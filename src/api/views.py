@@ -11,6 +11,11 @@ class CreaturePagination(pagination.CursorPagination):
 
 
 class CreatureViewSet(viewsets.ModelViewSet):
-    queryset = Creature.objects.filter(playable=True)
+    queryset = Creature.objects.filter(playable=True).prefetch_related(
+        'creaturespell_set',
+        'creaturespell_set__spell',
+        'creaturespell_set__spell__spelleffect_set',
+        'creaturespell_set__spell__spellupgrade_set',
+    )
     serializer_class = CreatureSerializer
     pagination_class = CreaturePagination
