@@ -1,5 +1,8 @@
-from glob import iglob
+import os
 import xml.etree.ElementTree as ET
+from glob import iglob
+
+from django.conf import settings
 
 from .models import Creature
 
@@ -13,7 +16,7 @@ def to_boolean(string):
 
 
 TRANSLATION_STRINGS = {}
-with open('bestiary/data_files/english.txt', encoding='utf8') as f:
+with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/english.txt'), encoding='utf8') as f:
     last_key = None
 
     for line in f:
@@ -28,7 +31,7 @@ with open('bestiary/data_files/english.txt', encoding='utf8') as f:
 
 
 def creatures():
-    for file_path in iglob('bestiary/data_files/creaturesDefinitions*.xml'):
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
 
