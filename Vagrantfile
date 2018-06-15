@@ -54,5 +54,5 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 5432, host: 5432  # postgres
     config.vm.network "forwarded_port", guest: 6379, host: 6379  # redis
     config.vm.network "forwarded_port", guest: 8000, host: 8000  # manage.py runserver using remote python interpreter
-    # config.vm.provision "shell", privileged: false, inline: $script
+    config.vm.provision "shell", privileged: false, inline: $script
 end
