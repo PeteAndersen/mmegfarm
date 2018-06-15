@@ -43,4 +43,27 @@ class CreatureSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Creature
-        fields = '__all__'
+        fields = [
+            'name',
+            'playable',
+            'summonable',
+            'inMenagerie',
+            'rank',
+            'archetype',
+            'element',
+            'group',
+            'subgroup',
+            'lore',
+            'creatureType',
+            'trackingName',
+            'hp',
+            'attack',
+            'defense',
+            'criticalChance',
+            'criticalDamage',
+            'accuracy',
+            'resistance',
+            'initialSpeed',
+            'speed',
+            'spells',
+        ]
