@@ -38,7 +38,6 @@ def creatures():
 
         for child in root:
             data = child.attrib
-            print(data['sku'])
 
             try:
                 c = Creature.objects.get(game_id=data['sku'])
@@ -128,7 +127,12 @@ def spells():
 
                         effect.effect = data[f'ingredient{x}']
                         effect.target = data[f'ingredient{x}Target']
-                        effect.condition = data.get(f'ingredient{x}Condition', '').split(';')
+
+                        if f'ingredient{x}Condition' in data:
+                            effect.condition = data.get(f'ingredient{x}Condition', '').split(';')
+                        else:
+                            effect.condition = []
+
                         effect.save()
                     else:
                         # Delete any effect entries beyond what was parsed
