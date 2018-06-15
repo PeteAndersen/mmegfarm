@@ -1,0 +1,19 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block title %}Home{% endblock %} - mm-eg.farm</title>
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  {% block content %}
+      You probably want <a href="{% url 'api:creature-list' %}">the API for now.</a>
+  {% endblock content %}
+</body>
+</html>

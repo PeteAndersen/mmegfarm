@@ -1,6 +1,5 @@
 import os
 import xml.etree.ElementTree as ET
-from glob import iglob
 
 from django.conf import settings
 
@@ -30,45 +29,55 @@ with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/english.txt'), en
             TRANSLATION_STRINGS[last_key] += f'\n{line}'
 
 
-def creatures():
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
-        tree = ET.parse(file_path)
-        root = tree.getroot()
+def creatures(f):
+    # Expecting f to be a file object for creaturesDefinitions*.xml files
+    tree = ET.parse(f)
+    root = tree.getroot()
 
-        for child in root:
-            data = child.attrib
+    updated = 0
+    created = 0
+    errors = []
 
-            try:
-                c = Creature.objects.get(game_id=data['sku'])
-            except Creature.DoesNotExist:
-                c = Creature()
-                c.game_id = data['sku']
-                print(f'Creating new creature {c.game_id}')
+    for child in root:
+        data = child.attrib
 
-            try:
-                c.name = TRANSLATION_STRINGS[data['name']]
-                c.playable = to_boolean(data['playable'])
-                c.summonable = to_boolean(data['getInGatcha'])
-                c.inMenagerie = to_boolean(data['inMenagerie'])
-                c.rank = data['rank']
-                c.archetype = data['class']
-                c.element = data['element']
-                c.group = data['group']
-                c.subgroup = data['subgroup'].split(',')
-                c.lore = TRANSLATION_STRINGS[data['lore']]
-                c.hp = int(data['hp'])
-                c.attack = int(data['attack'])
-                c.defense = int(data['defense'])
-                c.criticalChance = int(data['criticalChance'])
-                c.criticalDamage = int(data['criticalDamage'])
-                c.accuracy = float(data['accuracy'])
-                c.resistance = float(data['resistance'])
-                c.initialSpeed = float(data['initialSpeed'])
-                c.speed = float(data['speed'])
-                c.creatureType = data['creatureType']
-                c.trackingName = data['trackingName']
+        try:
+            c = Creature.objects.get(game_id=data['sku'])
+            updated += 1
+        except Creature.DoesNotExist:
+            c = Creature()
+            c.game_id = data['sku']
+            created += 1
 
-                c.save()
-            except (KeyError, ValueError) as e:
-                print(f'Failed to create creature {data["sku"]}')
-                print(type(e), e)
+        try:
+            c.name = TRANSLATION_STRINGS[data['name']]
+            c.playable = to_boolean(data['playable'])
+            c.summonable = to_boolean(data['getInGatcha'])
+            c.inMenagerie = to_boolean(data['inMenagerie'])
+            c.rank = data['rank']
+            c.archetype = data['class']
+            c.element = data['element']
+            c.group = data['group']
+            c.subgroup = data['subgroup'].split(',')
+            c.lore = TRANSLATION_STRINGS[data['lore']]
+            c.hp = int(data['hp'])
+            c.attack = int(data['attack'])
+            c.defense = int(data['defense'])
+            c.criticalChance = int(data['criticalChance'])
+            c.criticalDamage = int(data['criticalDamage'])
+            c.accuracy = float(data['accuracy'])
+            c.resistance = float(data['resistance'])
+            c.initialSpeed = float(data['initialSpeed'])
+            c.speed = float(data['speed'])
+            c.creatureType = data['creatureType']
+            c.trackingName = data['trackingName']
+
+            c.save()
+        except (KeyError, ValueError) as e:
+            errors.append(f'Failed to create creature {data["sku"]}. {type(e)} {e}.')
+
+    return {
+        'updated': updated,
+        'created': created,
+        'errors': errors,
+    }
