@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
 
     'api.apps.ApiConfig',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -108,6 +110,21 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# SSL settings
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_HTTPONLY = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = not DEBUG
+SECURE_BROWSER_XSS_FILTER = not DEBUG
+SECURE_HSTS_SECONDS = 31556926  # 1 year
+SECURE_HSTS_PRELOAD = not DEBUG
+
+# CORS settings
+CORS_ORIGIN_WHITELIST = (
+    'mm-eg.farm',
+)
 
 
 # Internationalization
