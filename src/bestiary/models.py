@@ -1,4 +1,4 @@
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 
 
@@ -69,8 +69,6 @@ class Creature(models.Model):
     initialSpeed = models.IntegerField()
     speed = models.FloatField()
 
-    spells = models.ManyToManyField('Spell', through='CreatureSpell')
-
     def __str__(self):
         return f'{self.name} - {self.get_element_display()} - {self.rank} star'
 
@@ -79,14 +77,23 @@ class Creature(models.Model):
 
 
 class Spell(models.Model):
+    creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
+    order = models.IntegerField()
     game_id = models.CharField(max_length=35)
+    title = models.CharField(max_length=80)
+    description = models.TextField()
     image = models.CharField(max_length=50)
+    type_image = models.CharField(max_length=50, default='')
     turns = models.IntegerField(blank=True, null=True)
     passive = models.BooleanField(default=False)
     passiveTrigger = models.CharField(max_length=30, blank=True, default='')
 
     def __str__(self):
         return self.game_id
+
+    class Meta:
+        ordering = ['order']
+        unique_together = ('creature', 'order')
 
 
 class SpellEffect(models.Model):
@@ -130,6 +137,7 @@ class SpellEffect(models.Model):
     order = models.IntegerField()
     effect = models.CharField(max_length=30)
     target = models.CharField(choices=TARGET_CHOICES, max_length=20)
+    params = JSONField(blank=True, default={})
     condition = ArrayField(
         models.CharField(choices=CONDITION_CHOICES, max_length=30, default=''),
         blank=True
@@ -138,6 +146,7 @@ class SpellEffect(models.Model):
 
     class Meta:
         ordering = ['order']
+        unique_together = ('spell', 'order')
 
 
 class SpellUpgrade(models.Model):
@@ -151,17 +160,4 @@ class SpellUpgrade(models.Model):
 
     class Meta:
         ordering = ['order']
-
-
-class CreatureSpell(models.Model):
-    # M2M through field for creature-unique attributes on spells
-    creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
-    spell = models.ForeignKey(Spell, on_delete=models.CASCADE)
-    order = models.IntegerField()
-    title = models.CharField(max_length=80)
-    description = models.TextField()
-    image = models.CharField(max_length=50)
-    params = models.TextField(blank=True, default='')
-
-    class Meta:
-        ordering = ['order']
+        unique_together = ('spell', 'order')

@@ -4,5 +4,4 @@ from bestiary import parse
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        parse.spells()
         parse.creatures()

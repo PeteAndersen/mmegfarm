@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from bestiary.models import Creature, Spell, SpellUpgrade, SpellEffect, CreatureSpell
+from bestiary.models import Creature, Spell, SpellUpgrade, SpellEffect
 
 
 class SpellEffectSerializer(serializers.ModelSerializer):
@@ -9,6 +9,7 @@ class SpellEffectSerializer(serializers.ModelSerializer):
         fields = [
             'effect',
             'target',
+            'params',
             'condition',
             'permanent',
         ]
@@ -16,30 +17,24 @@ class SpellEffectSerializer(serializers.ModelSerializer):
 
 class SpellSerializer(serializers.ModelSerializer):
     effects = SpellEffectSerializer(source='spelleffect_set', many=True)
+
     class Meta:
         model = Spell
-        exclude = [
-            'id',
-            'game_id',
-        ]
-
-
-class CreatureSpellSerializer(serializers.ModelSerializer):
-    spell = SpellSerializer()
-
-    class Meta:
-        model = CreatureSpell
         fields = [
+            'id',
             'title',
             'description',
             'image',
-            'params',
-            'spell'
+            'type_image',
+            'turns',
+            'passive',
+            'passiveTrigger',
+            'effects'
         ]
 
 
 class CreatureSerializer(serializers.ModelSerializer):
-    spells = CreatureSpellSerializer(source='creaturespell_set', many=True)
+    spells = SpellSerializer(source='spell_set', many=True)
 
     class Meta:
         model = Creature
