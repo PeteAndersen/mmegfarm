@@ -1,7 +1,8 @@
+import json
 import os
-from glob import iglob
-import xml.etree.ElementTree as ET
 import re
+import xml.etree.ElementTree as ET
+from glob import iglob
 
 from django.conf import settings
 
@@ -165,7 +166,13 @@ def _paramstodict(params):
         values = param.split(':')
         if len(values) == 2:
             # key:value pair
-            ret[values[0]] = values[1]
+            try:
+                # See if it's an int or float by parsing it
+                value = json.loads(values[1])
+                ret[values[0]] = value
+            except json.JSONDecodeError:
+                # Just interpret as string
+                ret[values[0]] = values[1]
         else:
             # simply presence of key
             ret[values[0]] = True
