@@ -15,8 +15,20 @@ class SpellEffectSerializer(serializers.ModelSerializer):
         ]
 
 
+class SpellUpgradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpellUpgrade
+        fields = [
+            'amount',
+            'is_percentage',
+            'attribute',
+            'description',
+        ]
+
+
 class SpellSerializer(serializers.ModelSerializer):
     effects = SpellEffectSerializer(source='spelleffect_set', many=True)
+    upgrades = SpellUpgradeSerializer(source='spellupgrade_set', many=True)
 
     class Meta:
         model = Spell
@@ -29,7 +41,8 @@ class SpellSerializer(serializers.ModelSerializer):
             'turns',
             'passive',
             'passiveTrigger',
-            'effects'
+            'upgrades',
+            'effects',
         ]
 
 
