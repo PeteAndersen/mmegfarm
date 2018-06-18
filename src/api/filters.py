@@ -1,18 +1,10 @@
 from django_filters import rest_framework as filters
 
-from bestiary.models import Creature
+from bestiary.models import Creature, SpellEffect
 
 
-def filter_array_contains(queryset, name, value):
-    return queryset.filter(**{f'{name}__contains': value.split(',')})
-
-
-def filter_array_contained_by(queryset, name, value):
-    return queryset.filter(**{f'{name}__contained_by': value.split(',')})
-
-
-def filter_array_overlap(queryset, name, value):
-    return queryset.filter(**{f'{name}__overlap': value.split(',')})
+def filter_array_value(queryset, name, value):
+    return queryset.filter(**{name: value.split(',')})
 
 
 class CreatureFilter(filters.FilterSet):
@@ -20,10 +12,26 @@ class CreatureFilter(filters.FilterSet):
     archetype = filters.ChoiceFilter(choices=Creature.ARCHETYPE_CHOICES)
     element = filters.ChoiceFilter(choices=Creature.ELEMENT_CHOICES)
     group = filters.ChoiceFilter(choices=Creature.GROUP_CHOICES)
-    subgroup = filters.CharFilter(method=filter_array_contains)
-    subgroup__contained_by = filters.CharFilter(method=filter_array_contained_by)
-    subgroup__overlap = filters.CharFilter(method=filter_array_overlap)
+    subgroup = filters.CharFilter(name='subgroup__contains', method=filter_array_value)
+    subgroup__contained_by = filters.CharFilter(method=filter_array_value)
+    subgroup__overlap = filters.CharFilter(method=filter_array_value)
     lore = filters.CharFilter(lookup_expr='icontains')
+
+    spell_name = filters.CharFilter(name='spell__title', lookup_expr='istartswith')
+    spell_description = filters.CharFilter(name='spell__description', lookup_expr='icontains')
+    spell_turns = filters.NumberFilter(name='spell__turns')
+    spell_turns__gte = filters.NumberFilter(name='spell__turns', lookup_expr='gte')
+    spell_turns__lte = filters.NumberFilter(name='spell__turns', lookup_expr='lte')
+    spell_passive = filters.BooleanFilter(name='spell__passive')
+    spell_effect = filters.CharFilter(name='spell__spelleffect__effect', lookup_expr='iexact')
+    spell_target = filters.ChoiceFilter(
+        name='spell__spelleffect__target',
+        choices=SpellEffect.TARGET_CHOICES,
+    )
+    spell_params_contains = filters.CharFilter(
+        name='spell_spelleffect__params__has_keys',
+        method=filter_array_value
+    )
 
     class Meta:
         model = Creature
