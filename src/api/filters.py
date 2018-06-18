@@ -29,7 +29,7 @@ class CreatureFilter(filters.FilterSet):
         choices=SpellEffect.TARGET_CHOICES,
     )
     spell_params_contains = filters.CharFilter(
-        name='spell_spelleffect__params__has_keys',
+        name='spell__spelleffect__params__has_keys',
         method=filter_array_value
     )
 
