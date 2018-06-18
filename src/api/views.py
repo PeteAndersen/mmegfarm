@@ -1,8 +1,8 @@
 from rest_framework import viewsets, pagination
 
 from bestiary.models import Creature
-
-from .serializers import *
+from .serializers import CreatureSerializer
+from .filters import CreatureFilter
 
 
 class CreaturePagination(pagination.CursorPagination):
@@ -13,6 +13,9 @@ class CreaturePagination(pagination.CursorPagination):
 
 
 class CreatureViewSet(viewsets.ModelViewSet):
+    """
+    Data for playable creatures in the game
+    """
     queryset = Creature.objects.filter(playable=True).prefetch_related(
         'spell_set',
         'spell_set__spelleffect_set',
@@ -20,3 +23,4 @@ class CreatureViewSet(viewsets.ModelViewSet):
     )
     serializer_class = CreatureSerializer
     pagination_class = CreaturePagination
+    filter_class = CreatureFilter
