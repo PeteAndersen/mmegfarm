@@ -52,6 +52,7 @@ class CreatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Creature
         fields = [
+            'id',
             'name',
             'playable',
             'summonable',
