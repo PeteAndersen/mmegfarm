@@ -207,3 +207,35 @@ def _getspellupgrades(sku):
                 break
 
         return upgrades
+
+
+def set_relationships():
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        for child in root:
+            data = child.attrib
+
+            try:
+                c = Creature.objects.get(game_id=data['sku'])
+            except Creature.DoesNotExist:
+                print(f'Could not find {data["sku"]} in creature database. Skipping.')
+            else:
+                if 'evolvesTo' in data:
+                    for evo_data in data['evolvesTo'].split(';'):
+                        if ',' in evo_data:
+                            # Can evolve to more than 1 creature
+                            game_id, _ = evo_data.split(',')
+                        else:
+                            game_id = evo_data
+
+                        try:
+                            evolves_to = Creature.objects.get(game_id=game_id)
+                        except Creature.DoesNotExist:
+                            print(f'ERROR: {data["sku"]} evolves to {game_id} but {game_id} was not found in the database.')
+                        else:
+                            evolves_to.evolvesFrom = c
+                            evolves_to.save()
+                            print(f'Set relationship for {c} evolving to {evolves_to}.')
+

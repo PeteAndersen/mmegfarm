@@ -17,6 +17,7 @@ class CreatureViewSet(viewsets.ModelViewSet):
     Data for playable creatures in the game
     """
     queryset = Creature.objects.filter(playable=True).prefetch_related(
+        'evolvesTo',
         'spell_set',
         'spell_set__spelleffect_set',
         'spell_set__spellupgrade_set',

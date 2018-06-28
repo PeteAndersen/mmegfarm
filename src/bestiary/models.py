@@ -58,6 +58,13 @@ class Creature(models.Model):
     lore = models.TextField(blank=True, default='')
     creatureType = models.CharField(max_length=50)
     trackingName = models.CharField(max_length=50)
+    evolvesFrom = models.ForeignKey(
+        'Creature',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='evolvesTo',
+    )
 
     hp = models.IntegerField()
     attack = models.IntegerField()
@@ -70,7 +77,7 @@ class Creature(models.Model):
     speed = models.FloatField()
 
     def __str__(self):
-        return f'{self.name} - {self.get_element_display()} - {self.rank} star'
+        return f'{self.name} - {self.get_element_display()} - {self.rank}*'
 
     class Meta:
         ordering = ['rank', 'name']
