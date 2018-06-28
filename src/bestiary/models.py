@@ -1,3 +1,4 @@
+from math import log, exp
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 
@@ -76,11 +77,96 @@ class Creature(models.Model):
     initialSpeed = models.IntegerField()
     speed = models.FloatField()
 
-    def __str__(self):
-        return f'{self.name} - {self.get_element_display()} - {self.rank}*'
+    maxLvlHp = models.IntegerField(blank=True, null=True)
+    maxLvlAttack = models.IntegerField(blank=True, null=True)
+    maxLvlDefense = models.IntegerField(blank=True, null=True)
+
+    evoHp = models.IntegerField(default=0)
+    evoAttack = models.IntegerField(default=0)
+    evoDefense = models.IntegerField(default=0)
+    evoCriticalChance = models.IntegerField(default=0)
+
+    RANK_UP_MULTIPLIERS = {
+        'hp': {1: 1.651, 2: 2.064, 3: 1.803, 4: 1.537, 5: 1.461},
+        'attack': {1: 1.689, 2: 2.540, 3: 1.905, 4: 1.537, 5: 1.461},
+        'defense': {1: 1.689, 2: 2.540, 3: 1.905, 4: 1.537, 5: 1.461},
+    }
+
+    @staticmethod
+    def max_level_for_rank(rank):
+        return 10 + rank * 5
+
+    def get_hp(self, rank, level):
+        return self._get_stat(
+            self.rank,
+            self.hp,
+            self.evoHp,
+            self.RANK_UP_MULTIPLIERS['hp'],
+            rank,
+            level
+        )
+
+    def get_attack(self, rank, level):
+        return self._get_stat(
+            self.rank,
+            self.attack,
+            self.evoAttack,
+            self.RANK_UP_MULTIPLIERS['attack'],
+            rank,
+            level
+        )
+
+    def get_defense(self, rank, level):
+        return self._get_stat(
+            self.rank,
+            self.defense,
+            self.evoDefense,
+            self.RANK_UP_MULTIPLIERS['defense'],
+            rank,
+            level
+        )
+
+    @staticmethod
+    def _get_stat(base_rank, base_stat, evo_stat, multipliers, rank, level):
+        max_lvl = Creature.max_level_for_rank(rank)
+
+        if rank < 1 or rank > 5:
+            raise ValueError('Rank must be between 1 and 5.')
+        if 1 > level or level > max_lvl:
+            raise ValueError(f'Level must be between 1 and {max_lvl} for rank {rank}.')
+
+        # Get min/max stat for requested rank
+        lvl_1_stat = base_stat
+        max_stat = base_stat * multipliers[base_rank]
+
+        for r in range(base_rank, rank):
+            lvl_1_stat = round((max_stat - evo_stat) / 1.27 + evo_stat)
+            max_stat = lvl_1_stat * multipliers[r + 1]
+
+        max_stat = round(max_stat)
+
+        if level == max_lvl:
+            return max_stat
+        else:
+            # Calculate exponential curve for stats between level 1 and max
+            a = lvl_1_stat
+            b = log(max_stat / lvl_1_stat) / (max_lvl-1)
+            x = level - 1
+
+            return int(round(a*exp(b*x)))
 
     class Meta:
         ordering = ['rank', 'name']
+
+    def save(self, *args, **kwargs):
+        self.maxLvlHp = self.get_hp(5, self.max_level_for_rank(5))
+        self.maxLvlAttack = self.get_attack(5, self.max_level_for_rank(5))
+        self.maxLvlDefense = self.get_defense(5, self.max_level_for_rank(5))
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.name} - {self.get_element_display()} - {self.rank}*'
 
 
 class Spell(models.Model):

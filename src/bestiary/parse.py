@@ -51,12 +51,15 @@ def creatures():
                 c.playable = to_boolean(data['playable'])
                 c.summonable = to_boolean(data['getInGatcha'])
                 c.inMenagerie = to_boolean(data['inMenagerie'])
-                c.rank = data['rank']
+                c.rank = int(data['rank'])
                 c.archetype = data['class']
                 c.element = data['element']
                 c.group = data['group']
                 c.subgroup = data['subgroup'].split(',')
                 c.lore = TRANSLATION_STRINGS[data['lore']]
+                c.creatureType = data['creatureType']
+                c.trackingName = data['trackingName']
+
                 c.hp = int(data['hp'])
                 c.attack = int(data['attack'])
                 c.defense = int(data['defense'])
@@ -66,8 +69,11 @@ def creatures():
                 c.resistance = float(data['resistance'])
                 c.initialSpeed = float(data['initialSpeed'])
                 c.speed = float(data['speed'])
-                c.creatureType = data['creatureType']
-                c.trackingName = data['trackingName']
+
+                c.evoHp = int(data.get('evoStatHP', 0))
+                c.evoAttack = int(data.get('evoStatAttack', 0))
+                c.evoDefense = int(data.get('evoStatDefense', 0))
+                c.evoCriticalChance = int(data.get('evoStatCriticalChance', 0))
 
                 c.save()
             except (KeyError, ValueError) as e:
@@ -237,5 +243,3 @@ def set_relationships():
                         else:
                             evolves_to.evolvesFrom = c
                             evolves_to.save()
-                            print(f'Set relationship for {c} evolving to {evolves_to}.')
-
