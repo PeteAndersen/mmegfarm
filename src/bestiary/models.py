@@ -136,24 +136,22 @@ class Creature(models.Model):
             raise ValueError(f'Level must be between 1 and {max_lvl} for rank {rank}.')
 
         # Get min/max stat for requested rank
-        lvl_1_stat = base_stat
-        max_stat = base_stat * multipliers[base_rank]
+        max_stat = (base_stat - evo_stat) * multipliers[base_rank]
 
         for r in range(base_rank, rank):
-            lvl_1_stat = round((max_stat - evo_stat) / 1.27 + evo_stat)
-            max_stat = lvl_1_stat * multipliers[r + 1]
+            max_stat = max_stat / 1.27 * multipliers[r + 1]
 
         max_stat = round(max_stat)
 
         if level == max_lvl:
-            return max_stat
+            return max_stat + evo_stat
         else:
             # Calculate exponential curve for stats between level 1 and max
-            a = lvl_1_stat
-            b = log(max_stat / lvl_1_stat) / (max_lvl-1)
+            a = base_stat
+            b = log(max_stat / base_stat) / (max_lvl-1)
             x = level - 1
 
-            return int(round(a*exp(b*x)))
+            return int(round(a*exp(b*x))) + evo_stat
 
     class Meta:
         ordering = ['rank', 'name']
