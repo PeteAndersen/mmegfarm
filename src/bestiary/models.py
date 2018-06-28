@@ -59,12 +59,12 @@ class Creature(models.Model):
     lore = models.TextField(blank=True, default='')
     creatureType = models.CharField(max_length=50)
     trackingName = models.CharField(max_length=50)
-    evolvesFrom = models.ForeignKey(
+    evolvesTo = models.ForeignKey(
         'Creature',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        related_name='evolvesTo',
+        related_name='evolvesFrom',
     )
 
     hp = models.IntegerField()
@@ -170,6 +170,7 @@ class Creature(models.Model):
 class Spell(models.Model):
     creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
     order = models.IntegerField()
+    slot = models.IntegerField(default=1)
     game_id = models.CharField(max_length=35)
     title = models.CharField(max_length=80)
     description = models.TextField()

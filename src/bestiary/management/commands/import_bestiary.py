@@ -4,5 +4,10 @@ from bestiary import parse
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        print('Parsing creatures...')
         parse.creatures()
-        parse.set_relationships()
+        print('Setting evolution relationships...')
+        parse.evolutions()
+        print('Parsing spells...')
+        parse.spells()
+        print('Done!')

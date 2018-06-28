@@ -34,6 +34,7 @@ class SpellSerializer(serializers.ModelSerializer):
         model = Spell
         fields = [
             'id',
+            'slot',
             'title',
             'description',
             'image',
