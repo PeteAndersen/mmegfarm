@@ -48,11 +48,6 @@ class SpellSerializer(serializers.ModelSerializer):
 
 class CreatureSerializer(serializers.ModelSerializer):
     spells = SpellSerializer(source='spell_set', many=True)
-    evolvesTo = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='api:creature-detail',
-    )
 
     class Meta:
         model = Creature
@@ -71,6 +66,7 @@ class CreatureSerializer(serializers.ModelSerializer):
             'creatureType',
             'trackingName',
             'evolvesTo',
+            'evolvesFrom',
             'hp',
             'attack',
             'defense',
