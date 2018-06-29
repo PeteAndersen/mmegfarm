@@ -133,11 +133,16 @@ def spells():
             continue
 
         order = 0
+        skus_used = []
 
         for slot in range(3):
             for creature_data in creatures_data:
                 if f'spell{slot}' in creature_data:
                     sku = creature_data[f'spell{slot}']
+                    if sku in skus_used:
+                        # Identical spell on secondary creature data - no need to parse again
+                        continue
+
                     try:
                         spell = Spell.objects.get(creature=c, game_id=sku)
                     except Spell.DoesNotExist:
@@ -158,6 +163,7 @@ def spells():
                     spell.passive = 'passive_spell' in spell.game_id
                     spell.passiveTrigger = spell_data.get('launch', '')
                     spell.save()
+                    skus_used.append(sku)
                     order += 1
 
                     # Parse spell effects
@@ -212,6 +218,9 @@ def spells():
 
                         # Delete any upgrade entries beyond what was parsed
                         SpellUpgrade.objects.filter(spell=spell, order__gte=len(upgrades)).delete()
+
+        # Remove spells assigned to this creature that were not processed
+        c.spell_set.exclude(game_id__in=set(skus_used)).delete()
 
 
 def _getcreaturedata(tracking_name):
