@@ -36,6 +36,7 @@ class CreatureFilter(filters.FilterSet):
     class Meta:
         model = Creature
         fields = {
+            'slug': ['exact', 'isnull'],
             'playable': ['exact'],
             'summonable': ['exact'],
             'rank': ['exact', 'gte', 'lte'],

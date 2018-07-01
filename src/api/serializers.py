@@ -54,6 +54,7 @@ class CreatureSerializer(serializers.ModelSerializer):
         model = Creature
         fields = [
             'id',
+            'slug',
             'name',
             'playable',
             'summonable',

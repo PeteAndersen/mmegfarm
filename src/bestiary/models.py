@@ -2,6 +2,8 @@ from math import log, exp
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 
+from django.utils.text import slugify
+
 
 class Creature(models.Model):
     ARCHETYPE_DEFENDER = 'defender'
@@ -59,6 +61,7 @@ class Creature(models.Model):
     lore = models.TextField(blank=True, default='')
     creatureType = models.CharField(max_length=50)
     trackingName = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=100, null=True, blank=True)
     evolvesTo = models.ForeignKey(
         'Creature',
         on_delete=models.SET_NULL,
@@ -160,6 +163,7 @@ class Creature(models.Model):
         self.maxLvlHp = self.get_hp(5, self.max_level_for_rank(5))
         self.maxLvlAttack = self.get_attack(5, self.max_level_for_rank(5))
         self.maxLvlDefense = self.get_defense(5, self.max_level_for_rank(5))
+        self.slug = slugify(f'{self.pk}-{self.name}-{self.element}')
 
         super().save(*args, **kwargs)
 
