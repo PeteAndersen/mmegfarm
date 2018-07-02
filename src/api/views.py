@@ -1,4 +1,6 @@
+from django_filters import rest_framework as filters
 from rest_framework import viewsets, pagination
+from rest_framework.filters import OrderingFilter
 
 from bestiary.models import Creature
 from .serializers import CreatureSerializer
@@ -16,12 +18,15 @@ class CreatureViewSet(viewsets.ModelViewSet):
     """
     Data for playable creatures in the game
     """
-    queryset = Creature.objects.filter(playable=True).prefetch_related(
-        'evolvesTo',
+    queryset = Creature.objects.filter(playable=True).select_related(
+        'evolvesTo'
+    ).prefetch_related(
+        'evolvesFrom',
         'spell_set',
         'spell_set__spelleffect_set',
         'spell_set__spellupgrade_set',
     )
     serializer_class = CreatureSerializer
     pagination_class = CreaturePagination
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter, )
     filter_class = CreatureFilter
