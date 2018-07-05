@@ -223,6 +223,22 @@ def spells():
         c.spell_set.exclude(game_id__in=set(skus_used)).delete()
 
 
+def effects():
+    tree = ET.parse('bestiary/data_files/spellIconsDefinitions.xml')
+    root = tree.getroot()
+
+    return {
+        child.attrib['spell']: {
+            'sku': child.attrib['sku'],
+            'spell': child.attrib['spell'],
+            'icon': child.attrib['icon'],
+            'is_buff': child.attrib['buff'],
+            'title': TRANSLATION_STRINGS[child.attrib['tidTitle']],
+            'description': TRANSLATION_STRINGS[child.attrib['tidDesc']]
+        } for child in root
+    }
+
+
 def _getcreaturedata(tracking_name):
     result = []
     # Return skill data for the sku provided
