@@ -12,7 +12,7 @@ def filter_has_all_related(queryset, name, value):
     for val in filter_values:
         queryset = queryset.filter(**{name: val})
 
-    return queryset
+    return queryset.distinct()
 
 
 class CreatureFilter(filters.FilterSet):
