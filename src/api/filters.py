@@ -34,10 +34,7 @@ class CreatureFilter(filters.FilterSet):
     spell_effect = filters.CharFilter(name='spell__spelleffect__effect', method=filter_has_all_related)
     spell_effect_any = filters.CharFilter(name='spell__spelleffect__effect__in', method=filter_array_value)
     spell_target = filters.CharFilter(name='spell__spelleffect__target__in', method=filter_array_value)
-    spell_params_contains = filters.CharFilter(
-        name='spell__spelleffect__params__has_keys',
-        method=filter_array_value
-    )
+    scales_with = filters.CharFilter(name="spell__spelleffect__params__incBase__in", method=filter_array_value)
 
     class Meta:
         model = Creature
