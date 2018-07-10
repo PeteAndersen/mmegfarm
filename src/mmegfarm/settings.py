@@ -124,9 +124,7 @@ SECURE_HSTS_PRELOAD = not DEBUG
 
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = DEBUG
-CORS_ORIGIN_WHITELIST = (
-    'mm-eg.farm',
-)
+CORS_ORIGIN_REGEX_WHITELIST = [r'^.*mm-eg\.farm$', ]
 
 
 # Internationalization
