@@ -188,10 +188,8 @@ def spells():
                             if x < len(effect_params):
                                 effect.params = _paramstodict(effect_params[x])
 
-                            if f'ingredient{x}Condition' in creature_data:
-                                effect.condition = creature_data.get(f'ingredient{x}Condition', '').split(';')
-                            else:
-                                effect.condition = []
+                            if f'ingredient{x}Condition' in spell_data:
+                                effect.condition = spell_data[f'ingredient{x}Condition'].split(';')
 
                             effect.save()
                             effect_order += 1
@@ -205,7 +203,7 @@ def spells():
                         for x in range(10):
                             if f'spell{x}' in effect.params['spell']:
                                 rand_spell_data = _getspelldata(effect.params['spell'][f'spell{x}'])
-                                rand_params = effect.params['spell'][f'spell{x}Params']
+                                rand_params = effect.params['spell'][f'spell{x}Params'].split(';')
 
                                 for eff_idx in range(10):
                                     if f'ingredient{eff_idx}' in rand_spell_data:
@@ -218,8 +216,10 @@ def spells():
 
                                         rand_effect.effect = rand_spell_data[f'ingredient{eff_idx}']
                                         rand_effect.target = rand_spell_data[f'ingredient{eff_idx}Target']
-                                        rand_effect.params = _paramstodict(rand_params)
+                                        rand_effect.params = _paramstodict(rand_params[eff_idx])
                                         rand_effect.probability = float(effect.params['spell'][f'spell{x}Prob'])
+                                        if f'ingredient{eff_idx}Condition' in rand_spell_data:
+                                            rand_effect.condition = rand_spell_data[f'ingredient{eff_idx}Condition'].split(';')
                                         rand_effect.save()
                                         effect_order += 1
                                     else:
