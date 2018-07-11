@@ -236,9 +236,10 @@ class SpellEffect(models.Model):
     params = JSONField(blank=True, default={})
     condition = ArrayField(
         models.CharField(choices=CONDITION_CHOICES, max_length=30, default=''),
-        blank=True
+        blank=True, default=[]
     )
     permanent = models.NullBooleanField()
+    probability = models.FloatField(null=True, blank=True)
 
     class Meta:
         ordering = ['order']

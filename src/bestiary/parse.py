@@ -167,6 +167,7 @@ def spells():
                     order += 1
 
                     # Parse spell effects
+                    effect_order = 0
                     if f'spell{slot}Params' in creature_data:
                         effect_params = creature_data[f'spell{slot}Params'].split(';')
                     else:
@@ -179,7 +180,7 @@ def spells():
                             except SpellEffect.DoesNotExist:
                                 effect = SpellEffect()
                                 effect.spell = spell
-                                effect.order = x
+                                effect.order = effect_order
 
                             effect.effect = spell_data[f'ingredient{x}']
                             effect.target = spell_data[f'ingredient{x}Target']
@@ -193,10 +194,40 @@ def spells():
                                 effect.condition = []
 
                             effect.save()
+                            effect_order += 1
                         else:
-                            # Delete any effect entries beyond what was parsed
-                            SpellEffect.objects.filter(spell=spell, order__gt=x).delete()
                             break
+
+                    # Parse random spell cast effects
+                    # The effects from random spells should be added to this main spell
+                    for effect in spell.spelleffect_set.filter(effect__in=['castRandomEnemy', 'castRandomAlly']):
+                        # Get each spell ID from the random options and get its effects
+                        for x in range(10):
+                            if f'spell{x}' in effect.params['spell']:
+                                rand_spell_data = _getspelldata(effect.params['spell'][f'spell{x}'])
+                                rand_params = effect.params['spell'][f'spell{x}Params']
+
+                                for eff_idx in range(10):
+                                    if f'ingredient{eff_idx}' in rand_spell_data:
+                                        try:
+                                            rand_effect = SpellEffect.objects.get(spell=spell, order=effect_order)
+                                        except SpellEffect.DoesNotExist:
+                                            rand_effect = SpellEffect()
+                                            rand_effect.spell = spell
+                                            rand_effect.order = effect_order
+
+                                        rand_effect.effect = rand_spell_data[f'ingredient{eff_idx}']
+                                        rand_effect.target = rand_spell_data[f'ingredient{eff_idx}Target']
+                                        rand_effect.params = _paramstodict(rand_params)
+                                        rand_effect.probability = float(effect.params['spell'][f'spell{x}Prob'])
+                                        rand_effect.save()
+                                        effect_order += 1
+                                    else:
+                                        break
+                            else:
+                                # Delete any effect entries beyond what was parsed
+                                SpellEffect.objects.filter(spell=spell, order__gte=effect_order).delete()
+                                break
 
                     # Parse upgrades
                     if 'spellUpgradeSku' in spell_data:
@@ -280,6 +311,9 @@ def _paramstodict(params):
             # simply presence of key
             ret[values[0]] = True
 
+    if 'spell' in ret:
+        ret['spell'] = _getspellrandomdef(ret['spell'])
+
     return ret
 
 
@@ -316,3 +350,12 @@ def _getspellupgrades(sku):
                 break
 
         return upgrades
+
+
+def _getspellrandomdef(sku):
+    with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creatureCastRandomSpellsDefinitions.xml')) as f:
+        tree = ET.parse(f)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+
+        return node.attrib

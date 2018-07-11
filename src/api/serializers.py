@@ -12,6 +12,7 @@ class SpellEffectSerializer(serializers.ModelSerializer):
             'params',
             'condition',
             'permanent',
+            'probability',
         ]
 
 
