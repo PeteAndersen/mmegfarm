@@ -299,9 +299,15 @@ def _getspellupgrades(sku):
         for x in range(10):
             if f'skillUp{x}' in data:
                 match = skillUpMatcher.match(data[f'skillUp{x}'])
+
                 if match:
+                    if match.group('attribute') == 'turns' and float(match.group('val')) != 0:
+                        val = float(match.group('val'))
+                    else:
+                        val = float(match.group('amount'))
+
                     upgrades.append({
-                        'value': float(match.group('amount')),
+                        'value': val,
                         'attribute': match.group('attribute'),
                         'description': TRANSLATION_STRINGS[data[f'skillUp{x}TID']],
                         'is_percentage': f'skillUp{x}Suffix' in data,
