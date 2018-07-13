@@ -53,4 +53,5 @@ class CreatureFilter(filters.FilterSet):
             'resistance': ['exact', 'gte', 'lte'],
             'initialSpeed': ['exact', 'gte', 'lte'],
             'speed': ['exact', 'gte', 'lte'],
+            'evolvesTo': ['exact', 'isnull'],
         }
