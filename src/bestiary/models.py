@@ -258,3 +258,96 @@ class SpellUpgrade(models.Model):
     class Meta:
         ordering = ['order']
         unique_together = ('spell', 'order')
+
+
+class Dungeon(models.Model):
+    GROUP_ELEMENT = 'GroupElements'
+    GROUP_GLYPH = 'GroupGlyphs'
+    GROUP_TWIN_TOWERS = 'GroupTwinTowers'
+    GROUP_EVENT = 'GroupEventDungeon'
+    GROUP_SCENARIO = 'ScenarioDungeon'
+
+    GROUP_CHOICES = (
+        (GROUP_ELEMENT, 'Elemental Dungeon'),
+        (GROUP_GLYPH, 'Glyph Dungeon'),
+        (GROUP_TWIN_TOWERS, 'Tower of Trials'),
+        (GROUP_EVENT, 'Event Dungeon'),
+        (GROUP_SCENARIO, 'Shattered Islands Scenario'),
+    )
+
+    game_id = models.CharField(max_length=50)
+    group = models.CharField(max_length=25, choices=GROUP_CHOICES)
+    always_available = models.BooleanField(default=True)
+    days = ArrayField(
+        models.IntegerField(),
+        default=[]
+    )
+    months = ArrayField(
+        models.IntegerField(),
+        default=[]
+    )
+
+
+class Level(models.Model):
+    DIFFICULTY_EASY = 'normal'
+    DIFFICULTY_MEDIUM = 'advanced'
+    DIFFICULTY_HARD = 'nightmare'
+
+    DIFFICULTY_CHOICES = (
+        (DIFFICULTY_EASY, 'Normal'),
+        (DIFFICULTY_MEDIUM, 'Advanced'),
+        (DIFFICULTY_HARD, 'Nightmare'),
+    )
+
+    dungeon = models.ForeignKey(Dungeon, on_delete=models.CASCADE)
+    game_id = models.CharField(max_length=50)
+    difficulty = models.CharField(max_length=15, null=True, blank=True)
+    slots = models.IntegerField(help_text='Creatures allowed to bring')
+    energy_cost = models.IntegerField()
+
+
+class Wave(models.Model):
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    game_id = models.CharField(max_length=50)
+
+
+class Enemy(models.Model):
+    wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
+    creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
+    level = models.IntegerField()
+    rank = models.IntegerField(default=1)
+    hpMulti = models.FloatField(default=1)
+    attackMulti = models.FloatField(default=1)
+    defenseMulti = models.FloatField(default=1)
+    speedMulti = models.FloatField(default=1)
+    criticalChanceMulti = models.FloatField(default=1)
+    criticalDamageMulti = models.FloatField(default=1)
+    accuracyMulti = models.FloatField(default=1)
+    resistanceMulti = models.FloatField(default=1)
+
+
+class Boss(Creature):
+    TYPE_BOSS = 'boss'
+    TYPE_MINIBOSS = 'miniboss'
+    TYPE_CHOICES = (
+        (TYPE_BOSS, 'Boss'),
+        (TYPE_MINIBOSS, 'Miniboss'),
+    )
+    type = models.CharField(choices=TYPE_CHOICES)
+    level = models.IntegerField()
+    rank = models.IntegerField(default=1)
+
+
+class DropGroup(models.Model):
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    instant = models.BooleanField(default=False, help_text='Drops when running with Instant Tickets')
+    xp = models.IntegerField()
+    crystals = models.IntegerField()
+
+
+class Drops(models.Model):
+    group = models.ForeignKey(DropGroup, on_delete=models.CASCADE)
+    probability = models.FloatField(help_text='Chance of reward')
+
+    # Might need to split this into different types of rewards for glyphs
+    # maybe an abstract base class
