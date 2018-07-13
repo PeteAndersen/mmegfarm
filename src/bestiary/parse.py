@@ -6,7 +6,7 @@ from glob import iglob
 
 from django.conf import settings
 
-from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon
+from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level
 
 
 # Checking for XML strings to values
@@ -306,6 +306,75 @@ def regions():
                     dungeon.always_available = True
 
                 dungeon.save()
+
+
+def levels():
+    for file_path in [
+        os.path.join(settings.BASE_DIR, 'bestiary/data_files/levelsDefinitions.xml'),
+        os.path.join(settings.BASE_DIR, 'bestiary/data_files/specialDungeonLevelsDefinitions.xml')
+    ]:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        for child in root:
+            data = child.attrib
+            print(data['sku'])
+
+            # Scenarios have easy, medium, hard
+            if 'easyLevel' in data:
+                _create_level(data, Level.DIFFICULTY_EASY)
+            if 'mediumLevel' in data:
+                _create_level(data, Level.DIFFICULTY_MEDIUM)
+            if 'hardLevel' in data:
+                _create_level(data, Level.DIFFICULTY_HARD)
+            if 'level' in data:
+                # Special dungeons
+                _create_level(data, None)
+
+
+_difficulty_keys = {
+    Level.DIFFICULTY_EASY: 'easyLevel',
+    Level.DIFFICULTY_MEDIUM: 'mediumLevel',
+    Level.DIFFICULTY_HARD: 'hardLevel',
+    None: 'level',
+}
+
+
+def _create_level(data, difficulty):
+    try:
+        level = Level.objects.get(game_id=data['sku'], difficulty=difficulty)
+    except Level.DoesNotExist:
+        level = Level()
+        level.game_id = data['sku']
+        level.difficulty = difficulty
+
+    difficulty_data = _get_difficulty_level(data[_difficulty_keys[difficulty]])
+
+    try:
+        dungeon = Dungeon.objects.get(game_id=data['region'])
+    except Dungeon.DoesNotExist:
+        print(f'Could not find region {data["region"]} for level {data["sku"]}. Skipping')
+        return
+    else:
+        level.dungeon = dungeon
+        level.order = int(data['order'])
+
+        level.slots = int(difficulty_data['allies'])
+        level.energy_cost = int(difficulty_data['energy'])
+
+        # TODO: Parse rewards here
+        # TODO: Parse waves here
+
+        level.save()
+
+
+def _get_difficulty_level(sku):
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/*[lL]evelsDefinitions.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+        if node is not None:
+            return node.attrib
 
 
 def _getcreaturedata(tracking_name):

@@ -275,7 +275,7 @@ class Dungeon(models.Model):
         (GROUP_SCENARIO, 'Shattered Islands Scenario'),
     )
 
-    game_id = models.CharField(max_length=50)
+    game_id = models.CharField(max_length=50, db_index=True)
     name = models.CharField(max_length=100)
     group = models.CharField(max_length=25, choices=GROUP_CHOICES)
     always_available = models.BooleanField(default=True)
@@ -301,15 +301,19 @@ class Level(models.Model):
     )
 
     dungeon = models.ForeignKey(Dungeon, on_delete=models.CASCADE)
-    game_id = models.CharField(max_length=50)
+    game_id = models.CharField(max_length=50, db_index=True)
+    order = models.IntegerField()
     difficulty = models.CharField(max_length=15, null=True, blank=True)
     slots = models.IntegerField(help_text='Creatures allowed to bring')
     energy_cost = models.IntegerField()
 
+    class Meta:
+        ordering = ['order']
+
 
 class Wave(models.Model):
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    game_id = models.CharField(max_length=50)
+    game_id = models.CharField(max_length=50, db_index=True)
 
 
 class Enemy(models.Model):

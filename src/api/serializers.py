@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from bestiary.models import Creature, Spell, SpellUpgrade, SpellEffect, Dungeon
+from bestiary.models import Creature, Spell, SpellUpgrade, SpellEffect, Dungeon, Level
 
 
 class SpellEffectSerializer(serializers.ModelSerializer):
@@ -89,14 +89,31 @@ class CreatureSerializer(serializers.ModelSerializer):
         ]
 
 
+class LevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Level
+        fields = [
+            'id',
+            'game_id',
+            'order',
+            'difficulty',
+            'slots',
+            'energy_cost',
+        ]
+
+
 class DungeonSerializer(serializers.ModelSerializer):
+    levels = LevelSerializer(source='level_set', many=True, read_only=True)
+
     class Meta:
         model = Dungeon
         fields = [
+            'id',
             'game_id',
             'name',
             'group',
             'always_available',
             'days_available',
             'months_available',
+            'levels',
         ]

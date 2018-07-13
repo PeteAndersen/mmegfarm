@@ -31,10 +31,11 @@ class CreatureViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter, )
     filter_class = CreatureFilter
 
+
 class DungeonViewSet(viewsets.ModelViewSet):
     """
     Dungeon waves and drops
     """
-    queryset = Dungeon.objects.all()
+    queryset = Dungeon.objects.all().prefetch_related('level_set')
     serializer_class = DungeonSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
