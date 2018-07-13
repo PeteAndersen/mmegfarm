@@ -278,11 +278,11 @@ class Dungeon(models.Model):
     game_id = models.CharField(max_length=50)
     group = models.CharField(max_length=25, choices=GROUP_CHOICES)
     always_available = models.BooleanField(default=True)
-    days = ArrayField(
+    days_available = ArrayField(
         models.IntegerField(),
         default=[]
     )
-    months = ArrayField(
+    months_available = ArrayField(
         models.IntegerField(),
         default=[]
     )
@@ -333,9 +333,8 @@ class Boss(Creature):
         (TYPE_BOSS, 'Boss'),
         (TYPE_MINIBOSS, 'Miniboss'),
     )
-    type = models.CharField(choices=TYPE_CHOICES)
+    type = models.CharField(max_length=15, choices=TYPE_CHOICES)
     level = models.IntegerField()
-    rank = models.IntegerField(default=1)
 
 
 class DropGroup(models.Model):
