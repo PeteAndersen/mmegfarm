@@ -6,7 +6,7 @@ from glob import iglob
 
 from django.conf import settings
 
-from .models import Creature, Spell, SpellEffect, SpellUpgrade
+from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon
 
 
 # Checking for XML strings to values
@@ -32,6 +32,7 @@ with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/english.txt'), en
             TRANSLATION_STRINGS[last_key] += f'\n{line}'
 
 
+# CREATURES AND SPELLS
 def creatures():
     for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
@@ -268,6 +269,43 @@ def effects():
             'description': TRANSLATION_STRINGS[child.attrib['tidDesc']]
         } for child in root
     }
+
+
+# DUNGEONS, ENEMIES, AND REWARDS
+def regions():
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/*[rR]egionsDefinitions.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        for child in root:
+            data = child.attrib
+
+            if data['path'] != 'PVP' and to_boolean(data['inGame']):
+                try:
+                    dungeon = Dungeon.objects.get(game_id=data['sku'])
+                except Dungeon.DoesNotExist:
+                    dungeon = Dungeon()
+                    dungeon.game_id = data['sku']
+
+                dungeon.name = TRANSLATION_STRINGS[data['name']]
+                dungeon.group = data.get('group', Dungeon.GROUP_SCENARIO)
+
+                if 'unlock' in data:
+                    # Dungeon is only open certain days or months
+                    time_unit, unlock = data['unlock'].split(':')
+                    unlock = [int(val) for val in unlock.split(',')]
+                    unlock.sort()
+
+                    if time_unit == 'Days':
+                        dungeon.days_available = unlock
+                        dungeon.always_available = len(unlock) == 7
+                    if time_unit == 'Months':
+                        dungeon.months_available = unlock
+                        dungeon.always_available = len(unlock) == 12
+                else:
+                    dungeon.always_available = True
+
+                dungeon.save()
 
 
 def _getcreaturedata(tracking_name):

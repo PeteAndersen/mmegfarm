@@ -276,6 +276,7 @@ class Dungeon(models.Model):
     )
 
     game_id = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     group = models.CharField(max_length=25, choices=GROUP_CHOICES)
     always_available = models.BooleanField(default=True)
     days_available = ArrayField(

@@ -2,8 +2,8 @@ from django_filters import rest_framework as filters
 from rest_framework import viewsets, pagination
 from rest_framework.filters import OrderingFilter
 
-from bestiary.models import Creature
-from .serializers import CreatureSerializer
+from bestiary.models import Creature, Dungeon
+from .serializers import CreatureSerializer, DungeonSerializer
 from .filters import CreatureFilter
 
 
@@ -30,3 +30,11 @@ class CreatureViewSet(viewsets.ModelViewSet):
     pagination_class = CreaturePagination
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter, )
     filter_class = CreatureFilter
+
+class DungeonViewSet(viewsets.ModelViewSet):
+    """
+    Dungeon waves and drops
+    """
+    queryset = Dungeon.objects.all()
+    serializer_class = DungeonSerializer
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
