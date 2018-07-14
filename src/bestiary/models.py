@@ -315,11 +315,13 @@ class Level(models.Model):
 class Wave(models.Model):
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     game_id = models.CharField(max_length=50, db_index=True)
+    order = models.IntegerField(default=0)
 
 
 class Enemy(models.Model):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
+    order = models.IntegerField(default=0)
     level = models.IntegerField()
     rank = models.IntegerField(default=1)
     hpMulti = models.FloatField(default=1)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from bestiary.models import Creature, Spell, SpellUpgrade, SpellEffect, Dungeon, Level
+from bestiary.models import Creature, Spell, SpellUpgrade, SpellEffect, Dungeon, Level, Wave, Enemy
 
 
 class SpellEffectSerializer(serializers.ModelSerializer):
@@ -89,7 +89,23 @@ class CreatureSerializer(serializers.ModelSerializer):
         ]
 
 
+class EnemySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Enemy
+        fields = '__all__'
+
+
+class WaveSerializer(serializers.ModelSerializer):
+    enemies = EnemySerializer(source='enemy_set', many=True, read_only=True)
+
+    class Meta:
+        model = Wave
+        fields = '__all__'
+
+
 class LevelSerializer(serializers.ModelSerializer):
+    waves = WaveSerializer(source='wave_set', many=True, read_only=True)
+
     class Meta:
         model = Level
         fields = [
@@ -99,6 +115,7 @@ class LevelSerializer(serializers.ModelSerializer):
             'difficulty',
             'slots',
             'energy_cost',
+            'waves',
         ]
 
 

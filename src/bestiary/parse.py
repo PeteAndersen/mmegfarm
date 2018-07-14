@@ -6,7 +6,7 @@ from glob import iglob
 
 from django.conf import settings
 
-from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level
+from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level, Wave, Enemy
 
 
 # Checking for XML strings to values
@@ -128,7 +128,7 @@ def spells():
         skus_used = []
         # Get XML elements for this creature. May be multiple results.
         # These are the same creature with different spells
-        creature_data = _getcreaturedata(c.game_id)
+        creature_data = _get_creature_data(c.game_id)
 
         for slot in range(3):
             if f'spell{slot}' in creature_data:
@@ -143,7 +143,7 @@ def spells():
                     spell.game_id = sku
 
                 spell.slot = slot + 1
-                spell_data = _getspelldata(spell.game_id)
+                spell_data = _get_spell_data(spell.game_id)
                 title_tid, desc_tid = creature_data[f'spell{slot}TIDS'].split(',')
 
                 spell.title = TRANSLATION_STRINGS[title_tid]
@@ -176,7 +176,7 @@ def spells():
                         effect.target = spell_data[f'ingredient{x}Target']
 
                         if x < len(effect_params):
-                            effect.params = _paramstodict(effect_params[x])
+                            effect.params = _params_to_dict(effect_params[x])
 
                         if f'ingredient{x}Condition' in spell_data:
                             effect.condition = spell_data[f'ingredient{x}Condition'].split(';')
@@ -192,7 +192,7 @@ def spells():
                     # Get each spell ID from the random options and get its effects
                     for x in range(10):
                         if f'spell{x}' in effect.params['spell']:
-                            rand_spell_data = _getspelldata(effect.params['spell'][f'spell{x}'])
+                            rand_spell_data = _get_spell_data(effect.params['spell'][f'spell{x}'])
                             rand_params = effect.params['spell'][f'spell{x}Params'].split(';')
 
                             for eff_idx in range(10):
@@ -206,7 +206,7 @@ def spells():
 
                                     rand_effect.effect = rand_spell_data[f'ingredient{eff_idx}']
                                     rand_effect.target = rand_spell_data[f'ingredient{eff_idx}Target']
-                                    rand_effect.params = _paramstodict(rand_params[eff_idx])
+                                    rand_effect.params = _params_to_dict(rand_params[eff_idx])
                                     rand_effect.probability = float(effect.params['spell'][f'spell{x}Prob'])
                                     if f'ingredient{eff_idx}Condition' in rand_spell_data:
                                         rand_effect.condition = rand_spell_data[f'ingredient{eff_idx}Condition'].split(';')
@@ -221,7 +221,7 @@ def spells():
 
                 # Parse upgrades
                 if 'spellUpgradeSku' in spell_data:
-                    upgrades = _getspellupgrades(spell_data['spellUpgradeSku'])
+                    upgrades = _get_spell_upgrades(spell_data['spellUpgradeSku'])
                     for x, upgrade_data in enumerate(upgrades):
                         try:
                             upgrade = SpellUpgrade.objects.get(spell=spell, order=x)
@@ -258,6 +258,93 @@ def effects():
             'description': TRANSLATION_STRINGS[child.attrib['tidDesc']]
         } for child in root
     }
+
+
+def _get_creature_data(sku):
+    # Return skill data for the sku provided
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+        if node is not None:
+            return node.attrib
+
+
+def _get_spell_data(sku):
+    # Return skill data for the sku provided
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creature*SpellsDefinitions.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+        if node is not None:
+            return node.attrib
+
+
+def _params_to_dict(params):
+    ret = {}
+    for param in params.split(','):
+        values = param.split(':')
+        if len(values) == 2:
+            # key:value pair
+            try:
+                # See if it's an int or float by parsing it
+                value = json.loads(values[1])
+                ret[values[0]] = value
+            except json.JSONDecodeError:
+                # Just interpret as string
+                ret[values[0]] = values[1]
+        else:
+            # simply presence of key
+            ret[values[0]] = True
+
+    if 'spell' in ret:
+        ret['spell'] = _get_spell_random_def(ret['spell'])
+
+    return ret
+
+
+skillUpMatcher = re.compile(r'^(?P<val>[-]?\d+),(?P<attribute>\w+):(?P<amount>[\d.]+)$')
+
+
+def _get_spell_upgrades(sku):
+    # Return upgrade data for the sku provided
+    with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creatureSpellIngredientUpgradesDefinitions.xml')) as f:
+        tree = ET.parse(f)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+
+        upgrades = []
+        data = node.attrib
+
+        for x in range(10):
+            if f'skillUp{x}' in data:
+                match = skillUpMatcher.match(data[f'skillUp{x}'])
+
+                if match:
+                    if match.group('attribute') == 'turns' and float(match.group('val')) != 0:
+                        val = float(match.group('val'))
+                    else:
+                        val = float(match.group('amount'))
+
+                    upgrades.append({
+                        'value': val,
+                        'attribute': match.group('attribute'),
+                        'description': TRANSLATION_STRINGS[data[f'skillUp{x}TID']],
+                        'is_percentage': f'skillUp{x}Suffix' in data,
+                    })
+            else:
+                break
+
+        return upgrades
+
+
+def _get_spell_random_def(sku):
+    with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creatureCastRandomSpellsDefinitions.xml')) as f:
+        tree = ET.parse(f)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+
+        return node.attrib
 
 
 # DUNGEONS, ENEMIES, AND REWARDS
@@ -307,7 +394,6 @@ def levels():
 
         for child in root:
             data = child.attrib
-            print(data['sku'])
 
             # Scenarios have easy, medium, hard
             if 'easyLevel' in data:
@@ -350,11 +436,33 @@ def _create_level(data, difficulty):
 
         level.slots = int(difficulty_data['allies'])
         level.energy_cost = int(difficulty_data['energy'])
-
-        # TODO: Parse rewards here
-        # TODO: Parse waves here
-
         level.save()
+
+        # TODO: Parse rewards here?
+
+        # Parse waves
+        waves_data = _get_waves(difficulty_data['sku'])
+        wave_skus = []
+        if len(waves_data):
+            for wave_idx, wave_data in enumerate(waves_data):
+                print(f'Wave {wave_data["sku"]}')
+                try:
+                    wave = Wave.objects.get(game_id=wave_data['sku'])
+                except Wave.DoesNotExist:
+                    wave = Wave()
+                    wave.game_id = wave_data['sku']
+
+                wave.level = level
+                wave.order = wave_idx
+                wave.save()
+                wave_skus.append(wave_data['sku'])
+                _create_wave_enemies(wave, wave_data['enemies'])
+
+            # Delete any other waves related to this level that were not in data files
+            level.wave_set.exclude(game_id__in=wave_skus).delete()
+
+        else:
+            print(f'No waves found for level {data["sku"]}!')
 
 
 def _get_difficulty_level(sku):
@@ -366,88 +474,48 @@ def _get_difficulty_level(sku):
             return node.attrib
 
 
-def _getcreaturedata(sku):
-    # Return skill data for the sku provided
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
+def _get_waves(difficulty_level_sku):
+    results = []
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/*[wW]avesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
-        node = root.find(f'Definition[@sku="{sku}"]')
-        if node is not None:
-            return node.attrib
+        results += root.findall(f'Definition[@difficultyLevel="{difficulty_level_sku}"]')
+
+    if len(results):
+        return [el.attrib for el in results]
+    else:
+        return None
 
 
-def _getspelldata(sku):
-    # Return skill data for the sku provided
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creature*SpellsDefinitions.xml')):
-        tree = ET.parse(file_path)
-        root = tree.getroot()
-        node = root.find(f'Definition[@sku="{sku}"]')
-        if node is not None:
-            return node.attrib
+def _create_wave_enemies(wave, enemies_string):
+    valid_enemy_ids = []
+    enemies_data = [
+        _params_to_dict(enemy_str) for enemy_str in enemies_string.split(';')
+    ]
 
+    for enemy_idx, enemy_data in enumerate(enemies_data):
+        print(f'Enemy {enemy_data}')
+        try:
+            enemy = Enemy.objects.get(wave=wave, order=enemy_idx)
+        except Enemy.DoesNotExist:
+            enemy = Enemy()
+            enemy.wave = wave
+            enemy.order = enemy_idx
 
-def _paramstodict(params):
-    ret = {}
-    for param in params.split(','):
-        values = param.split(':')
-        if len(values) == 2:
-            # key:value pair
-            try:
-                # See if it's an int or float by parsing it
-                value = json.loads(values[1])
-                ret[values[0]] = value
-            except json.JSONDecodeError:
-                # Just interpret as string
-                ret[values[0]] = values[1]
-        else:
-            # simply presence of key
-            ret[values[0]] = True
+        enemy.creature = Creature.objects.get(game_id=enemy_data['sku'])
+        enemy.level = enemy_data.get('level', 1)
+        enemy.rank = enemy_data.get('rank', 1)
+        enemy.hpMulti = enemy_data.get('xHp', 1)
+        enemy.attackMulti = enemy_data.get('xAttack', 1)
+        enemy.defenseMulti = enemy_data.get('xDefense', 1)
+        enemy.speedMulti = enemy_data.get('xSpeed', 1)
+        enemy.criticalChanceMulti = enemy_data.get('xCriticalChance', 1)
+        enemy.criticalDamageMulti = enemy_data.get('xCriticalDamage', 1)
+        enemy.accuracyMulti = enemy_data.get('xAccuracy', 1)  # Note - data key is a guess. Doesn't exist in data
+        enemy.resistanceMulti = enemy_data.get('xResistance', 1)  # Note - data key is a guess. Doesn't exist in data
+        enemy.save()
+        print(enemy.pk)
+        valid_enemy_ids.append(enemy.pk)
 
-    if 'spell' in ret:
-        ret['spell'] = _getspellrandomdef(ret['spell'])
-
-    return ret
-
-
-skillUpMatcher = re.compile(r'^(?P<val>[-]?\d+),(?P<attribute>\w+):(?P<amount>[\d.]+)$')
-
-
-def _getspellupgrades(sku):
-    # Return upgrade data for the sku provided
-    with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creatureSpellIngredientUpgradesDefinitions.xml')) as f:
-        tree = ET.parse(f)
-        root = tree.getroot()
-        node = root.find(f'Definition[@sku="{sku}"]')
-
-        upgrades = []
-        data = node.attrib
-
-        for x in range(10):
-            if f'skillUp{x}' in data:
-                match = skillUpMatcher.match(data[f'skillUp{x}'])
-
-                if match:
-                    if match.group('attribute') == 'turns' and float(match.group('val')) != 0:
-                        val = float(match.group('val'))
-                    else:
-                        val = float(match.group('amount'))
-
-                    upgrades.append({
-                        'value': val,
-                        'attribute': match.group('attribute'),
-                        'description': TRANSLATION_STRINGS[data[f'skillUp{x}TID']],
-                        'is_percentage': f'skillUp{x}Suffix' in data,
-                    })
-            else:
-                break
-
-        return upgrades
-
-
-def _getspellrandomdef(sku):
-    with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creatureCastRandomSpellsDefinitions.xml')) as f:
-        tree = ET.parse(f)
-        root = tree.getroot()
-        node = root.find(f'Definition[@sku="{sku}"]')
-
-        return node.attrib
+    # Delete other enemies assigned to this wave that were not in data files
+    wave.enemy_set.exclude(pk__in=valid_enemy_ids).delete()
