@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.text import slugify
 
 
-class Creature(models.Model):
+class CreatureBase(models.Model):
     ARCHETYPE_DEFENDER = 'defender'
     ARCHETYPE_ATTACKER = 'attacker'
     ARCHETYPE_SABOTEUR = 'saboteur'
@@ -34,6 +34,36 @@ class Creature(models.Model):
         (ELEMENT_DARK, 'Dark'),
     )
 
+    game_id = models.CharField(max_length=20, db_index=True)
+    name = models.CharField(max_length=30)
+    playable = models.BooleanField(default=False)
+    trackingName = models.CharField(max_length=50, blank=True, null=True)
+
+    rank = models.IntegerField()
+    archetype = models.CharField(choices=ARCHETYPE_CHOICES, max_length=15)
+    element = models.CharField(choices=ELEMENT_CHOICES, max_length=10)
+
+    hp = models.IntegerField()
+    attack = models.IntegerField()
+    defense = models.IntegerField()
+    criticalChance = models.IntegerField()
+    criticalDamage = models.IntegerField()
+    accuracy = models.FloatField()
+    resistance = models.FloatField()
+    initialSpeed = models.IntegerField()
+    speed = models.FloatField()
+
+    class Meta:
+        abstract = True
+
+    RANK_UP_MULTIPLIERS = {
+        'hp': {1: 1.651, 2: 2.064, 3: 1.803, 4: 1.537, 5: 1.461},
+        'attack': {1: 1.689, 2: 2.540, 3: 1.905, 4: 1.537, 5: 1.461},
+        'defense': {1: 1.689, 2: 2.540, 3: 1.905, 4: 1.537, 5: 1.461},
+    }
+
+
+class Creature(CreatureBase):
     GROUP_BAD = 'bad'
     GROUP_AVG = 'avg'
     GROUP_GOOD = 'good'
@@ -48,20 +78,10 @@ class Creature(models.Model):
         (GROUP_OUTSTANDING, 'Outstanding'),
     )
 
-    game_id = models.CharField(max_length=20, db_index=True)
-    name = models.CharField(max_length=30)
-    playable = models.BooleanField()
-    summonable = models.BooleanField()
-    inMenagerie = models.BooleanField()
-    rank = models.IntegerField()
-    archetype = models.CharField(choices=ARCHETYPE_CHOICES, max_length=15)
-    element = models.CharField(choices=ELEMENT_CHOICES, max_length=10)
     group = models.CharField(choices=GROUP_CHOICES, max_length=15)
     subgroup = ArrayField(models.CharField(max_length=20), blank=True)
-    lore = models.TextField(blank=True, default='')
-    creatureType = models.CharField(max_length=50)
-    trackingName = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=100, null=True, blank=True)
+    inMenagerie = models.BooleanField()
+    summonable = models.BooleanField(default=False)
     evolvesFrom = models.ForeignKey(
         'Creature',
         on_delete=models.SET_NULL,
@@ -69,31 +89,34 @@ class Creature(models.Model):
         null=True,
         related_name='evolvesTo',
     )
-
-    hp = models.IntegerField()
-    attack = models.IntegerField()
-    defense = models.IntegerField()
-    criticalChance = models.IntegerField()
-    criticalDamage = models.IntegerField()
-    accuracy = models.FloatField()
-    resistance = models.FloatField()
-    initialSpeed = models.IntegerField()
-    speed = models.FloatField()
-
-    maxLvlHp = models.IntegerField(blank=True, null=True)
-    maxLvlAttack = models.IntegerField(blank=True, null=True)
-    maxLvlDefense = models.IntegerField(blank=True, null=True)
+    lore = models.TextField(blank=True, default='')
+    creatureType = models.CharField(max_length=50)
 
     evoHp = models.IntegerField(default=0)
     evoAttack = models.IntegerField(default=0)
     evoDefense = models.IntegerField(default=0)
     evoCriticalChance = models.IntegerField(default=0)
+    maxLvlHp = models.IntegerField(blank=True, null=True)
+    maxLvlAttack = models.IntegerField(blank=True, null=True)
+    maxLvlDefense = models.IntegerField(blank=True, null=True)
 
-    RANK_UP_MULTIPLIERS = {
-        'hp': {1: 1.651, 2: 2.064, 3: 1.803, 4: 1.537, 5: 1.461},
-        'attack': {1: 1.689, 2: 2.540, 3: 1.905, 4: 1.537, 5: 1.461},
-        'defense': {1: 1.689, 2: 2.540, 3: 1.905, 4: 1.537, 5: 1.461},
-    }
+    slug = models.SlugField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        ordering = ['rank', 'name']
+
+    def save(self, *args, **kwargs):
+        self.maxLvlHp = self.get_hp(5, self.max_level_for_rank(5))
+        self.maxLvlAttack = self.get_attack(5, self.max_level_for_rank(5))
+        self.maxLvlDefense = self.get_defense(5, self.max_level_for_rank(5))
+
+        if self.pk:
+            self.slug = slugify(f'{self.pk}-{self.name}-{self.element}')
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.name} - {self.get_element_display()} - {self.rank}*'
 
     @staticmethod
     def max_level_for_rank(rank):
@@ -156,25 +179,8 @@ class Creature(models.Model):
 
             return int(round(a*exp(b*x))) + evo_stat
 
-    class Meta:
-        ordering = ['rank', 'name']
 
-    def save(self, *args, **kwargs):
-        self.maxLvlHp = self.get_hp(5, self.max_level_for_rank(5))
-        self.maxLvlAttack = self.get_attack(5, self.max_level_for_rank(5))
-        self.maxLvlDefense = self.get_defense(5, self.max_level_for_rank(5))
-
-        if self.pk:
-            self.slug = slugify(f'{self.pk}-{self.name}-{self.element}')
-
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f'{self.name} - {self.get_element_display()} - {self.rank}*'
-
-
-class Spell(models.Model):
-    creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
+class SpellBase(models.Model):
     slot = models.IntegerField(default=1)
     game_id = models.CharField(max_length=35)
     title = models.CharField(max_length=80)
@@ -185,6 +191,13 @@ class Spell(models.Model):
     passive = models.BooleanField(default=False)
     passiveTrigger = models.CharField(max_length=30, blank=True, default='')
 
+    class Meta:
+        abstract = True
+
+
+class Spell(SpellBase):
+    creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
+
     def __str__(self):
         return self.game_id
 
@@ -193,7 +206,7 @@ class Spell(models.Model):
         unique_together = ('creature', 'slot')
 
 
-class SpellEffect(models.Model):
+class SpellEffectBase(models.Model):
     TARGET_ONE = 'one'
     TARGET_ALL = 'all'
     TARGET_SELF = 'self'
@@ -230,7 +243,6 @@ class SpellEffect(models.Model):
         (CONDITION_LINK, 'Link'),
     )
 
-    spell = models.ForeignKey(Spell, on_delete=models.CASCADE)
     order = models.IntegerField()
     effect = models.CharField(max_length=30)
     target = models.CharField(choices=TARGET_CHOICES, max_length=20)
@@ -241,6 +253,13 @@ class SpellEffect(models.Model):
     )
     permanent = models.NullBooleanField()
     probability = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class SpellEffect(SpellEffectBase):
+    spell = models.ForeignKey(Spell, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['order']
@@ -322,6 +341,7 @@ class Enemy(models.Model):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
     order = models.IntegerField(default=0)
+    miniboss = models.BooleanField(default=False)
     level = models.IntegerField()
     rank = models.IntegerField(default=1)
     hpMulti = models.FloatField(default=1)
@@ -334,15 +354,26 @@ class Enemy(models.Model):
     resistanceMulti = models.FloatField(default=1)
 
 
-class Boss(Creature):
-    TYPE_BOSS = 'boss'
-    TYPE_MINIBOSS = 'miniboss'
-    TYPE_CHOICES = (
-        (TYPE_BOSS, 'Boss'),
-        (TYPE_MINIBOSS, 'Miniboss'),
-    )
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES)
+class Boss(CreatureBase):
+    wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
+    order = models.IntegerField()
     level = models.IntegerField()
+
+
+class BossSpell(SpellBase):
+    creature = models.ForeignKey(Boss, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['slot']
+        unique_together = ('creature', 'slot')
+
+
+class BossSpellEffect(SpellEffectBase):
+    spell = models.ForeignKey(BossSpell, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['order']
+        unique_together = ('spell', 'order')
 
 
 class DropGroup(models.Model):

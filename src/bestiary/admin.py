@@ -33,3 +33,26 @@ class CreatureAdmin(admin.ModelAdmin):
         'element',
         'group',
     )
+
+
+@admin.register(Dungeon)
+class RegionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Level)
+class LevelAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Wave)
+class WaveAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Enemy)
+class EnemyAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Boss)
+class BossAdmin(admin.ModelAdmin):
+    pass
