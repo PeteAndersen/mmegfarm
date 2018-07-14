@@ -1,7 +1,7 @@
 from math import log, exp
+
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
-
 from django.utils.text import slugify
 
 
@@ -62,12 +62,12 @@ class Creature(models.Model):
     creatureType = models.CharField(max_length=50)
     trackingName = models.CharField(max_length=50)
     slug = models.SlugField(max_length=100, null=True, blank=True)
-    evolvesTo = models.ForeignKey(
+    evolvesFrom = models.ForeignKey(
         'Creature',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        related_name='evolvesFrom',
+        related_name='evolvesTo',
     )
 
     hp = models.IntegerField()
@@ -163,7 +163,9 @@ class Creature(models.Model):
         self.maxLvlHp = self.get_hp(5, self.max_level_for_rank(5))
         self.maxLvlAttack = self.get_attack(5, self.max_level_for_rank(5))
         self.maxLvlDefense = self.get_defense(5, self.max_level_for_rank(5))
-        self.slug = slugify(f'{self.pk}-{self.name}-{self.element}')
+
+        if self.pk:
+            self.slug = slugify(f'{self.pk}-{self.name}-{self.element}')
 
         super().save(*args, **kwargs)
 
@@ -173,7 +175,6 @@ class Creature(models.Model):
 
 class Spell(models.Model):
     creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
-    order = models.IntegerField()
     slot = models.IntegerField(default=1)
     game_id = models.CharField(max_length=35)
     title = models.CharField(max_length=80)
@@ -188,8 +189,8 @@ class Spell(models.Model):
         return self.game_id
 
     class Meta:
-        ordering = ['order']
-        unique_together = ('creature', 'order')
+        ordering = ['slot']
+        unique_together = ('creature', 'slot')
 
 
 class SpellEffect(models.Model):
