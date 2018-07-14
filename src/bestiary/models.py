@@ -336,6 +336,9 @@ class Wave(models.Model):
     game_id = models.CharField(max_length=50, db_index=True)
     order = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ['order']
+
 
 class Enemy(models.Model):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
@@ -353,11 +356,17 @@ class Enemy(models.Model):
     accuracyMulti = models.FloatField(default=1)
     resistanceMulti = models.FloatField(default=1)
 
+    class Meta:
+        ordering = ['order']
+
 
 class Boss(CreatureBase):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     order = models.IntegerField()
     level = models.IntegerField()
+
+    class Meta:
+        ordering = ['order']
 
 
 class BossSpell(SpellBase):
