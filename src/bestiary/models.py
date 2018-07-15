@@ -310,9 +310,9 @@ class Dungeon(models.Model):
 
 
 class Level(models.Model):
-    DIFFICULTY_EASY = 'normal'
-    DIFFICULTY_MEDIUM = 'advanced'
-    DIFFICULTY_HARD = 'nightmare'
+    DIFFICULTY_EASY = 1
+    DIFFICULTY_MEDIUM = 2
+    DIFFICULTY_HARD = 3
 
     DIFFICULTY_CHOICES = (
         (DIFFICULTY_EASY, 'Normal'),
@@ -323,12 +323,12 @@ class Level(models.Model):
     dungeon = models.ForeignKey(Dungeon, on_delete=models.CASCADE)
     game_id = models.CharField(max_length=50, db_index=True)
     order = models.IntegerField()
-    difficulty = models.CharField(max_length=15, null=True, blank=True)
+    difficulty = models.IntegerField(choices=DIFFICULTY_CHOICES, null=True, blank=True)
     slots = models.IntegerField(help_text='Creatures allowed to bring')
     energy_cost = models.IntegerField()
 
     class Meta:
-        ordering = ['order']
+        ordering = ['difficulty', 'order']
 
 
 class Wave(models.Model):

@@ -104,6 +104,7 @@ class WaveSerializer(serializers.ModelSerializer):
 
 
 class LevelSerializer(serializers.ModelSerializer):
+    difficulty = serializers.CharField(source='get_difficulty_display')
     waves = WaveSerializer(source='wave_set', many=True, read_only=True)
 
     class Meta:
@@ -119,8 +120,22 @@ class LevelSerializer(serializers.ModelSerializer):
         ]
 
 
+class LevelSummarySerializar(serializers.ModelSerializer):
+    difficulty = serializers.CharField(source='get_difficulty_display')
+
+    class Meta:
+        model = Level
+        fields = [
+            'id',
+            'difficulty',
+            'slots',
+            'energy_cost',
+            # TODO: Put rewards here
+        ]
+
+
 class DungeonSerializer(serializers.ModelSerializer):
-    levels = LevelSerializer(source='level_set', many=True, read_only=True)
+    levels = LevelSummarySerializar(source='level_set', many=True, read_only=True)
 
     class Meta:
         model = Dungeon

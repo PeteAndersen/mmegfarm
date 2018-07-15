@@ -2,8 +2,8 @@ from django_filters import rest_framework as filters
 from rest_framework import viewsets, pagination
 from rest_framework.filters import OrderingFilter
 
-from bestiary.models import Creature, Dungeon
-from .serializers import CreatureSerializer, DungeonSerializer
+from bestiary.models import Creature, Dungeon, Level
+from .serializers import CreatureSerializer, DungeonSerializer, LevelSerializer, LevelSummarySerializar
 from .filters import CreatureFilter
 
 
@@ -34,8 +34,28 @@ class CreatureViewSet(viewsets.ModelViewSet):
 
 class DungeonViewSet(viewsets.ModelViewSet):
     """
-    Dungeon waves and drops
+    Dungeons with levels and rewards
     """
     queryset = Dungeon.objects.all().prefetch_related('level_set')
     serializer_class = DungeonSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+
+
+class LevelViewSet(viewsets.ModelViewSet):
+    """
+    Detailed levels with wave information
+    """
+    queryset = Level.objects.all().prefetch_related(
+        'wave_set',
+        'wave_set__enemy_set',
+        'wave_set__enemy_set__creature',
+        'wave_set__boss_set',
+        'wave_set__boss_set__bossspell_set',
+    )
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action == 'list':
+            return LevelSummarySerializar
+        else:
+            return LevelSerializer

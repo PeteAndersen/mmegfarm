@@ -465,7 +465,6 @@ def _create_level(data, difficulty):
         wave_skus = []
         if len(waves_data):
             for wave_idx, wave_data in enumerate(waves_data):
-                print(f'Wave {wave_data["sku"]}')
                 try:
                     wave = Wave.objects.get(game_id=wave_data['sku'])
                 except Wave.DoesNotExist:
