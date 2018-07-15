@@ -50,6 +50,13 @@ class DungeonViewSet(viewsets.ModelViewSet):
     filter_class = DungeonFilter
 
 
+class LevelPagination(pagination.PageNumberPagination):
+    ordering = ['order']
+    page_size = 50
+    max_page_size = 10000
+    page_size_query_param = 'page_size'
+
+
 class LevelViewSet(viewsets.ModelViewSet):
     """
     Levels with wave information when viewing a single instance
@@ -64,8 +71,11 @@ class LevelViewSet(viewsets.ModelViewSet):
             queryset = queryset.prefetch_related(
                 'wave_set',
                 'wave_set__enemy_set',
+                'wave_set__enemy_set__enemyspell_set',
+                'wave_set__enemy_set__enemyspell_set__enemyspelleffect_set',
                 'wave_set__boss_set',
                 'wave_set__boss_set__bossspell_set',
+                'wave_set__boss_set__bossspell_set__bossspelleffect_set',
             )
 
         return queryset

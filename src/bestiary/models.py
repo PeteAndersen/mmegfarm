@@ -349,6 +349,22 @@ class Enemy(CreatureBase):
         ordering = ['order']
 
 
+class EnemySpell(SpellBase):
+    creature = models.ForeignKey(Enemy, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['slot']
+        unique_together = ('creature', 'slot')
+
+
+class EnemySpellEffect(SpellEffectBase):
+    spell = models.ForeignKey(EnemySpell, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['order']
+        unique_together = ('spell', 'order')
+
+
 class Boss(CreatureBase):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     order = models.IntegerField()

@@ -6,7 +6,8 @@ from glob import iglob
 
 from django.conf import settings
 
-from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level, Wave, Enemy, Boss, BossSpell, BossSpellEffect
+from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level, Wave, Enemy, EnemySpell, \
+    EnemySpellEffect, Boss, BossSpell, BossSpellEffect
 
 
 # string true/false to bool
@@ -299,7 +300,7 @@ def _get_creature_data(tracking_name):
     # Return matching creatures for the trackingName provided
     result = []
 
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
+    for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
         result += root.findall(f'Definition[@trackingName="{tracking_name}"][@playable="true"]')
@@ -308,6 +309,16 @@ def _get_creature_data(tracking_name):
         return [el.attrib for el in result]
     else:
         return None
+
+
+def _get_creature_data_by_sku(sku):
+    # Returns a single creature data
+    for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+        if node is not None:
+            return node.attrib
 
 
 def _get_spell_data(sku):
@@ -450,6 +461,9 @@ def levels():
         for child in root:
             data = child.attrib
 
+            # This is a slow process so print to console to see progress
+            print(f'Parsing level {data["sku"]}')
+
             # Scenarios have easy, medium, hard
             if 'easyLevel' in data:
                 _create_level(data, Level.DIFFICULTY_EASY)
@@ -581,17 +595,40 @@ def _create_trash_enemy(wave, idx, data):
     enemy.name = c.name
     enemy.archetype = c.archetype
     enemy.element = c.element
-    enemy.hp = float(data.get('xHp', 1)) * c.get_hp(enemy.rank, enemy.level)
-    enemy.attack = float(data.get('xAttack', 1)) * c.get_attack(enemy.rank, enemy.level)
-    enemy.defense = float(data.get('xDefense', 1)) * c.get_defense(enemy.rank, enemy.level)
+    enemy.hp = round(float(data.get('xHp', 1)) * c.get_hp(enemy.rank, enemy.level))
+    enemy.attack = round(float(data.get('xAttack', 1)) * c.get_attack(enemy.rank, enemy.level))
+    enemy.defense = round(float(data.get('xDefense', 1)) * c.get_defense(enemy.rank, enemy.level))
     enemy.speed = float(data.get('xSpeed', 1)) * c.speed
     enemy.initialSpeed = c.initialSpeed
-    enemy.criticalChance = float(data.get('xCriticalChance', 1)) * c.criticalChance
-    enemy.criticalDamage = float(data.get('xCriticalDamage', 1)) * c.criticalDamage
+    enemy.criticalChance = round(float(data.get('xCriticalChance', 1)) * c.criticalChance)
+    enemy.criticalDamage = round(float(data.get('xCriticalDamage', 1)) * c.criticalDamage)
     enemy.accuracy = float(data.get('xAccuracy', 1)) * c.accuracy  # Note - xAccuracy key is a guess
     enemy.resistance = float(data.get('xResistance', 1)) * c.resistance  # Note - xResistance key is a guess
     enemy.miniboss = data.get('type') == 'miniBoss'
     enemy.save()
+
+    # Enemy spells
+    spell_ids = []
+    creature_data = _get_creature_data_by_sku(data['sku'])
+
+    for slot in range(3):
+        if f'spell{slot}' in creature_data:
+            sku = creature_data[f'spell{slot}']
+
+            try:
+                spell = EnemySpell.objects.get(creature=enemy, game_id=sku)
+            except EnemySpell.DoesNotExist:
+                spell = EnemySpell()
+                spell.creature = enemy
+                spell.game_id = sku
+
+            spell = _fill_spell_data(spell, creature_data, slot)
+            spell_ids.append(spell.pk)
+
+            _create_spell_effects(spell, creature_data, effect_model=EnemySpellEffect)
+
+    # Remove spells assigned to this creature that were not processed
+    enemy.enemyspell_set.exclude(pk__in=set(spell_ids)).delete()
 
     return enemy
 
@@ -620,15 +657,15 @@ def _create_boss_enemy(wave, idx, boss_params):
     if c:
         boss.trackingName = c.trackingName
 
-    boss.hp = float(boss_data['hp']) * boss_params.get('xHp', 1)
-    boss.attack = float(boss_data['attack']) * boss_params.get('xAttack', 1)
-    boss.defense = float(boss_data['defense']) * boss_params.get('xDefense', 1)
+    boss.hp = round(float(boss_data['hp']) * boss_params.get('xHp', 1))
+    boss.attack = round(float(boss_data['attack']) * boss_params.get('xAttack', 1))
+    boss.defense = round(float(boss_data['defense']) * boss_params.get('xDefense', 1))
     boss.speed = float(boss_data['speed']) * boss_params.get('xSpeed', 1)
     boss.initialSpeed = int(boss_data['initialSpeed'])
-    boss.criticalChance = float(boss_data['speed']) * boss_params.get('xCriticalChance', 1)
-    boss.criticalDamage = float(boss_data['speed']) * boss_params.get('xCriticalDamage', 1)
-    boss.accuracy = float(boss_data['speed']) * boss_params.get('xAccuracy', 1)  # Note - data key is a guess. Doesn't exist in data
-    boss.resistance = float(boss_data['speed']) * boss_params.get('xResistance', 1)  # Note - data key is a guess. Doesn't exist in data
+    boss.criticalChance = round(float(boss_data['criticalChance']) * boss_params.get('xCriticalChance', 1))
+    boss.criticalDamage = round(float(boss_data['criticalDamage']) * boss_params.get('xCriticalDamage', 1))
+    boss.accuracy = float(boss_data['accuracy']) * boss_params.get('xAccuracy', 1)  # Note - data key is a guess. Doesn't exist in data
+    boss.resistance = float(boss_data['resistance']) * boss_params.get('xResistance', 1)  # Note - data key is a guess. Doesn't exist in data
 
     boss.save()
 
@@ -646,7 +683,6 @@ def _create_boss_enemy(wave, idx, boss_params):
                 spell.game_id = sku
 
             spell = _fill_spell_data(spell, boss_data, slot)
-            spell.save()
             spell_ids.append(spell.pk)
 
             _create_spell_effects(spell, boss_data, effect_model=BossSpellEffect)
