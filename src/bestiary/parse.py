@@ -11,10 +11,7 @@ from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level, 
 
 # string true/false to bool
 def to_boolean(string):
-    if string in ['true', 'True', 'TRUE']:
-        return True
-    else:
-        return False
+    return string in ['true', 'True', 'TRUE']
 
 
 DATA_DIR = os.path.join(settings.BASE_DIR, 'bestiary/data_files')
