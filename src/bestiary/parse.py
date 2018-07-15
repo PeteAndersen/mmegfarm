@@ -43,6 +43,11 @@ def creatures():
                 # Skip L/D elements because their data is incomplete
                 continue
 
+            if data['sku'][-1] == 'b':
+                # This is a secondary creature w/ alternate skill 1. Skip importing.
+                # Alternate skills parsed in skills() function
+                continue
+
             try:
                 c = Creature.objects.get(game_id=data['sku'])
             except Creature.DoesNotExist:
@@ -97,6 +102,10 @@ def evolutions():
             if data['element'] in ['dark', 'light']:
                 continue
 
+            if data['sku'][-1] == 'b':
+                # This a secondary copy of a creature w/ alternate skills which are not imported.
+                continue
+
             try:
                 c = Creature.objects.get(game_id=data['sku'])
             except Creature.DoesNotExist:
@@ -126,25 +135,35 @@ def spells():
         skus_used = []
         # Get XML elements for this creature. May be multiple results.
         # These are the same creature with different spells
-        creature_data = _get_creature_data(c.game_id)
+        creatures_data = _get_creature_data(c.trackingName)
+        if creatures_data is None:
+            continue
+
+        order = 0
+        skus_used = []
 
         for slot in range(3):
-            if f'spell{slot}' in creature_data:
-                sku = creature_data[f'spell{slot}']
+            for creature_data in creatures_data:
+                if f'spell{slot}' in creature_data:
+                    sku = creature_data[f'spell{slot}']
+                    if sku in skus_used:
+                        # Identical spell on secondary creature data - no need to parse again
+                        continue
 
-                try:
-                    spell = Spell.objects.get(creature=c, game_id=sku)
-                except Spell.DoesNotExist:
-                    spell = Spell()
-                    spell.creature = c
-                    spell.game_id = sku
+                    try:
+                        spell = Spell.objects.get(creature=c, game_id=sku)
+                    except Spell.DoesNotExist:
+                        spell = Spell()
+                        spell.creature = c
+                        spell.game_id = sku
 
-                spell = _fill_spell_data(spell, creature_data, slot)
-                spell.save()
-                skus_used.append(spell)
+                    spell.order = order
+                    spell = _fill_spell_data(spell, creature_data, slot)
+                    skus_used.append(sku)
+                    order += 1
 
-                _create_spell_effects(spell, creature_data)
-                _create_spell_upgrades(spell)
+                    _create_spell_effects(spell, creature_data)
+                    _create_spell_upgrades(spell)
 
         # Remove spells assigned to this creature that were not processed
         c.spell_set.exclude(game_id__in=set(skus_used)).delete()
@@ -277,14 +296,19 @@ def effects():
     }
 
 
-def _get_creature_data(sku):
-    # Return skill data for the sku provided
-    for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
+def _get_creature_data(tracking_name):
+    # Return matching creatures for the trackingName provided
+    result = []
+
+    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
-        node = root.find(f'Definition[@sku="{sku}"]')
-        if node is not None:
-            return node.attrib
+        result += root.findall(f'Definition[@trackingName="{tracking_name}"][@playable="true"]')
+
+    if len(result):
+        return [el.attrib for el in result]
+    else:
+        return None
 
 
 def _get_spell_data(sku):

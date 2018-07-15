@@ -192,13 +192,14 @@ class SpellBase(models.Model):
 
 class Spell(SpellBase):
     creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
+    order = models.IntegerField()
 
     def __str__(self):
         return self.game_id
 
     class Meta:
-        ordering = ['slot']
-        unique_together = ('creature', 'slot')
+        ordering = ['order']
+        unique_together = ('creature', 'order')
 
 
 class SpellEffectBase(models.Model):
