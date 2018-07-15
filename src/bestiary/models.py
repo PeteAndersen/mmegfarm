@@ -304,6 +304,9 @@ class Dungeon(models.Model):
         default=[]
     )
 
+    class Meta:
+        ordering = ['pk']
+
 
 class Level(models.Model):
     DIFFICULTY_EASY = 1

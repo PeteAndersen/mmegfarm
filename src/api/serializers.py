@@ -92,7 +92,23 @@ class CreatureSerializer(serializers.ModelSerializer):
 class EnemySerializer(serializers.ModelSerializer):
     class Meta:
         model = Enemy
-        fields = '__all__'
+        fields = [
+            'id',
+            'name',
+            'rank',
+            'archetype',
+            'element',
+            'trackingName',
+            'hp',
+            'attack',
+            'defense',
+            'criticalChance',
+            'criticalDamage',
+            'accuracy',
+            'resistance',
+            'initialSpeed',
+            'speed',
+        ]
 
 
 class WaveSerializer(serializers.ModelSerializer):
@@ -113,12 +129,11 @@ class LevelSerializer(serializers.ModelSerializer):
         model = Level
         fields = [
             'id',
-            'game_id',
-            'order',
             'difficulty',
             'slots',
             'energy_cost',
             'waves',
+            # TODO: Put rewards here
         ]
 
 
@@ -143,7 +158,6 @@ class DungeonSerializer(serializers.ModelSerializer):
         model = Dungeon
         fields = [
             'id',
-            'game_id',
             'name',
             'group',
             'always_available',

@@ -4,14 +4,14 @@ from rest_framework.filters import OrderingFilter
 
 from bestiary.models import Creature, Dungeon, Level
 from .serializers import CreatureSerializer, DungeonSerializer, LevelSerializer, LevelSummarySerializar
-from .filters import CreatureFilter
+from .filters import CreatureFilter, DungeonFilter
 
 
 class CreaturePagination(pagination.PageNumberPagination):
     ordering = ['rank', 'name']
     page_size = 50
-    page_size_query_param = 'page_size'
     max_page_size = 10000
+    page_size_query_param = 'page_size'
 
 
 class CreatureViewSet(viewsets.ModelViewSet):
@@ -32,18 +32,27 @@ class CreatureViewSet(viewsets.ModelViewSet):
     filter_class = CreatureFilter
 
 
+class DungeonPagination(pagination.PageNumberPagination):
+    ordering = ['id']
+    page_size = 25
+    max_page_size = 10000
+    page_size_query_param = 'page_size'
+
+
 class DungeonViewSet(viewsets.ModelViewSet):
     """
     Dungeons with levels and rewards
     """
     queryset = Dungeon.objects.all().prefetch_related('level_set')
     serializer_class = DungeonSerializer
-    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    pagination_class = DungeonPagination
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter, )
+    filter_class = DungeonFilter
 
 
 class LevelViewSet(viewsets.ModelViewSet):
     """
-    Detailed levels with wave information
+    Levels with wave information when viewing a single instance
     """
     queryset = Level.objects.all()
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
@@ -60,9 +69,6 @@ class LevelViewSet(viewsets.ModelViewSet):
             )
 
         return queryset
-
-
-
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action == 'list':

@@ -388,6 +388,21 @@ def _get_spell_random_def(sku):
 
 
 # DUNGEONS, ENEMIES, AND REWARDS
+def _region_valid_to_import(data):
+    if 'unlock' in data:
+        # Check that the unlock period is out of bounds of typical day/month numbers
+        time_unit, unlock = data['unlock'].split(':')
+        unlock = [int(val) for val in unlock.split(',')]
+        if time_unit == 'Days':
+            available = min(unlock) <= 7
+        else:
+            available = min(unlock) <= 12
+    else:
+        available = True
+
+    return data['path'] != 'PVP' and to_boolean(data['inGame']) and available
+
+
 def regions():
     for file_path in iglob(os.path.join(DATA_DIR, '*[rR]egionsDefinitions.xml')):
         tree = ET.parse(file_path)
@@ -396,7 +411,7 @@ def regions():
         for child in root:
             data = child.attrib
 
-            if data['path'] != 'PVP' and to_boolean(data['inGame']):
+            if _region_valid_to_import(data):
                 try:
                     dungeon = Dungeon.objects.get(game_id=data['sku'])
                 except Dungeon.DoesNotExist:
