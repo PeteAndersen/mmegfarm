@@ -536,17 +536,25 @@ def _create_trash_enemy(wave, idx, data):
         enemy.wave = wave
         enemy.order = idx
 
-    enemy.creature = Creature.objects.get(game_id=data['sku'])
     enemy.level = data.get('level', 1)
     enemy.rank = data.get('rank', 1)
-    enemy.hpMulti = data.get('xHp', 1)
-    enemy.attackMulti = data.get('xAttack', 1)
-    enemy.defenseMulti = data.get('xDefense', 1)
-    enemy.speedMulti = data.get('xSpeed', 1)
-    enemy.criticalChanceMulti = data.get('xCriticalChance', 1)
-    enemy.criticalDamageMulti = data.get('xCriticalDamage', 1)
-    enemy.accuracyMulti = data.get('xAccuracy', 1)  # Note - data key is a guess. Doesn't exist in data
-    enemy.resistanceMulti = data.get('xResistance', 1)  # Note - data key is a guess. Doesn't exist in data
+
+    # Grab stats off base defined creature
+    c = Creature.objects.get(game_id=data['sku'])
+    enemy.game_id = c.game_id
+    enemy.trackingName = c.trackingName
+    enemy.name = c.name
+    enemy.archetype = c.archetype
+    enemy.element = c.element
+    enemy.hp = float(data.get('xHp', 1)) * c.get_hp(enemy.rank, enemy.level)
+    enemy.attack = float(data.get('xAttack', 1)) * c.get_attack(enemy.rank, enemy.level)
+    enemy.defense = float(data.get('xDefense', 1)) * c.get_defense(enemy.rank, enemy.level)
+    enemy.speed = float(data.get('xSpeed', 1)) * c.speed
+    enemy.initialSpeed = c.initialSpeed
+    enemy.criticalChance = float(data.get('xCriticalChance', 1)) * c.criticalChance
+    enemy.criticalDamage = float(data.get('xCriticalDamage', 1)) * c.criticalDamage
+    enemy.accuracy = float(data.get('xAccuracy', 1)) * c.accuracy  # Note - xAccuracy key is a guess
+    enemy.resistance = float(data.get('xResistance', 1)) * c.resistance  # Note - xResistance key is a guess
     enemy.miniboss = data.get('type') == 'miniBoss'
     enemy.save()
 
@@ -590,7 +598,7 @@ def _create_boss_enemy(wave, idx, boss_params):
     boss.save()
 
     # Boss spells
-    skus_used = []
+    spell_ids = []
     for slot in range(3):
         if f'spell{slot}' in boss_data:
             sku = boss_data[f'spell{slot}']
@@ -604,12 +612,12 @@ def _create_boss_enemy(wave, idx, boss_params):
 
             spell = _fill_spell_data(spell, boss_data, slot)
             spell.save()
-            skus_used.append(spell)
+            spell_ids.append(spell.pk)
 
             _create_spell_effects(spell, boss_data, effect_model=BossSpellEffect)
 
     # Remove spells assigned to this creature that were not processed
-    boss.bossspell_set.exclude(game_id__in=set(skus_used)).delete()
+    boss.bossspell_set.exclude(pk__in=set(spell_ids)).delete()
 
     return boss
 

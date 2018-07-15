@@ -45,14 +45,24 @@ class LevelViewSet(viewsets.ModelViewSet):
     """
     Detailed levels with wave information
     """
-    queryset = Level.objects.all().prefetch_related(
-        'wave_set',
-        'wave_set__enemy_set',
-        'wave_set__enemy_set__creature',
-        'wave_set__boss_set',
-        'wave_set__boss_set__bossspell_set',
-    )
+    queryset = Level.objects.all()
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        if self.action in ['retrieve']:
+            queryset = queryset.prefetch_related(
+                'wave_set',
+                'wave_set__enemy_set',
+                'wave_set__boss_set',
+                'wave_set__boss_set__bossspell_set',
+            )
+
+        return queryset
+
+
+
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action == 'list':

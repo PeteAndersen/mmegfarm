@@ -46,12 +46,12 @@ class CreatureBase(models.Model):
     hp = models.IntegerField()
     attack = models.IntegerField()
     defense = models.IntegerField()
+    speed = models.FloatField()
+    initialSpeed = models.IntegerField()
     criticalChance = models.IntegerField()
     criticalDamage = models.IntegerField()
     accuracy = models.FloatField()
     resistance = models.FloatField()
-    initialSpeed = models.IntegerField()
-    speed = models.FloatField()
 
     class Meta:
         abstract = True
@@ -155,11 +155,6 @@ class Creature(CreatureBase):
     @staticmethod
     def _get_stat(base_rank, base_stat, evo_stat, multipliers, rank, level):
         max_lvl = Creature.max_level_for_rank(rank)
-
-        if rank < 1 or rank > 5:
-            raise ValueError('Rank must be between 1 and 5.')
-        if 1 > level or level > max_lvl:
-            raise ValueError(f'Level must be between 1 and {max_lvl} for rank {rank}.')
 
         # Get min/max stat for requested rank
         max_stat = (base_stat - evo_stat) * multipliers[base_rank]
@@ -340,21 +335,11 @@ class Wave(models.Model):
         ordering = ['order']
 
 
-class Enemy(models.Model):
+class Enemy(CreatureBase):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
-    creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
     order = models.IntegerField(default=0)
     miniboss = models.BooleanField(default=False)
     level = models.IntegerField()
-    rank = models.IntegerField(default=1)
-    hpMulti = models.FloatField(default=1)
-    attackMulti = models.FloatField(default=1)
-    defenseMulti = models.FloatField(default=1)
-    speedMulti = models.FloatField(default=1)
-    criticalChanceMulti = models.FloatField(default=1)
-    criticalDamageMulti = models.FloatField(default=1)
-    accuracyMulti = models.FloatField(default=1)
-    resistanceMulti = models.FloatField(default=1)
 
     class Meta:
         ordering = ['order']

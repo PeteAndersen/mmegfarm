@@ -100,7 +100,9 @@ class WaveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wave
-        fields = '__all__'
+        fields = [
+            'enemies',
+        ]
 
 
 class LevelSerializer(serializers.ModelSerializer):
