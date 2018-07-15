@@ -140,7 +140,6 @@ def spells():
             continue
 
         order = 0
-        skus_used = []
 
         for slot in range(3):
             for creature_data in creatures_data:
