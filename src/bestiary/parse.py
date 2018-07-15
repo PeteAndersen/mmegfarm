@@ -6,19 +6,18 @@ from glob import iglob
 
 from django.conf import settings
 
-from .models import Creature, Spell, SpellEffect, SpellUpgrade
+from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level, Wave, Enemy, EnemySpell, \
+    EnemySpellEffect, Boss, BossSpell, BossSpellEffect
 
 
-# Checking for XML strings to values
+# string true/false to bool
 def to_boolean(string):
-    if string in ['true', 'True', 'TRUE']:
-        return True
-    else:
-        return False
+    return string in ['true', 'True', 'TRUE']
 
 
+DATA_DIR = os.path.join(settings.BASE_DIR, 'bestiary/data_files')
 TRANSLATION_STRINGS = {}
-with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/english.txt'), encoding='utf8') as f:
+with open(os.path.join(DATA_DIR, 'english.txt'), encoding='utf8') as f:
     last_key = None
 
     for line in f:
@@ -32,20 +31,22 @@ with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/english.txt'), en
             TRANSLATION_STRINGS[last_key] += f'\n{line}'
 
 
+# CREATURES AND SPELLS
 def creatures():
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
+    for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
 
         for child in root:
             data = child.attrib
 
+            if data['element'] in ['dark', 'light']:
+                # Skip L/D elements because their data is incomplete
+                continue
+
             if data['sku'][-1] == 'b':
                 # This is a secondary creature w/ alternate skill 1. Skip importing.
                 # Alternate skills parsed in skills() function
-                continue
-            if data['element'] in ['Dark', 'Light']:
-                # Skip L/D elements because their data is incomplete
                 continue
 
             try:
@@ -86,14 +87,21 @@ def creatures():
             except (KeyError, ValueError) as e:
                 print(f'Unable to save {data["sku"]}. {type(e)}: {e}')
 
+    # Final step - make sure any new creatures have a slug
+    for c in Creature.objects.filter(slug__isnull=True):
+        c.save()
+
 
 def evolutions():
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
+    for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
 
         for child in root:
             data = child.attrib
+
+            if data['element'] in ['dark', 'light']:
+                continue
 
             if data['sku'][-1] == 'b':
                 # This a secondary copy of a creature w/ alternate skills which are not imported.
@@ -118,22 +126,21 @@ def evolutions():
                             # Try the other game ID in the evolvesTo field
                             continue
                         else:
-                            c.evolvesTo = evolves_to
-                            c.save()
-                            break
+                            evolves_to.evolvesFrom = c
+                            evolves_to.save()
 
 
 def spells():
     # Parse spells for each creature
     for c in Creature.objects.all():
+        skus_used = []
         # Get XML elements for this creature. May be multiple results.
         # These are the same creature with different spells
-        creatures_data = _getcreaturedata(c.trackingName)
+        creatures_data = _get_creature_data(c.trackingName)
         if creatures_data is None:
             continue
 
         order = 0
-        skus_used = []
 
         for slot in range(3):
             for creature_data in creatures_data:
@@ -151,107 +158,126 @@ def spells():
                         spell.game_id = sku
 
                     spell.order = order
-                    spell.slot = slot + 1
-                    spell_data = _getspelldata(spell.game_id)
-                    title_tid, desc_tid = creature_data[f'spell{slot}TIDS'].split(',')
-
-                    spell.title = TRANSLATION_STRINGS[title_tid]
-                    spell.description = TRANSLATION_STRINGS[desc_tid]
-                    spell.image = creature_data.get(f'spell{slot}OverrideImage', '')
-                    spell.type_image = spell_data.get('image', '')
-                    spell.turns = spell_data.get('turns')
-                    spell.passive = 'passive_spell' in spell.game_id
-                    spell.passiveTrigger = spell_data.get('launch', '')
-                    spell.save()
+                    spell = _fill_spell_data(spell, creature_data, slot)
                     skus_used.append(sku)
                     order += 1
 
-                    # Parse spell effects
-                    effect_order = 0
-                    if f'spell{slot}Params' in creature_data:
-                        effect_params = creature_data[f'spell{slot}Params'].split(';')
-                    else:
-                        effect_params = []
-
-                    for x in range(10):
-                        if f'ingredient{x}' in spell_data:
-                            try:
-                                effect = SpellEffect.objects.get(spell=spell, order=x)
-                            except SpellEffect.DoesNotExist:
-                                effect = SpellEffect()
-                                effect.spell = spell
-                                effect.order = effect_order
-
-                            effect.effect = spell_data[f'ingredient{x}']
-                            effect.target = spell_data[f'ingredient{x}Target']
-
-                            if x < len(effect_params):
-                                effect.params = _paramstodict(effect_params[x])
-
-                            if f'ingredient{x}Condition' in spell_data:
-                                effect.condition = spell_data[f'ingredient{x}Condition'].split(';')
-
-                            effect.save()
-                            effect_order += 1
-                        else:
-                            break
-
-                    # Parse random spell cast effects
-                    # The effects from random spells should be added to this main spell
-                    for effect in spell.spelleffect_set.filter(effect__in=['castRandomEnemy', 'castRandomAlly']):
-                        # Get each spell ID from the random options and get its effects
-                        for x in range(10):
-                            if f'spell{x}' in effect.params['spell']:
-                                rand_spell_data = _getspelldata(effect.params['spell'][f'spell{x}'])
-                                rand_params = effect.params['spell'][f'spell{x}Params'].split(';')
-
-                                for eff_idx in range(10):
-                                    if f'ingredient{eff_idx}' in rand_spell_data:
-                                        try:
-                                            rand_effect = SpellEffect.objects.get(spell=spell, order=effect_order)
-                                        except SpellEffect.DoesNotExist:
-                                            rand_effect = SpellEffect()
-                                            rand_effect.spell = spell
-                                            rand_effect.order = effect_order
-
-                                        rand_effect.effect = rand_spell_data[f'ingredient{eff_idx}']
-                                        rand_effect.target = rand_spell_data[f'ingredient{eff_idx}Target']
-                                        rand_effect.params = _paramstodict(rand_params[eff_idx])
-                                        rand_effect.probability = float(effect.params['spell'][f'spell{x}Prob'])
-                                        if f'ingredient{eff_idx}Condition' in rand_spell_data:
-                                            rand_effect.condition = rand_spell_data[f'ingredient{eff_idx}Condition'].split(';')
-                                        rand_effect.save()
-                                        effect_order += 1
-                                    else:
-                                        break
-                            else:
-                                # Delete any effect entries beyond what was parsed
-                                SpellEffect.objects.filter(spell=spell, order__gte=effect_order).delete()
-                                break
-
-                    # Parse upgrades
-                    if 'spellUpgradeSku' in spell_data:
-                        upgrades = _getspellupgrades(spell_data['spellUpgradeSku'])
-                        for x, upgrade_data in enumerate(upgrades):
-                            try:
-                                upgrade = SpellUpgrade.objects.get(spell=spell, order=x)
-                            except SpellUpgrade.DoesNotExist:
-                                upgrade = SpellUpgrade()
-                                upgrade.spell = spell
-                                upgrade.order = x
-
-                            upgrade.game_id = spell_data['spellUpgradeSku']
-                            upgrade.amount = upgrade_data['value']
-                            upgrade.is_percentage = upgrade_data['is_percentage']
-                            upgrade.attribute = upgrade_data['attribute']
-                            upgrade.description = upgrade_data['description']
-                            upgrade.save()
-
-                        # Delete any upgrade entries beyond what was parsed
-                        SpellUpgrade.objects.filter(spell=spell, order__gte=len(upgrades)).delete()
+                    _create_spell_effects(spell, creature_data)
+                    _create_spell_upgrades(spell)
 
         # Remove spells assigned to this creature that were not processed
         c.spell_set.exclude(game_id__in=set(skus_used)).delete()
+
+
+def _fill_spell_data(spell, creature_data, slot):
+    spell.slot = slot + 1
+    spell_data = _get_spell_data(spell.game_id)
+    title_tid, desc_tid = creature_data[f'spell{slot}TIDS'].split(',')
+
+    spell.title = TRANSLATION_STRINGS[title_tid]
+    spell.description = TRANSLATION_STRINGS[desc_tid]
+    spell.image = creature_data.get(f'spell{slot}OverrideImage', '')
+    spell.type_image = spell_data.get('image', '')
+    spell.turns = spell_data.get('turns')
+    spell.passive = 'passive_spell' in spell.game_id
+    spell.passiveTrigger = spell_data.get('launch', '')
+    spell.save()
+
+    return spell
+
+
+def _create_spell_effects(spell, creature_data, *args, **kwargs):
+    effect_model = kwargs.get('effect_model', SpellEffect)
+
+    # Parse spell effects
+    spell_data = _get_spell_data(spell.game_id)
+    effect_order = 0
+
+    if f'spell{spell.slot - 1}Params' in creature_data:
+        effect_params = creature_data[f'spell{spell.slot - 1}Params'].split(';')
+    else:
+        effect_params = []
+
+    for x in range(10):
+        if f'ingredient{x}' in spell_data:
+            try:
+                effect = effect_model.objects.get(spell=spell, order=x)
+            except effect_model.DoesNotExist:
+                effect = effect_model()
+                effect.spell = spell
+                effect.order = effect_order
+
+            effect.effect = spell_data[f'ingredient{x}']
+            effect.target = spell_data[f'ingredient{x}Target']
+
+            if x < len(effect_params):
+                effect.params = _params_to_dict(effect_params[x])
+
+            if f'ingredient{x}Condition' in spell_data:
+                effect.condition = spell_data[f'ingredient{x}Condition'].split(';')
+
+            effect.save()
+            effect_order += 1
+        else:
+            break
+
+    # Parse random spell cast effects
+    # The effects from random spells should be added to this main spell
+    for effect in effect_model.objects.filter(spell=spell, effect__in=['castRandomEnemy', 'castRandomAlly']):
+        # Get each spell ID from the random options and get its effects
+        for x in range(10):
+            if f'spell{x}' in effect.params['spell']:
+                rand_spell_data = _get_spell_data(effect.params['spell'][f'spell{x}'])
+                rand_params = effect.params['spell'][f'spell{x}Params'].split(';')
+
+                for eff_idx in range(10):
+                    if f'ingredient{eff_idx}' in rand_spell_data:
+                        try:
+                            rand_effect = effect_model.objects.get(spell=spell, order=effect_order)
+                        except effect_model.DoesNotExist:
+                            rand_effect = effect_model()
+                            rand_effect.spell = spell
+                            rand_effect.order = effect_order
+
+                        rand_effect.effect = rand_spell_data[f'ingredient{eff_idx}']
+                        rand_effect.target = rand_spell_data[f'ingredient{eff_idx}Target']
+                        rand_effect.params = _params_to_dict(rand_params[eff_idx])
+                        rand_effect.probability = float(effect.params['spell'][f'spell{x}Prob'])
+                        if f'ingredient{eff_idx}Condition' in rand_spell_data:
+                            rand_effect.condition = rand_spell_data[f'ingredient{eff_idx}Condition'].split(';')
+                        rand_effect.save()
+                        effect_order += 1
+                    else:
+                        break
+            else:
+                break
+    # Delete any effect entries beyond what was parsed
+    effect_model.objects.filter(spell=spell, order__gte=effect_order).delete()
+
+
+def _create_spell_upgrades(spell):
+    # Parse upgrades
+    spell_data = _get_spell_data(spell.game_id)
+
+    if 'spellUpgradeSku' in spell_data:
+        upgrades = _get_spell_upgrades(spell_data['spellUpgradeSku'])
+        for x, upgrade_data in enumerate(upgrades):
+            try:
+                upgrade = SpellUpgrade.objects.get(spell=spell, order=x)
+            except SpellUpgrade.DoesNotExist:
+                upgrade = SpellUpgrade()
+                upgrade.spell = spell
+                upgrade.order = x
+
+            upgrade.game_id = spell_data['spellUpgradeSku']
+            upgrade.amount = upgrade_data['value']
+            upgrade.is_percentage = upgrade_data['is_percentage']
+            upgrade.attribute = upgrade_data['attribute']
+            upgrade.description = upgrade_data['description']
+            upgrade.save()
+
+        # Delete any upgrade entries beyond what was parsed
+        SpellUpgrade.objects.filter(spell=spell, order__gte=len(upgrades)).delete()
 
 
 def effects():
@@ -270,10 +296,11 @@ def effects():
     }
 
 
-def _getcreaturedata(tracking_name):
+def _get_creature_data(tracking_name):
+    # Return matching creatures for the trackingName provided
     result = []
-    # Return skill data for the sku provided
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creaturesDefinitions*.xml')):
+
+    for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
         result += root.findall(f'Definition[@trackingName="{tracking_name}"][@playable="true"]')
@@ -284,9 +311,9 @@ def _getcreaturedata(tracking_name):
         return None
 
 
-def _getspelldata(sku):
-    # Return skill data for the sku provided
-    for file_path in iglob(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creature*SpellsDefinitions.xml')):
+def _get_creature_data_by_sku(sku):
+    # Returns a single creature data
+    for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
         node = root.find(f'Definition[@sku="{sku}"]')
@@ -294,7 +321,17 @@ def _getspelldata(sku):
             return node.attrib
 
 
-def _paramstodict(params):
+def _get_spell_data(sku):
+    # Return skill data for the sku provided
+    for file_path in iglob(os.path.join(DATA_DIR, 'creature*SpellsDefinitions.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+        if node is not None:
+            return node.attrib
+
+
+def _params_to_dict(params):
     ret = {}
     for param in params.split(','):
         values = param.split(':')
@@ -312,7 +349,7 @@ def _paramstodict(params):
             ret[values[0]] = True
 
     if 'spell' in ret:
-        ret['spell'] = _getspellrandomdef(ret['spell'])
+        ret['spell'] = _get_spell_random_def(ret['spell'])
 
     return ret
 
@@ -320,9 +357,9 @@ def _paramstodict(params):
 skillUpMatcher = re.compile(r'^(?P<val>[-]?\d+),(?P<attribute>\w+):(?P<amount>[\d.]+)$')
 
 
-def _getspellupgrades(sku):
+def _get_spell_upgrades(sku):
     # Return upgrade data for the sku provided
-    with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creatureSpellIngredientUpgradesDefinitions.xml')) as f:
+    with open(os.path.join(DATA_DIR, 'creatureSpellIngredientUpgradesDefinitions.xml')) as f:
         tree = ET.parse(f)
         root = tree.getroot()
         node = root.find(f'Definition[@sku="{sku}"]')
@@ -352,10 +389,313 @@ def _getspellupgrades(sku):
         return upgrades
 
 
-def _getspellrandomdef(sku):
-    with open(os.path.join(settings.BASE_DIR, 'bestiary/data_files/creatureCastRandomSpellsDefinitions.xml')) as f:
+def _get_spell_random_def(sku):
+    with open(os.path.join(DATA_DIR, 'creatureCastRandomSpellsDefinitions.xml')) as f:
         tree = ET.parse(f)
         root = tree.getroot()
         node = root.find(f'Definition[@sku="{sku}"]')
 
+        return node.attrib
+
+
+# DUNGEONS, ENEMIES, AND REWARDS
+def _region_valid_to_import(data):
+    if 'unlock' in data:
+        # Check that the unlock period is out of bounds of typical day/month numbers
+        time_unit, unlock = data['unlock'].split(':')
+        unlock = [int(val) for val in unlock.split(',')]
+        if time_unit == 'Days':
+            available = min(unlock) <= 7
+        else:
+            available = min(unlock) <= 12
+    else:
+        available = True
+
+    return data['path'] != 'PVP' and to_boolean(data['inGame']) and available
+
+
+def regions():
+    for file_path in iglob(os.path.join(DATA_DIR, '*[rR]egionsDefinitions.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        for child in root:
+            data = child.attrib
+
+            if _region_valid_to_import(data):
+                try:
+                    dungeon = Dungeon.objects.get(game_id=data['sku'])
+                except Dungeon.DoesNotExist:
+                    dungeon = Dungeon()
+                    dungeon.game_id = data['sku']
+
+                dungeon.name = TRANSLATION_STRINGS[data['name']]
+                dungeon.group = data.get('group', Dungeon.GROUP_SCENARIO)
+
+                if 'unlock' in data:
+                    # Dungeon is only open certain days or months
+                    time_unit, unlock = data['unlock'].split(':')
+                    unlock = [int(val) for val in unlock.split(',')]
+                    unlock.sort()
+
+                    if time_unit == 'Days':
+                        dungeon.days_available = unlock
+                        dungeon.always_available = len(unlock) == 7
+                    if time_unit == 'Months':
+                        dungeon.months_available = unlock
+                        dungeon.always_available = len(unlock) == 12
+                else:
+                    dungeon.always_available = True
+
+                dungeon.save()
+
+
+def levels():
+    for file_path in [
+        os.path.join(DATA_DIR, 'levelsDefinitions.xml'),
+        os.path.join(DATA_DIR, 'specialDungeonLevelsDefinitions.xml')
+    ]:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        for child in root:
+            data = child.attrib
+
+            # This is a slow process so print to console to see progress
+            print(f'Parsing level {data["sku"]}')
+
+            # Scenarios have easy, medium, hard
+            if 'easyLevel' in data:
+                _create_level(data, Level.DIFFICULTY_EASY)
+            if 'mediumLevel' in data:
+                _create_level(data, Level.DIFFICULTY_MEDIUM)
+            if 'hardLevel' in data:
+                _create_level(data, Level.DIFFICULTY_HARD)
+            if 'level' in data:
+                # Special dungeons
+                _create_level(data, None)
+
+
+_difficulty_keys = {
+    Level.DIFFICULTY_EASY: 'easyLevel',
+    Level.DIFFICULTY_MEDIUM: 'mediumLevel',
+    Level.DIFFICULTY_HARD: 'hardLevel',
+    None: 'level',
+}
+
+
+def _create_level(data, difficulty):
+    try:
+        level = Level.objects.get(game_id=data['sku'], difficulty=difficulty)
+    except Level.DoesNotExist:
+        level = Level()
+        level.game_id = data['sku']
+        level.difficulty = difficulty
+
+    difficulty_data = _get_difficulty_level(data[_difficulty_keys[difficulty]])
+
+    try:
+        dungeon = Dungeon.objects.get(game_id=data['region'])
+    except Dungeon.DoesNotExist:
+        print(f'Could not find region {data["region"]} for level {data["sku"]}. Skipping')
+        return
+    else:
+        level.dungeon = dungeon
+        level.order = int(data['order'])
+
+        level.slots = int(difficulty_data['allies'])
+        level.energy_cost = int(difficulty_data['energy'])
+        level.save()
+
+        # TODO: Parse rewards here?
+
+        # Parse waves
+        waves_data = _get_waves(difficulty_data['sku'])
+        wave_skus = []
+        if len(waves_data):
+            for wave_idx, wave_data in enumerate(waves_data):
+                try:
+                    wave = Wave.objects.get(game_id=wave_data['sku'])
+                except Wave.DoesNotExist:
+                    wave = Wave()
+                    wave.game_id = wave_data['sku']
+
+                wave.level = level
+                wave.order = wave_idx
+                wave.save()
+                wave_skus.append(wave_data['sku'])
+                _create_wave_enemies(wave, wave_data['enemies'])
+
+            # Delete any other waves related to this level that were not in data files
+            level.wave_set.exclude(game_id__in=wave_skus).delete()
+
+        else:
+            print(f'No waves found for level {data["sku"]}!')
+
+
+def _get_difficulty_level(sku):
+    for file_path in iglob(os.path.join(DATA_DIR, '*[lL]evelsDefinitions.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        node = root.find(f'Definition[@sku="{sku}"]')
+        if node is not None:
+            return node.attrib
+
+
+def _get_waves(difficulty_level_sku):
+    results = []
+    for file_path in iglob(os.path.join(DATA_DIR, '*[wW]avesDefinitions*.xml')):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        results += root.findall(f'Definition[@difficultyLevel="{difficulty_level_sku}"]')
+
+    if len(results):
+        return [el.attrib for el in results]
+    else:
+        return None
+
+
+def _create_wave_enemies(wave, enemies_string):
+    valid_enemy_ids = []
+    valid_boss_ids = []
+    enemies_data = [
+        _params_to_dict(enemy_str) for enemy_str in enemies_string.split(';')
+    ]
+
+    for enemy_idx, enemy_data in enumerate(enemies_data):
+        if enemy_data['sku'].startswith('boss'):
+            enemy = _create_boss_enemy(wave, enemy_idx, enemy_data)
+            valid_boss_ids.append(enemy.pk)
+        else:
+            enemy = _create_trash_enemy(wave, enemy_idx, enemy_data)
+            valid_enemy_ids.append(enemy.pk)
+
+    # Delete other enemies assigned to this wave that were not in data files
+    wave.enemy_set.exclude(pk__in=valid_enemy_ids).delete()
+    wave.boss_set.exclude(pk__in=valid_boss_ids).delete()
+
+
+def _create_trash_enemy(wave, idx, data):
+    # Trash enemies are instances of standard creatures with multipliers on stats
+
+    try:
+        enemy = Enemy.objects.get(wave=wave, order=idx)
+    except Enemy.DoesNotExist:
+        enemy = Enemy()
+        enemy.wave = wave
+        enemy.order = idx
+
+    enemy.level = data.get('level', 1)
+    enemy.rank = data.get('rank', 1)
+
+    # Grab stats off base defined creature
+    c = Creature.objects.get(game_id=data['sku'])
+    enemy.game_id = c.game_id
+    enemy.trackingName = c.trackingName
+    enemy.name = c.name
+    enemy.archetype = c.archetype
+    enemy.element = c.element
+    enemy.hp = round(float(data.get('xHp', 1)) * c.get_hp(enemy.rank, enemy.level))
+    enemy.attack = round(float(data.get('xAttack', 1)) * c.get_attack(enemy.rank, enemy.level))
+    enemy.defense = round(float(data.get('xDefense', 1)) * c.get_defense(enemy.rank, enemy.level))
+    enemy.speed = float(data.get('xSpeed', 1)) * c.speed
+    enemy.initialSpeed = c.initialSpeed
+    enemy.criticalChance = round(float(data.get('xCriticalChance', 1)) * c.criticalChance)
+    enemy.criticalDamage = round(float(data.get('xCriticalDamage', 1)) * c.criticalDamage)
+    enemy.accuracy = float(data.get('xAccuracy', 1)) * c.accuracy  # Note - xAccuracy key is a guess
+    enemy.resistance = float(data.get('xResistance', 1)) * c.resistance  # Note - xResistance key is a guess
+    enemy.miniboss = data.get('type') == 'miniBoss'
+    enemy.save()
+
+    # Enemy spells
+    spell_ids = []
+    creature_data = _get_creature_data_by_sku(data['sku'])
+
+    for slot in range(3):
+        if f'spell{slot}' in creature_data:
+            sku = creature_data[f'spell{slot}']
+
+            try:
+                spell = EnemySpell.objects.get(creature=enemy, game_id=sku)
+            except EnemySpell.DoesNotExist:
+                spell = EnemySpell()
+                spell.creature = enemy
+                spell.game_id = sku
+
+            spell = _fill_spell_data(spell, creature_data, slot)
+            spell_ids.append(spell.pk)
+
+            _create_spell_effects(spell, creature_data, effect_model=EnemySpellEffect)
+
+    # Remove spells assigned to this creature that were not processed
+    enemy.enemyspell_set.exclude(pk__in=set(spell_ids)).delete()
+
+    return enemy
+
+
+def _create_boss_enemy(wave, idx, boss_params):
+    # Boss enemies are unique creatures
+    try:
+        boss = Boss.objects.get(wave=wave, order=idx)
+    except Boss.DoesNotExist:
+        boss = Boss()
+        boss.wave = wave
+        boss.order = idx
+
+    boss_data = _get_boss_data(boss_params['sku'])
+
+    boss.game_id = boss_params['sku']
+    boss.playable = to_boolean(boss_data['playable'])
+    boss.name = TRANSLATION_STRINGS[boss_data['name']]
+    boss.rank = int(boss_params.get('rank', boss_data['rank']))
+    boss.level = int(boss_params['level'])
+    boss.archetype = boss_data['class']
+    boss.element = boss_data['element']
+
+    # Get trackingName from creature match (if one exists)
+    c = Creature.objects.filter(name=boss.name, element=boss.element).first()
+    if c:
+        boss.trackingName = c.trackingName
+
+    boss.hp = round(float(boss_data['hp']) * boss_params.get('xHp', 1))
+    boss.attack = round(float(boss_data['attack']) * boss_params.get('xAttack', 1))
+    boss.defense = round(float(boss_data['defense']) * boss_params.get('xDefense', 1))
+    boss.speed = float(boss_data['speed']) * boss_params.get('xSpeed', 1)
+    boss.initialSpeed = int(boss_data['initialSpeed'])
+    boss.criticalChance = round(float(boss_data['criticalChance']) * boss_params.get('xCriticalChance', 1))
+    boss.criticalDamage = round(float(boss_data['criticalDamage']) * boss_params.get('xCriticalDamage', 1))
+    boss.accuracy = float(boss_data['accuracy']) * boss_params.get('xAccuracy', 1)  # Note - data key is a guess. Doesn't exist in data
+    boss.resistance = float(boss_data['resistance']) * boss_params.get('xResistance', 1)  # Note - data key is a guess. Doesn't exist in data
+
+    boss.save()
+
+    # Boss spells
+    spell_ids = []
+    for slot in range(3):
+        if f'spell{slot}' in boss_data:
+            sku = boss_data[f'spell{slot}']
+
+            try:
+                spell = BossSpell.objects.get(creature=boss, game_id=sku)
+            except BossSpell.DoesNotExist:
+                spell = BossSpell()
+                spell.creature = boss
+                spell.game_id = sku
+
+            spell = _fill_spell_data(spell, boss_data, slot)
+            spell_ids.append(spell.pk)
+
+            _create_spell_effects(spell, boss_data, effect_model=BossSpellEffect)
+
+    # Remove spells assigned to this creature that were not processed
+    boss.bossspell_set.exclude(pk__in=set(spell_ids)).delete()
+
+    return boss
+
+
+def _get_boss_data(sku):
+    tree = ET.parse(os.path.join(DATA_DIR, 'bossCreaturesDefinitions.xml'))
+    root = tree.getroot()
+    node = root.find(f'Definition[@sku="{sku}"]')
+    if node is not None:
         return node.attrib

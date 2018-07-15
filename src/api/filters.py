@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from bestiary.models import Creature, SpellEffect
+from bestiary.models import Creature, Dungeon
 
 
 def filter_array_value(queryset, name, value):
@@ -40,6 +40,7 @@ class CreatureFilter(filters.FilterSet):
         model = Creature
         fields = {
             'slug': ['exact', 'isnull'],
+            'game_id': ['exact'],
             'creatureType': ['exact'],
             'playable': ['exact'],
             'summonable': ['exact'],
@@ -54,4 +55,16 @@ class CreatureFilter(filters.FilterSet):
             'initialSpeed': ['exact', 'gte', 'lte'],
             'speed': ['exact', 'gte', 'lte'],
             'evolvesTo': ['exact', 'isnull'],
+        }
+
+
+class DungeonFilter(filters.FilterSet):
+    name = filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Dungeon
+        fields = {
+            'game_id': ['exact'],
+            'group': ['exact'],
+            'always_available': ['exact']
         }
