@@ -1,10 +1,16 @@
 from django_filters import rest_framework as filters
-
+from django.db.models import Count
 from bestiary.models import Creature, Dungeon
 
 
 def filter_array_value(queryset, name, value):
     return queryset.filter(**{name: value.split(',')}).distinct()
+
+
+def filter_reverse_lookup_count(queryset, name, value):
+    # django-filter doesn't properly support the __len lookup
+    count_name = name + '_count'
+    return queryset.annotate(**{count_name: Count(name)}).filter(**{count_name: value})
 
 
 def filter_has_all_related(queryset, name, value):
@@ -24,6 +30,7 @@ class CreatureFilter(filters.FilterSet):
     subgroup__contained_by = filters.CharFilter(method=filter_array_value)
     subgroup__overlap = filters.CharFilter(method=filter_array_value)
     lore = filters.CharFilter(lookup_expr='icontains')
+    evolvesTo_count = filters.NumberFilter(name='evolvesTo', method=filter_reverse_lookup_count)
 
     spell_name = filters.CharFilter(name='spell__title', lookup_expr='istartswith')
     spell_description = filters.CharFilter(name='spell__description', lookup_expr='icontains')
@@ -54,7 +61,6 @@ class CreatureFilter(filters.FilterSet):
             'resistance': ['exact', 'gte', 'lte'],
             'initialSpeed': ['exact', 'gte', 'lte'],
             'speed': ['exact', 'gte', 'lte'],
-            'evolvesTo': ['exact', 'isnull'],
         }
 
 
