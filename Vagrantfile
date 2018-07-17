@@ -7,7 +7,7 @@ $script = <<-SCRIPT
 echo "Installing software packages..."
 sudo apt-get -qq update
 sudo apt-get -qq upgrade -y
-sudo apt-get -qq install -y postgresql-10 postgresql-contrib-10 redis-server git make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev
+sudo apt-get -qq install -y postgresql-10 postgresql-contrib-10 redis-server git make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev
 
 # Postgresql setup
 # Allow listening on all interfaces
@@ -19,9 +19,9 @@ echo "host    all             all             all                     md5" | sud
 sudo service postgresql restart
 
 # Set up database and user
-sudo -u postgres psql --command="CREATE DATABASE egranch_dev WITH ENCODING 'UTF8' LC_CTYPE 'en_US.UTF-8' LC_COLLATE 'en_US.UTF8' TEMPLATE=template0;"
-sudo -u postgres psql --command="CREATE USER egrancher WITH PASSWORD 'intentionallyweak';"
-sudo -u postgres psql --command="GRANT ALL PRIVILEGES ON DATABASE egranch_dev TO egrancher;"
+sudo -u postgres psql --command="CREATE DATABASE mmegfarm_dev WITH ENCODING 'UTF8' LC_CTYPE 'en_US.UTF-8' LC_COLLATE 'en_US.UTF8' TEMPLATE=template0;"
+sudo -u postgres psql --command="CREATE USER mmeg_user WITH PASSWORD 'intentionallyweak';"
+sudo -u postgres psql --command="GRANT ALL PRIVILEGES ON DATABASE mmegfarm_dev TO mmeg_user;"
 
 # Install pyenv + friends
 curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
@@ -35,9 +35,9 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # Install python + init virtualenv
-pyenv install 3.6.5
-pyenv virtualenv 3.6.5 egranch-3.6.5
-pyenv activate egranch-3.6.5
+pyenv install 3.7.0
+pyenv virtualenv 3.7.0 mmegfarm-3.7.0
+pyenv activate mmegfarm-3.7.0
 
 echo "Setting up python environment..."
 pip install -qq -r /vagrant/requirements_dev.txt
