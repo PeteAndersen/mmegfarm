@@ -430,7 +430,11 @@ def regions():
                     dungeon.game_id = data['sku']
 
                 dungeon.name = TRANSLATION_STRINGS[data['name']]
-                dungeon.group = data.get('group', Dungeon.GROUP_SCENARIO)
+                if 'special' in file_path:
+                    default_group = Dungeon.GROUP_ELEMENT
+                else:
+                    default_group = Dungeon.GROUP_SCENARIO
+                dungeon.group = data.get('group', default_group)
 
                 if 'unlock' in data:
                     # Dungeon is only open certain days or months
