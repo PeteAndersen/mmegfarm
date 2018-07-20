@@ -212,6 +212,7 @@ class WaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wave
         fields = [
+            'id',
             'enemies',
             'bosses',
         ]
