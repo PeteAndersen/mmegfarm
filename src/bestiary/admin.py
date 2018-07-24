@@ -52,7 +52,3 @@ class WaveAdmin(admin.ModelAdmin):
 @admin.register(Enemy)
 class EnemyAdmin(admin.ModelAdmin):
     pass
-
-@admin.register(Boss)
-class BossAdmin(admin.ModelAdmin):
-    pass

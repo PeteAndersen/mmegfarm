@@ -340,9 +340,21 @@ class Wave(models.Model):
 
 
 class Enemy(CreatureBase):
+    BOSS_TYPE_MINIBOSS = 'miniBoss'
+    BOSS_TYPE_BOSS = 'boss'
+    BOSS_TYPE_CHOICES = (
+        (BOSS_TYPE_MINIBOSS, 'Miniboss'),
+        (BOSS_TYPE_BOSS, 'Boss'),
+    )
+
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     order = models.IntegerField(default=0)
-    miniboss = models.BooleanField(default=False)
+    boss_type = models.CharField(
+        max_length=10,
+        choices=BOSS_TYPE_CHOICES,
+        blank=True,
+        null=True
+    )
     level = models.IntegerField()
 
     class Meta:
@@ -359,31 +371,6 @@ class EnemySpell(SpellBase):
 
 class EnemySpellEffect(SpellEffectBase):
     spell = models.ForeignKey(EnemySpell, on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['order']
-        unique_together = ('spell', 'order')
-
-
-class Boss(CreatureBase):
-    wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
-    order = models.IntegerField()
-    level = models.IntegerField()
-
-    class Meta:
-        ordering = ['order']
-
-
-class BossSpell(SpellBase):
-    creature = models.ForeignKey(Boss, on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['slot']
-        unique_together = ('creature', 'slot')
-
-
-class BossSpellEffect(SpellEffectBase):
-    spell = models.ForeignKey(BossSpell, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['order']

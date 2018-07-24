@@ -7,7 +7,7 @@ from glob import iglob
 from django.conf import settings
 
 from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level, Wave, Enemy, EnemySpell, \
-    EnemySpellEffect, Boss, BossSpell, BossSpellEffect
+    EnemySpellEffect
 
 
 # string true/false to bool
@@ -561,27 +561,20 @@ def _get_waves(difficulty_level_sku):
 
 def _create_wave_enemies(wave, enemies_string):
     valid_enemy_ids = []
-    valid_boss_ids = []
     enemies_data = [
         _params_to_dict(enemy_str) for enemy_str in enemies_string.split(';')
     ]
 
     for enemy_idx, enemy_data in enumerate(enemies_data):
-        if enemy_data['sku'].startswith('boss'):
-            enemy = _create_boss_enemy(wave, enemy_idx, enemy_data)
-            valid_boss_ids.append(enemy.pk)
-        else:
-            enemy = _create_trash_enemy(wave, enemy_idx, enemy_data)
-            valid_enemy_ids.append(enemy.pk)
+        enemy = _create_enemy_creature(wave, enemy_idx, enemy_data)
+        valid_enemy_ids.append(enemy.pk)
 
     # Delete other enemies assigned to this wave that were not in data files
     wave.enemy_set.exclude(pk__in=valid_enemy_ids).delete()
-    wave.boss_set.exclude(pk__in=valid_boss_ids).delete()
 
 
-def _create_trash_enemy(wave, idx, data):
-    # Trash enemies are instances of standard creatures with multipliers on stats
-
+def _create_enemy_creature(wave, idx, params):
+    # Enemies are instances of standard creatures with multipliers on stats
     try:
         enemy = Enemy.objects.get(wave=wave, order=idx)
     except Enemy.DoesNotExist:
@@ -589,31 +582,51 @@ def _create_trash_enemy(wave, idx, data):
         enemy.wave = wave
         enemy.order = idx
 
-    enemy.level = data.get('level', 1)
-    enemy.rank = data.get('rank', 1)
+    enemy.level = params.get('level', 1)
+    enemy.rank = params.get('rank', 1)
+    enemy.game_id = params['sku']
 
-    # Grab stats off base defined creature
-    c = Creature.objects.get(game_id=data['sku'])
-    enemy.game_id = c.game_id
-    enemy.trackingName = c.trackingName
-    enemy.name = c.name
-    enemy.archetype = c.archetype
-    enemy.element = c.element
-    enemy.hp = round(float(data.get('xHp', 1)) * c.get_hp(enemy.rank, enemy.level))
-    enemy.attack = round(float(data.get('xAttack', 1)) * c.get_attack(enemy.rank, enemy.level))
-    enemy.defense = round(float(data.get('xDefense', 1)) * c.get_defense(enemy.rank, enemy.level))
-    enemy.speed = float(data.get('xSpeed', 1)) * c.speed
-    enemy.initialSpeed = c.initialSpeed
-    enemy.criticalChance = round(float(data.get('xCriticalChance', 1)) * c.criticalChance)
-    enemy.criticalDamage = round(float(data.get('xCriticalDamage', 1)) * c.criticalDamage)
-    enemy.accuracy = float(data.get('xAccuracy', 1)) * c.accuracy  # Note - xAccuracy key is a guess
-    enemy.resistance = float(data.get('xResistance', 1)) * c.resistance  # Note - xResistance key is a guess
-    enemy.miniboss = data.get('type') == 'miniBoss'
+    # Get creature data
+    if params['sku'].startswith('boss'):
+        creature_data = _get_boss_data(params['sku'])
+    else:
+        creature_data = _get_creature_data_by_sku(params['sku'])
+
+    enemy.trackingName = creature_data.get('trackingName')
+    enemy.name = TRANSLATION_STRINGS[creature_data['name']]
+    enemy.archetype = creature_data['class']
+    enemy.element = creature_data['element']
+
+    if params['sku'].startswith('boss'):
+        # Boss stats are taken directly from the creature_data and scaled
+        enemy.hp = round(float(creature_data['hp']) * params.get('xHp', 1))
+        enemy.attack = round(float(creature_data['attack']) * params.get('xAttack', 1))
+        enemy.defense = round(float(creature_data['defense']) * params.get('xDefense', 1))
+        enemy.speed = float(creature_data['speed']) * params.get('xSpeed', 1)
+        enemy.initialSpeed = int(creature_data['initialSpeed'])
+        enemy.criticalChance = round(float(creature_data['criticalChance']) * params.get('xCriticalChance', 1))
+        enemy.criticalDamage = round(float(creature_data['criticalDamage']) * params.get('xCriticalDamage', 1))
+        enemy.accuracy = float(creature_data['accuracy']) * params.get('xAccuracy', 1)  # Note - data key is a guess. Doesn't exist in data
+        enemy.resistance = float(creature_data['resistance']) * params.get('xResistance', 1)  # Note - data key is a guess. Doesn't exist in data
+    else:
+        # Regular enemy stats are taken from the base creature,
+        # scaled to appropriate rank/level, and then final scaling applied
+        c = Creature.objects.get(game_id=params['sku'])
+        enemy.hp = round(float(params.get('xHp', 1)) * c.get_hp(enemy.rank, enemy.level))
+        enemy.attack = round(float(params.get('xAttack', 1)) * c.get_attack(enemy.rank, enemy.level))
+        enemy.defense = round(float(params.get('xDefense', 1)) * c.get_defense(enemy.rank, enemy.level))
+        enemy.speed = float(params.get('xSpeed', 1)) * c.speed
+        enemy.initialSpeed = c.initialSpeed
+        enemy.criticalChance = round(float(params.get('xCriticalChance', 1)) * c.criticalChance)
+        enemy.criticalDamage = round(float(params.get('xCriticalDamage', 1)) * c.criticalDamage)
+        enemy.accuracy = float(params.get('xAccuracy', 1)) * c.accuracy  # Note - xAccuracy key is a guess
+        enemy.resistance = float(params.get('xResistance', 1)) * c.resistance  # Note - xResistance key is a guess
+
+    enemy.boss_type = params.get('type')
     enemy.save()
 
     # Enemy spells
     spell_ids = []
-    creature_data = _get_creature_data_by_sku(data['sku'])
 
     for slot in range(3):
         if f'spell{slot}' in creature_data:
@@ -635,66 +648,6 @@ def _create_trash_enemy(wave, idx, data):
     enemy.enemyspell_set.exclude(pk__in=set(spell_ids)).delete()
 
     return enemy
-
-
-def _create_boss_enemy(wave, idx, boss_params):
-    # Boss enemies are unique creatures
-    try:
-        boss = Boss.objects.get(wave=wave, order=idx)
-    except Boss.DoesNotExist:
-        boss = Boss()
-        boss.wave = wave
-        boss.order = idx
-
-    boss_data = _get_boss_data(boss_params['sku'])
-
-    boss.game_id = boss_params['sku']
-    boss.playable = to_boolean(boss_data['playable'])
-    boss.name = TRANSLATION_STRINGS[boss_data['name']]
-    boss.rank = int(boss_params.get('rank', boss_data['rank']))
-    boss.level = int(boss_params['level'])
-    boss.archetype = boss_data['class']
-    boss.element = boss_data['element']
-
-    # Get trackingName from creature match (if one exists)
-    c = Creature.objects.filter(name=boss.name, element=boss.element).first()
-    if c:
-        boss.trackingName = c.trackingName
-
-    boss.hp = round(float(boss_data['hp']) * boss_params.get('xHp', 1))
-    boss.attack = round(float(boss_data['attack']) * boss_params.get('xAttack', 1))
-    boss.defense = round(float(boss_data['defense']) * boss_params.get('xDefense', 1))
-    boss.speed = float(boss_data['speed']) * boss_params.get('xSpeed', 1)
-    boss.initialSpeed = int(boss_data['initialSpeed'])
-    boss.criticalChance = round(float(boss_data['criticalChance']) * boss_params.get('xCriticalChance', 1))
-    boss.criticalDamage = round(float(boss_data['criticalDamage']) * boss_params.get('xCriticalDamage', 1))
-    boss.accuracy = float(boss_data['accuracy']) * boss_params.get('xAccuracy', 1)  # Note - data key is a guess. Doesn't exist in data
-    boss.resistance = float(boss_data['resistance']) * boss_params.get('xResistance', 1)  # Note - data key is a guess. Doesn't exist in data
-
-    boss.save()
-
-    # Boss spells
-    spell_ids = []
-    for slot in range(3):
-        if f'spell{slot}' in boss_data:
-            sku = boss_data[f'spell{slot}']
-
-            try:
-                spell = BossSpell.objects.get(creature=boss, game_id=sku)
-            except BossSpell.DoesNotExist:
-                spell = BossSpell()
-                spell.creature = boss
-                spell.game_id = sku
-
-            spell = _fill_spell_data(spell, boss_data, slot)
-            spell_ids.append(spell.pk)
-
-            _create_spell_effects(spell, boss_data, effect_model=BossSpellEffect)
-
-    # Remove spells assigned to this creature that were not processed
-    boss.bossspell_set.exclude(pk__in=set(spell_ids)).delete()
-
-    return boss
 
 
 def _get_boss_data(sku):

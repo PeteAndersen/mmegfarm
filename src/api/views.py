@@ -73,9 +73,6 @@ class LevelViewSet(viewsets.ModelViewSet):
                 'wave_set__enemy_set',
                 'wave_set__enemy_set__enemyspell_set',
                 'wave_set__enemy_set__enemyspell_set__enemyspelleffect_set',
-                'wave_set__boss_set',
-                'wave_set__boss_set__bossspell_set',
-                'wave_set__boss_set__bossspell_set__bossspelleffect_set',
             )
 
         return queryset
