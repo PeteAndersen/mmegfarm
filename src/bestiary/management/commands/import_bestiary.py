@@ -10,4 +10,6 @@ class Command(BaseCommand):
         parse.evolutions()
         print('Parsing spells...')
         parse.spells()
+        print('Updating special cases...')
+        parse.special_case_creatures()
         print('Done!')

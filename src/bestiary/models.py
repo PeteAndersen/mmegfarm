@@ -64,6 +64,7 @@ class CreatureBase(models.Model):
 
 
 class Creature(CreatureBase):
+    GROUP_UNDEFINED = 'undefined'
     GROUP_BAD = 'bad'
     GROUP_AVG = 'avg'
     GROUP_GOOD = 'good'
@@ -71,6 +72,7 @@ class Creature(CreatureBase):
     GROUP_OUTSTANDING = 'outstanding'
 
     GROUP_CHOICES = (
+        (GROUP_UNDEFINED, 'Undefined'),
         (GROUP_BAD, 'Bad'),
         (GROUP_AVG, 'Average'),
         (GROUP_GOOD, 'Good'),

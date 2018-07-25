@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from glob import iglob
 
 from django.conf import settings
+from django.db.models import Count
 
 from .models import Creature, Spell, SpellEffect, SpellUpgrade, Dungeon, Level, Wave, Enemy, EnemySpell, \
     EnemySpellEffect
@@ -168,6 +169,16 @@ def spells():
         # Remove spells assigned to this creature that were not processed
         c.spell_set.exclude(game_id__in=set(skus_used)).delete()
 
+
+def special_case_creatures():
+    # Tawerets all have the same name for creatureType. Need to update evolved ones.
+    Creature.objects.annotate(
+        evolvesTo__count=Count('evolvesTo')
+    ).filter(
+        name__icontains="taweret", evolvesTo__count=0
+    ).update(
+        creatureType='creature_type_taweret_elite'
+    )
 
 def _fill_spell_data(spell, creature_data, slot):
     spell.slot = slot + 1
