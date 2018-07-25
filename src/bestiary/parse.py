@@ -180,6 +180,7 @@ def special_case_creatures():
         creatureType='creature_type_taweret_elite'
     )
 
+
 def _fill_spell_data(spell, creature_data, slot):
     spell.slot = slot + 1
     spell_data = _get_spell_data(spell.game_id)
@@ -609,6 +610,10 @@ def _create_enemy_creature(wave, idx, params):
     enemy.element = creature_data['element']
 
     if params['sku'].startswith('boss'):
+        c = Creature.objects.filter(name=enemy.name, element=enemy.element).first()
+        if c:
+            enemy.trackingName = c.trackingName
+
         # Boss stats are taken directly from the creature_data and scaled
         enemy.hp = round(float(creature_data['hp']) * params.get('xHp', 1))
         enemy.attack = round(float(creature_data['attack']) * params.get('xAttack', 1))
