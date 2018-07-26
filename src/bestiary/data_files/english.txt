@@ -809,7 +809,7 @@ TID_SPELL_177=Double attacks an enemy.
 TID_SPELL_178=Attacks all enemies. <color=#00ff00>&&1,prob&&%</color> chance of decreasing their speed for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_179=Attacks an enemy and amplifies damage they receive by <color=#00ff00>&&1,amount_float&&%</color> for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_180=Attacks an enemy with an attack increase based on own speed, and increases their chance of receiving a critical attack for <color=#00ff00>&&1,turns&&</color> turns.
-TID_SPELL_181=Attacks an enemy. If attack is critical, stuns them for <color=#00ff00>&&1,turns&&</color> turn.
+TID_SPELL_181=Attacks an enemy, inflicting great damage . If attack is critical, stuns them for <color=#00ff00>&&1,turns&&</color> turn.
 TID_SPELL_182=Attacks all enemies and increases their chance of receiving a critical attack for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_183=Attacks an enemy, inflicting great damage with an attack increase based on own speed, and transfers <color=#00ff00>&&1,amount_int&&</color> of own harmful effects to them.
 TID_SPELL_184=Attacks an enemy inflicting great damage, increasing critical chance. If attack is critical, confuses enemy for <color=#00ff00>&&1,turns&&</color> turns and steals <color=#00ff00>&&2,amount_float&&%</color> of their turn bar.
@@ -986,7 +986,7 @@ TID_SPELL_354=Increase speed and defense. <color=#00ff00>&&0,amount_float&&%</co
 TID_SPELL_355=Attacks an enemy, inflicting great damage. <color=#00ff00>&&1,prob&&%</color> chance of stealing <color=#00ff00>&&1,amount_float&&%</color> of their turn bar.
 TID_SPELL_356=Decreases defense of all enemies and increases attack of all allies, for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_357=Lowers turn bar of all enemies by <color=#00ff00>&&0,amount_float&&%</color>. <color=#00ff00>&&1,prob&&%</color> chance of putting them to sleep for <color=#00ff00>&&1,turns&&</color> turn.
-TID_SPELL_358=Attacks an enemy with an attack increase based on own speed, steals <color=#00ff00>&&1,amount_float&&%</color> of their life, increases the attack bar of all allies by <color=#00ff00>&&2,amount_float&&%</color> and increases own attack bar by <color=#00ff00>&&3,amount_float&&%</color>.
+TID_SPELL_358=Attacks an enemy, increasing attack based on own speed, steals their life by <color=#00ff00>&&1,amount_float&&%</color> of own attack, increase the attack bar of all allies by <color=#00ff00>&&2,amount_float&&%</color> and increases self attack bar by <color=#00ff00>&&3,amount_float&&%</color>.
 TID_SPELL_359=Attacks an enemy, and increases self attack and defense for <color=#00ff00>&&2,turns&&</color> turns. <color=#00ff00>&&3,prob&&%</color> chance of recovering the turn.
 TID_SPELL_360=Attacks all enemies. <color=#00ff00>&&1,prob&&%</color> chance of blinding them for <color=#00ff00>&&1,turns&&</color> turn, and lowering their turn bar by <color=#00ff00>&&2,amount_float&&%</color>.
 TID_SPELL_361=Attacks an enemy.
@@ -1112,7 +1112,7 @@ TID_SPELL_480=Attacks all enemies, completely empties their turn bar and freezes
 TID_SPELL_481=Attacks an enemy.
 TID_SPELL_482=Attack an enemy with an attack increase based on own remaining HP. <color=#00ff00>&&1,prob&&%</color> chance of removing <color=#00ff00>&&1,amount_int&&</color> beneficial effects from them.
 TID_SPELL_483=Attacks an enemy. If attack is critical, refills own turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
-TID_SPELL_484=Drains HP from all enemies during <color=#00ff00>&&0,turns&&</color> turns. Drain is <color=#00ff00>&&0,amount_float&&%</color> of their max HP.
+TID_SPELL_484=Drains HP from all enemies ignoring their defense. Drain is <color=#00ff00>&&0,amount_float&&%</color> of own max HP.
 TID_SPELL_485=Attacks all enemies, inflicting moderate damage, puts all their skills on cooldown, and blinds them, for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_486=Attacks an enemy.
 TID_SPELL_487=Attacks an enemy and decreases their accuracy for <color=#00ff00>&&1,turns&&</color> turn.
@@ -1133,7 +1133,7 @@ TID_SPELL_501=Refills the turn bars of all allies by <color=#00ff00>&&0,amount_f
 TID_SPELL_502=Attacks an enemy.
 TID_SPELL_503=Attacks an enemy, inflicting great damage. <color=#00ff00>&&1,prob&&%</color> chance of decreasing their speed for <color=#00ff00>&&1,turns&&</color> turn.
 TID_SPELL_504=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of muting them, locking their special abilities for <color=#00ff00>&&1,turns&&</color> turn.
-TID_SPELL_505=Attacks all enemies and bursts their active poisons, dealing <color=#00ff00>&&1,amount_float&&%</color> extra damage. <color=#00ff00>&&3,prob&&%</color> chance of preventing them from receiving healing effects for <color=#00ff00>&&3,turns&&</color> turns.
+TID_SPELL_505=Attacks all enemies and bursts their active poisons, dealing <color=#00ff00>&&1,amount_float&&%</color> extra damage. <color=#00ff00>&&2,prob&& %</color> chance of preventing them from receiving healing effects for <color=#00ff00>&&3,turns&&</color> turns and <color=#00ff00>&&3,prob&& %</color> chance of preventing them from being revived for <color=#00ff00>&&3,turns&&</color> turns.
 TID_SPELL_506=Poisons all enemies twice for <color=#00ff00>&&1,turns&&</color> turns and decreases their attack for <color=#00ff00>&&2,turns&&</color> turns. <color=#00ff00>&&3,prob&& %</color> chance of getting another turn.
 TID_SPELL_507=Attacks an enemy, amplifiying their incoming damage by <color=#00ff00>&&1,amount_float&&%</color>, and decreasing their defense, for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_508=Attacks all enemies, increasing critical chance and lowers their turn bar by <color=#00ff00>&&1,amount_float&&%</color>. <color=#00ff00>&&2,prob&&%</color> chance of freezing them for <color=#00ff00>&&2,turns&&</color> turn.
@@ -1148,8 +1148,8 @@ TID_SPELL_516=Attacks an enemy and marks them as hunted amplifying incoming dama
 TID_SPELL_517=Attack all the enemies and steals <color=#00ff00>&&1,amount_float&&%</color> of their turn bar and drains their HP. Drain is <color=#00ff00>&&2,amount_float&&%</color> own attack. Then, prevents them from receiving healing effects and from being revived for <color=#00ff00>&&3,turns&&</color> turn.
 TID_SPELL_518=Double attacks an enemy and terrifies them for <color=#00ff00>&&1,turns&&</color> turn and prevents them from receiving healing effects for <color=#00ff00>&&2,turns&&</color> turns. <color=#00ff00>&&3,prob&&%</color> chance of getting another turn.
 TID_SPELL_519=<color=#00ff00>&&0,prob&&%</color> chance of decreasing cooldown of all allies by <color=#00ff00>&&0,amount_int&&</color>. At the end of every turn, refills self turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
-TID_SPELL_520=Attack all enemies, prevents them from receiving healing effects for <color=#00ff00>&&1,turns&&</color> turn, and increases duration of their active harmfull effects by <color=#00ff00>&&2,amount_int&&</color>.
-TID_SPELL_521=If attack is critical, grants self phoenix soul for <color=#00ff00>&&1,turns&&</color> turn, and instantly drains HP of the enemy. Drain is <color=#00ff00>&&0,amount_float&&%</color> of own attack.
+TID_SPELL_520=Attack all enemies increasing attack base on own max HP, prevents them from receiving healing effects for <color=#00ff00>&&1,turns&&</color> turn, and increases duration of their active harmfull effects by <color=#00ff00>&&2,amount_int&&</color>.
+TID_SPELL_521=If attack is critical, grants self phoenix soul for <color=#00ff00>&&1,turns&&</color> turn, and instantly drains HP of the enemy. Drain is <color=#00ff00>&&0,amount_float&&%</color> of own HP.
 TID_SPELL_522=Attacks an enemy and prevents self from receiving direct damage for <color=#00ff00>&&1,turns&&</color> turn. Then, protects self with a crystalline veil, bouncing back incoming negative effects to the original caster for <color=#00ff00>&&2,turns&&</color> turn.
 TID_SPELL_523=Attacks all enemies, taunts them, decreases their attack and drains their HP for <color=#00ff00>&&3,turns&&</color> turns. Drain is <color=#00ff00>&&3,amount_float&&%</color> of own attack. Then, spreads the damages received among all allies for <color=#00ff00>&&4,turns&&</color> turns.
 TID_SPELL_524=Attacks an enemy.
@@ -1157,8 +1157,8 @@ TID_SPELL_525=Attacks an enemy and creates a shield over self, sheltering <color
 TID_SPELL_526=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of increasing their cooldown by <color=#00ff00>&&1,amount_int&&</color>.
 TID_SPELL_527=Increases defense of all allies and decreases attack of all enemies for <color=#00ff00>&&0,turns&&</color> turns. Lowers turn bar of all enemies by <color=#00ff00>&&3,amount_float&&%</color> and fills turn bar of all allies by <color=#00ff00>&&2,amount_float&&%</color>. Heals all allies by <color=#00ff00>&&4,percentage&&%</color> of own max HP.
 TID_SPELL_528=Double-attacks an enemy with an attack increase based on own HP and grants self Phoenix Soul for <color=#00ff00>&&1,turns&&</color> turns, recovering with <color=#00ff00>&&1,amount_float&&%</color> HP if perishing while the effect is active. Also grants self damage reflection for <color=#00ff00>&&2,turns&&</color> turns.
-TID_SPELL_529=Attacks an enemy with an attack increase based on own defense, inflicting great damage, and heals self by <color=#00ff00>&&2,percentage&&%</color> own max HP. <color=#00ff00>&&1,prob&&%</color> chance of freezing them for <color=#00ff00>&&1,turns&&</color> turns.
-TID_SPELL_530=Elemental advantage over every other element. If an attack is critical, steals <color=#00ff00>&&2,amount_float&&%</color> of the enemy's turn bar.
+TID_SPELL_529=Attacks an enemy with attack increased based on own defense, inflicting great damage, and heals self by <color=#00ff00>&&2,percentage&&%</color> own max HP. Then, freezes the attacked enemy for <color=#00ff00>&&1,turns&&</color> turns.
+TID_SPELL_530=Elemental advantage over every other element. If an attack is critical, steals <color=#00ff00>&&2,amount_float&&%</color> of the enemy's turn bar. At every end of turn has <color=#00ff00>&&3,prob&&%</color> chance to cast a divine shield that will fully protect from the first attack received for <color=#00ff00>&&3,turns&&</color> turns.
 TID_SPELL_531=Increases attack and accuracy of an ally for <color=#00ff00>&&1,turns&&</color> turns, cleans up to <color=#00ff00>&&3,amount_int&&</color> negative effects, and heals them by <color=#00ff00>&&4,percentage&&%</color> of their max HP, then completely refills their turn bar.
 TID_SPELL_532=Attacks all enemies with damage increased based on own defense, and activates the cooldown of their skills.
 TID_SPELL_533=Attacks all enemies, inflicting great damage with an attack increase based on own defense, at the cost of <color=#00ff00>&&1,amount_float&&%</color> of own HP.
@@ -1170,8 +1170,8 @@ TID_SPELL_538=Attacks an enemy, inflicting great damage, and decrease their atta
 TID_SPELL_539=Teams up with <color=#00ff00>&&1,amount_int&&</color> other allies to attack an enemy. <color=#00ff00>&&2,prob&&%</color> chance of transferring them <color=#00ff00>&&2,amount_int&&</color> own harmful effects. <color=#00ff00>&&3,prob&&%</color> chance of refilling the turn bar of all allies by <color=#00ff00>&&3,amount_float&&%</color>.
 TID_SPELL_540=Increases own attack, speed, and critical damage, for <color=#00ff00>&&2,turns&&</color> turns. Then refills own turn bar by <color=#00ff00>&&3,amount_float&&%</color>.
 TID_SPELL_541=<color=#00ff00>&&1,prob&&%</color> chance of decreasing defense of all enemies for <color=#00ff00>&&1,turns&&</color> turns, then attacks all of them.
-TID_SPELL_542=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy.
-TID_SPELL_543=Attacks all enemies with an attack increase based on own speed. <color=#00ff00>&&1,prob&&%</color> chance of increasing their cooldowns by <color=#00ff00>&&1,amount_int&&</color>.
+TID_SPELL_542=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy and lowers their turn bar by <color=#00ff00>&&2,amount_float&&%</color>. Then, decreases the speed of the other enemies for <color=#00ff00>&&3,turns&&</color> turns.
+TID_SPELL_543=Attacks all enemies with an attack increased based on own speed and increase their cooldowns by <color=#00ff00>&&1,amount_int&&</color>.
 TID_SPELL_544=Attacks an enemy, inflicting huge damage. <color=#00ff00>&&0,probRandom,0&&%</color> chance of attacking all enemies instead. Both actions will decrease the attack of the enemy(s) for <color=#00ff00>&&0,paramRandom,1,1,turns&&</color> turns.
 TID_SPELL_545=Attacks all enemies, increasing critical damage, lowers their turn bar by <color=#00ff00>&&1,amount_float&&%</color>, and refills turn bar of all allies by <color=#00ff00>&&2,amount_float&&%</color>. Then, grants self <color=#00ff00>&&3,amount_float&&%</color> chance to dodge attacks for <color=#00ff00>&&3,turns&&</color> turns.
 TID_SPELL_546=Attacks an enemy.
@@ -1189,7 +1189,7 @@ TID_SPELL_557=Attacks an enemy.
 TID_SPELL_558=Attacks an enemy. <color=#00ff00>&&0,probRandom,1&&%</color> chance of decreasing both their attack and defense for <color=#00ff00>&&0,paramRandom,1,2,turns&&</color> turns.
 TID_SPELL_559=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of stunning them for <color=#00ff00>&&1,turns&&</color> turn.
 TID_SPELL_560=Attacks an enemy, inflicting great damage, and explodes their active bombs, dealing <color=#00ff00>&&1,amount_float&&%</color> damage.
-TID_SPELL_561=Attack all enemies and decrease their speed for <color=#00ff00>&&2,turns&&</color> turns. <color=#00ff00>&&1,prob&&%</color> chance of planting a bomb on each that deals <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turn timer.
+TID_SPELL_561=Attack all enemies and decrease their speed for <color=#00ff00>&&2,turns&&</color> turns. <color=#00ff00>&&1,prob&&%</color> chance of planting a bomb on each that deals <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turn timer. Then, refills own turn bar by <color=#00ff00>&&3,amount_float&&%</color>.
 TID_SPELL_562=Attacks all enemies. <color=#00ff00>&&1,prob&&%</color> chance of planting a bomb on each that deals <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turn timer.
 TID_SPELL_563=Attacks all enemies, decreases their resistance for <color=#00ff00>&&1,turns&&</color> turns, and refills own turn bar by <color=#00ff00>&&2,amount_float&&%</color>.
 TID_SPELL_564=Attacks an enemy, inflicting moderate damage with an attack increase based on own max HP. <color=#00ff00>&&1,prob&&%</color> chance of puting all enemy's skills on cooldown.
@@ -1210,12 +1210,12 @@ TID_SPELL_578=Completely clears all allies of negative effects, increases their 
 TID_SPELL_579=Attacks an enemy.
 TID_SPELL_580=Attacks an enemy. <color=#00ff00>&&0,probRandom,1&&%</color> chance of attacking all instead, inflicting moderate damage.
 TID_SPELL_581=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of getting another turn.
-TID_SPELL_582=Attacks all enemies. <color=#00ff00>&&1,prob&&%</color> chance of amplifying their incoming damage by <color=#00ff00>&&1,amount_float&&%</color> for <color=#00ff00>&&1,turns&&</color> turns.
-TID_SPELL_583=Double attacks an enemy, and increases the duration of their harmful effects by <color=#00ff00>&&1,amount_int&&</color> turn.
+TID_SPELL_582=Double attacks an enemy and drains their HP. Drain is <color=#00ff00>&&1,amount_float&&%</color> of own attack. Then, increases the duration of their harmful effects by <color=#00ff00>&&2,amount_int&&</color> turn.
+TID_SPELL_583=Attack all enemies and amplifies their incoming damage by <color=#00ff00>&&1,amount_float&&%</color> for <color=#00ff00>&&1,turns&&</color> turns. Then, obtain counter-attack for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_584=Attacks all enemies, inflicting great damage. <color=#00ff00>&&1,prob&&%</color> chance of lowering one enemy's turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
 TID_SPELL_585=Attacks all enemies, paralyzes them for <color=#00ff00>&&1,turns&&</color> turn and increases their chance of receiving a critical attack for <color=#00ff00>&&2,turns&&</color> turns.
-TID_SPELL_586=Attacks all enemies. <color=#00ff00>&&1,prob&&%</color> chance of preventing them from receiving healing effects for <color=#00ff00>&&1,turns&&</color> turns.
-TID_SPELL_587=Attacks all enemies. If attack is critical, increases own attack and defense for <color=#00ff00>&&1,turns&&</color> turn.
+TID_SPELL_586=Attack all enemies inflicting great damage, and prevents them from receiving healing effects for <color=#00ff00>&&1,turns&&</color> turns. If attack is critical, execrates them, disabling <color=#00ff00>&&2,amount_float&&%</color> of their HP for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_587=Attack all enemies and blinds them for <color=#00ff00>&&1,turns&&</color> turn(s). If attack is critical, prevents own HP from getting down to 0 for <color=#00ff00>&&2,turns&&</color> turn(s).
 TID_SPELL_588=Attacks all enemies increasing attack based on own speed. <color=#00ff00>&&1,prob&&%</color> chance to blind all enemies and <color=#00ff00>&&2,prob&&%</color> chance of poisoning them for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_589=If attack brings down an enemy, grants self invincibility for <color=#00ff00>&&0,turns&&</color> turn and poisons all enemies for <color=#00ff00>&&1,turns&&</color> turns.
 TID_AVATAR_SPELL_TITLE_1=Attack all
@@ -5340,7 +5340,7 @@ TID_SPELL_878=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of stu
 TID_SPELL_879=Attacks an enemy with a huge attack increase based on own defense, and increases the remaining cooldown of the enemy's spells by <color=#00ff00>&&1,amount_int&&</color>.
 TID_SPELL_880=Attacks all enemies, dealing moderate damage with an attack increase based on own defense, and reverts the healing and damaging effects received by all allies except self for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_881=Attacks an enemy, increasing attack based on the remaining own HP, taunts them for <color=#00ff00>&&1,turns&&</color> turn(s) and mutes them for <color=#00ff00>&&2,turns&&</color> turn(s). Decrease the enemy defense for <color=#00ff00>&&3,turns&&</color> turns if they have a harmful effect applied.
-TID_SPELL_882=Casts Disarming Bash upon any enemy who performs a critical attack against self.
+TID_SPELL_882=Cast Disarming Bash upon the enemy that performs a critical attack against self. Also, is protected by a Mail of Thorns, damaging an enemy attacker by <color=#00ff00>&&1,amount_float&&%</color> of their max HP.
 TID_SPELL_883=Attacks an enemy, mutes them, and curses them for <color=#00ff00>&&2,turns&&</color> turns, disabling <color=#00ff00>&&2,amount_float&&%</color> of their max HP.
 TID_SPELL_884=Protects self with a Mail of Thorns, damaging an enemy attacker by <color=#00ff00>&&0,amount_float&&%</color> of their max HP. Heals self by <color=#00ff00>&&1,percentage&&%</color> of own max HP upon receiving a critical attack.
 TID_SPELL_885=Attacks an enemy with an attack increase based on own defense, empties their turn bar, lowers the turn bar of all the other enemies by <color=#00ff00>&&2,amount_float&&%</color>, and decreases the speed of all enemies for <color=#00ff00>&&3,turns&&</color> turns.
@@ -6589,13 +6589,13 @@ TID_SPELL_981=Attacks an enemy.
 TID_SPELL_982=Attacks an enemy, increasing the attack damage based on own max HP and marks them as hunted, amplifying incoming damage for <color=#00ff00>&&1,turns&&</color> turn.
 TID_SPELL_983=Attacks an enemy and decreases their defense for <color=#00ff00>&&1,turns&&</color> turn.
 TID_SPELL_984=Attacks an enemy, increasing the attack damage based on own max HP and taunts the enemy for <color=#00ff00>&&1,turns&&</color> turn(s). Both heal and damage status effects don't affect your HP for <color=#00ff00>&&2,turns&&</color> turn(s).
-TID_SPELL_985=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. If the enemy attacked has been marked as hunted, will be confused for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_985=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. Then, the enemy attacked will be confused for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_986=Attacks an enemy, increasing the attack damage based on own max HP. Increases self defense for <color=#00ff00>&&1,turns&&</color> turns and grants self advantage over all elements when defending for <color=#00ff00>&&2,turns&&</color> turns.
-TID_SPELL_987=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. If the enemy attacked has been marked as hunted, grants self <color=#00ff00>&&2,amount_float&&%</color> chance of counter-attacking for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_987=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. Then, grants self <color=#00ff00>&&2,amount_float&&%</color> chance of counter-attacking for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_988=Attacks an enemy, increasing the attack damage based on own max HP. Grants a chance to counter-attack for <color=#00ff00>&&1,turns&&</color> turns and will spread the damage received among all allies for <color=#00ff00>&&2,turns&&</color> turns.
-TID_SPELL_989=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. If the attacked enemy has been marked as hunted, he will be muted for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_989=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. Then, the enemy attacked will be muted for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_990=Attacks an enemy, increasing the attack damage based on own max HP, decreases their defense for <color=#00ff00>&&1,turns&&</color> turns and decreases their attack for <color=#00ff00>&&2,turns&&</color> turns.
-TID_SPELL_991=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. If the attacked enemy has decreased defense, he will be poisoned twice for <color=#00ff00>&&3,turns&&</color> turn.
+TID_SPELL_991=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. Then, poisons twice the enemy for <color=#00ff00>&&3,turns&&</color> turn each.
 TID_SPELL_992=Teams up with <color=#00ff00>&&1,amount_int&&</color> ally to attack an enemy. If the attacked enemy has been marked as hunted, their defense and their attack will be decreased for <color=#00ff00>&&3,turns&&</color> turns. <color=#00ff00>&&4,amount_float&&%</color> chance to get another turn.
 TID_SPELL_993=Grants invisibility to all the other allies for <color=#00ff00>&&2,turns&&</color> turns, and increases self defense and attack for <color=#00ff00>&&1,turns&&</color>  turns.
 TID_SPELL_994=Teams up with <color=#00ff00>&&1,amount_int&&</color> ally to attack an enemy. If the attacked enemy is poisoned, the current poison will burst and a new poison will be applied for <color=#00ff00>&&3,turns&&</color> turns.

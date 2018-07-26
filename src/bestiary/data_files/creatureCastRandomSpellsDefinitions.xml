@@ -1,5 +1,5 @@
 <Definitions>
-    <Definition sku="creature_spell_random_0000" spell0="creature_spell_0202" spell0Prob="0.2" spell0Params="amount:1;turns:1,amount:0.5" spell1="creature_spell_0272" spell1Prob="0.2" spell1Params="amount:1;turns:1" spell2="creature_spell_0389" spell2Prob="0.6" spell2Params="amount:1" />
+    <Definition sku="creature_spell_random_0000" spell0="creature_spell_0202" spell0Prob="0.2" spell0Params="amount:1;turns:1,amount:0.5" spell1="creature_spell_0077" spell1Prob="0.2" spell1Params="amount:1;turns:1" spell2="creature_spell_0389" spell2Prob="0.6" spell2Params="amount:1" />
     <Definition sku="creature_spell_random_0001" spell0="creature_spell_0000" spell0Prob="0.75" spell0Params="amount:1" spell1="creature_spell_0000" spell1Prob="0.25" spell1Params="amount:2,animation:ACTION_ATTACK_2" />
     <Definition sku="creature_spell_random_0002" spell0="creature_spell_0389" spell0Prob="0.75" spell0Params="amount:1" spell1="creature_spell_0389" spell1Prob="0.25" spell1Params="amount:2,animation:ACTION_ATTACK_2" />
     <Definition sku="creature_spell_random_0003" spell0="creature_spell_0630" spell0Prob="0.7" spell0Params="spell:creature_spell_random_0001" spell1="creature_spell_0630" spell1Prob="0.3" spell1Params="spell:creature_spell_random_0002" />
