@@ -147,18 +147,19 @@ def spells():
             for creature_data in creatures_data:
                 if f'spell{slot}' in creature_data:
                     sku = creature_data[f'spell{slot}']
+
                     if sku in skus_used:
                         # Identical spell on secondary creature data - no need to parse again
                         continue
 
                     try:
-                        spell = Spell.objects.get(creature=c, game_id=sku)
+                        spell = Spell.objects.get(creature=c, order=order)
                     except Spell.DoesNotExist:
                         spell = Spell()
                         spell.creature = c
-                        spell.game_id = sku
+                        spell.order = order
 
-                    spell.order = order
+                    spell.game_id = sku
                     spell = _fill_spell_data(spell, creature_data, slot)
                     skus_used.append(sku)
                     order += 1
@@ -167,7 +168,7 @@ def spells():
                     _create_spell_upgrades(spell)
 
         # Remove spells assigned to this creature that were not processed
-        c.spell_set.exclude(game_id__in=set(skus_used)).delete()
+        c.spell_set.filter(order__gte=order).delete()
 
 
 def special_case_creatures():
@@ -232,6 +233,9 @@ def _create_spell_effects(spell, creature_data, *args, **kwargs):
             effect_order += 1
         else:
             break
+
+    # Delete any effect entries beyond this point to avoid parsing old random effects.
+    effect_model.objects.filter(spell=spell, order__gte=effect_order).delete()
 
     # Parse random spell cast effects
     # The effects from random spells should be added to this main spell
