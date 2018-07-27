@@ -749,7 +749,7 @@
     <Definition sku="creature_spell_ingredient_upgrade_0753" skillUp0="-1,turns:1" skillUp0TID="TID_PLUS_COOLDOWN" />
     <Definition sku="creature_spell_ingredient_upgrade_0754" skillUp0="0,amount:0.05" skillUp0TID="TID_PLUS_DAMAGE" skillUp0Suffix="%" skillUp1="0,amount:0.05" skillUp1TID="TID_PLUS_DAMAGE" skillUp1Suffix="%" skillUp2="0,amount:0.05" skillUp2TID="TID_PLUS_DAMAGE" skillUp2Suffix="%" skillUp3="0,amount:0.1" skillUp3TID="TID_PLUS_DAMAGE" skillUp3Suffix="%" />
     <Definition sku="creature_spell_ingredient_upgrade_0755" skillUp0="0,amount:0.05" skillUp0TID="TID_PLUS_DAMAGE" skillUp0Suffix="%" skillUp1="0,amount:0.05" skillUp1TID="TID_PLUS_DAMAGE" skillUp1Suffix="%" skillUp2="0,amount:0.05" skillUp2TID="TID_PLUS_DAMAGE" skillUp2Suffix="%" skillUp3="0,amount:0.1" skillUp3TID="TID_PLUS_DAMAGE" skillUp3Suffix="%" />
-    <Definition sku="creature_spell_ingredient_upgrade_0756" />
+    <Definition sku="creature_spell_ingredient_upgrade_0756" skillUp0="0,turns:1" skillUp0TID="TID_PLUS_TURNS" />
     <Definition sku="creature_spell_ingredient_upgrade_0757" />
     <Definition sku="creature_spell_ingredient_upgrade_0758" />
     <Definition sku="creature_spell_ingredient_upgrade_0759" />
