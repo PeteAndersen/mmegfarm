@@ -618,10 +618,15 @@ def _create_enemy_creature(wave, idx, params):
         if c:
             enemy.trackingName = c.trackingName
 
+        base_rank = int(creature_data['rank'])
+        base_hp = int(creature_data['hp'])
+        base_attack = int(creature_data['attack'])
+        base_defense = int(creature_data['defense'])
+
         # Boss stats are taken directly from the creature_data and scaled
-        enemy.hp = round(float(creature_data['hp']) * params.get('xHp', 1))
-        enemy.attack = round(float(creature_data['attack']) * params.get('xAttack', 1))
-        enemy.defense = round(float(creature_data['defense']) * params.get('xDefense', 1))
+        enemy.hp = Enemy.get_hp(base_rank, base_hp, enemy.rank, enemy.level) * params.get('xHp', 1)
+        enemy.attack = Enemy.get_attack(base_rank, base_attack, enemy.rank, enemy.level) * params.get('xAttack', 1)
+        enemy.defense = Enemy.get_defense(base_rank, base_defense, enemy.rank, enemy.level) * params.get('xDefense', 1)
         enemy.speed = float(creature_data['speed']) * params.get('xSpeed', 1)
         enemy.initialSpeed = int(creature_data['initialSpeed'])
         enemy.criticalChance = round(float(creature_data['criticalChance']) * params.get('xCriticalChance', 1))
@@ -653,12 +658,12 @@ def _create_enemy_creature(wave, idx, params):
             sku = creature_data[f'spell{slot}']
 
             try:
-                spell = EnemySpell.objects.get(creature=enemy, game_id=sku)
+                spell = EnemySpell.objects.get(creature=enemy, slot=slot)
             except EnemySpell.DoesNotExist:
                 spell = EnemySpell()
                 spell.creature = enemy
-                spell.game_id = sku
 
+            spell.game_id = sku
             spell = _fill_spell_data(spell, creature_data, slot)
             spell_ids.append(spell.pk)
 

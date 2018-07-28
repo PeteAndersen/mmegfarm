@@ -362,6 +362,62 @@ class Enemy(CreatureBase):
     class Meta:
         ordering = ['order']
 
+    @staticmethod
+    def max_level_for_rank(rank):
+        return 10 + rank * 5
+
+    @staticmethod
+    def get_hp(base_rank, base_stat, rank, level):
+        return Enemy._get_stat(
+            base_rank,
+            base_stat,
+            Enemy.RANK_UP_MULTIPLIERS['hp'],
+            rank,
+            level
+        )
+
+    @staticmethod
+    def get_attack(base_rank, base_stat, rank, level):
+        return Enemy._get_stat(
+            base_rank,
+            base_stat,
+            Enemy.RANK_UP_MULTIPLIERS['attack'],
+            rank,
+            level
+        )
+
+    @staticmethod
+    def get_defense(base_rank, base_stat, rank, level):
+        return Enemy._get_stat(
+            base_rank,
+            base_stat,
+            Enemy.RANK_UP_MULTIPLIERS['defense'],
+            rank,
+            level
+        )
+
+    @staticmethod
+    def _get_stat(base_rank, base_stat, multipliers, rank, level):
+        max_lvl = Creature.max_level_for_rank(rank)
+
+        # Get min/max stat for requested rank
+        max_stat = base_stat * multipliers[base_rank]
+
+        for r in range(base_rank, rank):
+            max_stat = max_stat / 1.27 * multipliers[r + 1]
+
+        max_stat = round(max_stat)
+
+        if level == max_lvl:
+            return max_stat
+        else:
+            # Calculate exponential curve for stats between level 1 and max
+            a = base_stat
+            b = log(max_stat / base_stat) / (max_lvl - 1)
+            x = level - 1
+
+            return int(round(a * exp(b * x)))
+
 
 class EnemySpell(SpellBase):
     creature = models.ForeignKey(Enemy, on_delete=models.CASCADE)
