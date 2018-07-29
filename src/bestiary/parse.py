@@ -658,7 +658,7 @@ def _create_enemy_creature(wave, idx, params):
             sku = creature_data[f'spell{slot}']
 
             try:
-                spell = EnemySpell.objects.get(creature=enemy, slot=slot)
+                spell = EnemySpell.objects.get(creature=enemy, slot=slot + 1)
             except EnemySpell.DoesNotExist:
                 spell = EnemySpell()
                 spell.creature = enemy
