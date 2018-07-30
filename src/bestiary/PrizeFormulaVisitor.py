@@ -9,9 +9,6 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         else:
             raise ValueError('Attempting to append result to non-list object')
 
-    def defaultResult(self):
-        return []
-
     def visitRewards(self, ctx: PrizeFormulaParser.RewardsContext):
         print(f'visitRewards: {ctx.getText()}')
         return self.visitChildren(ctx)

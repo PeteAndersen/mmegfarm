@@ -5,7 +5,6 @@ from io import StringIO
 from typing.io import TextIO
 import sys
 
-
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\33")
@@ -70,28 +69,29 @@ def serializedATN():
         return buf.getvalue()
 
 
-class PrizeFormulaParser(Parser):
+class PrizeFormulaParser ( Parser ):
+
     grammarFileName = "PrizeFormula.g4"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
+    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = ["<INVALID>", "';'", "'p:'", "'['", "','", "']'", "'daily:'",
-                    "'w:'", "'victory['", "'('", "')'", "':'", "'xp:'",
-                    "'xpGuild:'", "'guildPotion:'", "':addMax'", "'runePattern:'",
-                    "'rune:'", "'evolutionItemPattern:'", "'creaturePattern:'",
-                    "'creature:'"]
+    literalNames = [ "<INVALID>", "';'", "'p:'", "'['", "','", "']'", "'daily:'", 
+                     "'w:'", "'victory['", "'('", "')'", "':'", "'xp:'", 
+                     "'xpGuild:'", "'guildPotion:'", "':addMax'", "'runePattern:'", 
+                     "'rune:'", "'evolutionItemPattern:'", "'creaturePattern:'", 
+                     "'creature:'" ]
 
-    symbolicNames = ["<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
-                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
-                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
-                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
-                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
-                     "<INVALID>", "AMOUNT", "CURRENCY", "ENERGY", "SKU",
-                     "WS"]
+    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "AMOUNT", "CURRENCY", "ENERGY", "SKU", 
+                      "WS" ]
 
     RULE_rewards = 0
     RULE_reward = 1
@@ -114,72 +114,86 @@ class PrizeFormulaParser(Parser):
     RULE_creaturePattern = 18
     RULE_creature = 19
 
-    ruleNames = ["rewards", "reward", "singleReward", "probabilityReward",
-                 "dailyReward", "waveReward", "victoryReward", "battleReward",
-                 "partialProbReward", "simpleReward", "xpReward", "xpGuildReward",
-                 "guildPotionReward", "addMaxEnergyReward", "patternReward",
-                 "runePattern", "rune", "evolutionItemPattern", "creaturePattern",
-                 "creature"]
+    ruleNames =  [ "rewards", "reward", "singleReward", "probabilityReward", 
+                   "dailyReward", "waveReward", "victoryReward", "battleReward", 
+                   "partialProbReward", "simpleReward", "xpReward", "xpGuildReward", 
+                   "guildPotionReward", "addMaxEnergyReward", "patternReward", 
+                   "runePattern", "rune", "evolutionItemPattern", "creaturePattern", 
+                   "creature" ]
 
     EOF = Token.EOF
-    T__0 = 1
-    T__1 = 2
-    T__2 = 3
-    T__3 = 4
-    T__4 = 5
-    T__5 = 6
-    T__6 = 7
-    T__7 = 8
-    T__8 = 9
-    T__9 = 10
-    T__10 = 11
-    T__11 = 12
-    T__12 = 13
-    T__13 = 14
-    T__14 = 15
-    T__15 = 16
-    T__16 = 17
-    T__17 = 18
-    T__18 = 19
-    T__19 = 20
-    AMOUNT = 21
-    CURRENCY = 22
-    ENERGY = 23
-    SKU = 24
-    WS = 25
+    T__0=1
+    T__1=2
+    T__2=3
+    T__3=4
+    T__4=5
+    T__5=6
+    T__6=7
+    T__7=8
+    T__8=9
+    T__9=10
+    T__10=11
+    T__11=12
+    T__12=13
+    T__13=14
+    T__14=15
+    T__15=16
+    T__16=17
+    T__17=18
+    T__18=19
+    T__19=20
+    AMOUNT=21
+    CURRENCY=22
+    ENERGY=23
+    SKU=24
+    WS=25
 
-    def __init__(self, input: TokenStream, output: TextIO = sys.stdout):
+    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
+
+
     class RewardsContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def reward(self, i: int = None):
+        def reward(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(PrizeFormulaParser.RewardContext)
             else:
-                return self.getTypedRuleContext(PrizeFormulaParser.RewardContext, i)
+                return self.getTypedRuleContext(PrizeFormulaParser.RewardContext,i)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_rewards
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitRewards"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRewards" ):
+                listener.enterRewards(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRewards" ):
+                listener.exitRewards(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRewards" ):
                 return visitor.visitRewards(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def rewards(self):
 
         localctx = PrizeFormulaParser.RewardsContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_rewards)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 40
@@ -187,7 +201,7 @@ class PrizeFormulaParser(Parser):
             self.state = 45
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la == PrizeFormulaParser.T__0:
+            while _la==PrizeFormulaParser.T__0:
                 self.state = 41
                 self.match(PrizeFormulaParser.T__0)
                 self.state = 42
@@ -206,33 +220,49 @@ class PrizeFormulaParser(Parser):
 
     class RewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def singleReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.SingleRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.SingleRewardContext,0)
+
 
         def probabilityReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.ProbabilityRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.ProbabilityRewardContext,0)
+
 
         def dailyReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.DailyRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.DailyRewardContext,0)
+
 
         def waveReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.WaveRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.WaveRewardContext,0)
+
 
         def victoryReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.VictoryRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.VictoryRewardContext,0)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_reward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterReward" ):
+                listener.enterReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitReward" ):
+                listener.exitReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitReward" ):
                 return visitor.visitReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def reward(self):
 
@@ -242,9 +272,7 @@ class PrizeFormulaParser(Parser):
             self.state = 53
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [PrizeFormulaParser.T__12, PrizeFormulaParser.T__13, PrizeFormulaParser.T__15,
-                         PrizeFormulaParser.T__16, PrizeFormulaParser.T__17, PrizeFormulaParser.T__18,
-                         PrizeFormulaParser.T__19, PrizeFormulaParser.CURRENCY, PrizeFormulaParser.ENERGY]:
+            if token in [PrizeFormulaParser.T__12, PrizeFormulaParser.T__13, PrizeFormulaParser.T__15, PrizeFormulaParser.T__16, PrizeFormulaParser.T__17, PrizeFormulaParser.T__18, PrizeFormulaParser.T__19, PrizeFormulaParser.CURRENCY, PrizeFormulaParser.ENERGY]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 48
                 self.singleReward()
@@ -282,39 +310,57 @@ class PrizeFormulaParser(Parser):
 
     class SingleRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def simpleReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.SimpleRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.SimpleRewardContext,0)
+
 
         def patternReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.PatternRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.PatternRewardContext,0)
+
 
         def addMaxEnergyReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.AddMaxEnergyRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.AddMaxEnergyRewardContext,0)
+
 
         def creature(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.CreatureContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.CreatureContext,0)
+
 
         def rune(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.RuneContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.RuneContext,0)
+
 
         def guildPotionReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.GuildPotionRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.GuildPotionRewardContext,0)
+
 
         def xpGuildReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.XpGuildRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.XpGuildRewardContext,0)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_singleReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitSingleReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterSingleReward" ):
+                listener.enterSingleReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitSingleReward" ):
+                listener.exitSingleReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitSingleReward" ):
                 return visitor.visitSingleReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def singleReward(self):
 
@@ -372,33 +418,45 @@ class PrizeFormulaParser(Parser):
 
     class ProbabilityRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def AMOUNT(self):
             return self.getToken(PrizeFormulaParser.AMOUNT, 0)
 
-        def partialProbReward(self, i: int = None):
+        def partialProbReward(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(PrizeFormulaParser.PartialProbRewardContext)
             else:
-                return self.getTypedRuleContext(PrizeFormulaParser.PartialProbRewardContext, i)
+                return self.getTypedRuleContext(PrizeFormulaParser.PartialProbRewardContext,i)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_probabilityReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitProbabilityReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterProbabilityReward" ):
+                listener.enterProbabilityReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitProbabilityReward" ):
+                listener.exitProbabilityReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitProbabilityReward" ):
                 return visitor.visitProbabilityReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def probabilityReward(self):
 
         localctx = PrizeFormulaParser.ProbabilityRewardContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_probabilityReward)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 64
@@ -412,7 +470,7 @@ class PrizeFormulaParser(Parser):
             self.state = 72
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la == PrizeFormulaParser.T__3:
+            while _la==PrizeFormulaParser.T__3:
                 self.state = 68
                 self.match(PrizeFormulaParser.T__3)
                 self.state = 69
@@ -433,7 +491,7 @@ class PrizeFormulaParser(Parser):
 
     class DailyRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -441,16 +499,28 @@ class PrizeFormulaParser(Parser):
             return self.getToken(PrizeFormulaParser.AMOUNT, 0)
 
         def simpleReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.SimpleRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.SimpleRewardContext,0)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_dailyReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitDailyReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterDailyReward" ):
+                listener.enterDailyReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitDailyReward" ):
+                listener.exitDailyReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDailyReward" ):
                 return visitor.visitDailyReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def dailyReward(self):
 
@@ -478,33 +548,45 @@ class PrizeFormulaParser(Parser):
 
     class WaveRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def AMOUNT(self):
             return self.getToken(PrizeFormulaParser.AMOUNT, 0)
 
-        def battleReward(self, i: int = None):
+        def battleReward(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(PrizeFormulaParser.BattleRewardContext)
             else:
-                return self.getTypedRuleContext(PrizeFormulaParser.BattleRewardContext, i)
+                return self.getTypedRuleContext(PrizeFormulaParser.BattleRewardContext,i)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_waveReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitWaveReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterWaveReward" ):
+                listener.enterWaveReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitWaveReward" ):
+                listener.exitWaveReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitWaveReward" ):
                 return visitor.visitWaveReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def waveReward(self):
 
         localctx = PrizeFormulaParser.WaveRewardContext(self, self._ctx, self.state)
         self.enterRule(localctx, 10, self.RULE_waveReward)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 83
@@ -518,7 +600,7 @@ class PrizeFormulaParser(Parser):
             self.state = 91
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la == PrizeFormulaParser.T__3:
+            while _la==PrizeFormulaParser.T__3:
                 self.state = 87
                 self.match(PrizeFormulaParser.T__3)
                 self.state = 88
@@ -539,30 +621,42 @@ class PrizeFormulaParser(Parser):
 
     class VictoryRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def battleReward(self, i: int = None):
+        def battleReward(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(PrizeFormulaParser.BattleRewardContext)
             else:
-                return self.getTypedRuleContext(PrizeFormulaParser.BattleRewardContext, i)
+                return self.getTypedRuleContext(PrizeFormulaParser.BattleRewardContext,i)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_victoryReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitVictoryReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterVictoryReward" ):
+                listener.enterVictoryReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitVictoryReward" ):
+                listener.exitVictoryReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitVictoryReward" ):
                 return visitor.visitVictoryReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def victoryReward(self):
 
         localctx = PrizeFormulaParser.VictoryRewardContext(self, self._ctx, self.state)
         self.enterRule(localctx, 12, self.RULE_victoryReward)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 96
@@ -572,7 +666,7 @@ class PrizeFormulaParser(Parser):
             self.state = 102
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la == PrizeFormulaParser.T__3:
+            while _la==PrizeFormulaParser.T__3:
                 self.state = 98
                 self.match(PrizeFormulaParser.T__3)
                 self.state = 99
@@ -593,27 +687,41 @@ class PrizeFormulaParser(Parser):
 
     class BattleRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def probabilityReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.ProbabilityRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.ProbabilityRewardContext,0)
+
 
         def singleReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.SingleRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.SingleRewardContext,0)
+
 
         def xpReward(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.XpRewardContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.XpRewardContext,0)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_battleReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitBattleReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterBattleReward" ):
+                listener.enterBattleReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitBattleReward" ):
+                listener.exitBattleReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBattleReward" ):
                 return visitor.visitBattleReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def battleReward(self):
 
@@ -628,9 +736,7 @@ class PrizeFormulaParser(Parser):
                 self.state = 107
                 self.probabilityReward()
                 pass
-            elif token in [PrizeFormulaParser.T__12, PrizeFormulaParser.T__13, PrizeFormulaParser.T__15,
-                           PrizeFormulaParser.T__16, PrizeFormulaParser.T__17, PrizeFormulaParser.T__18,
-                           PrizeFormulaParser.T__19, PrizeFormulaParser.CURRENCY, PrizeFormulaParser.ENERGY]:
+            elif token in [PrizeFormulaParser.T__12, PrizeFormulaParser.T__13, PrizeFormulaParser.T__15, PrizeFormulaParser.T__16, PrizeFormulaParser.T__17, PrizeFormulaParser.T__18, PrizeFormulaParser.T__19, PrizeFormulaParser.CURRENCY, PrizeFormulaParser.ENERGY]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 108
                 self.singleReward()
@@ -653,33 +759,45 @@ class PrizeFormulaParser(Parser):
 
     class PartialProbRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def AMOUNT(self):
             return self.getToken(PrizeFormulaParser.AMOUNT, 0)
 
-        def singleReward(self, i: int = None):
+        def singleReward(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(PrizeFormulaParser.SingleRewardContext)
             else:
-                return self.getTypedRuleContext(PrizeFormulaParser.SingleRewardContext, i)
+                return self.getTypedRuleContext(PrizeFormulaParser.SingleRewardContext,i)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_partialProbReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitPartialProbReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPartialProbReward" ):
+                listener.enterPartialProbReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPartialProbReward" ):
+                listener.exitPartialProbReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPartialProbReward" ):
                 return visitor.visitPartialProbReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def partialProbReward(self):
 
         localctx = PrizeFormulaParser.PartialProbRewardContext(self, self._ctx, self.state)
         self.enterRule(localctx, 16, self.RULE_partialProbReward)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 112
@@ -691,7 +809,7 @@ class PrizeFormulaParser(Parser):
             self.state = 119
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la == PrizeFormulaParser.T__3:
+            while _la==PrizeFormulaParser.T__3:
                 self.state = 115
                 self.match(PrizeFormulaParser.T__3)
                 self.state = 116
@@ -712,7 +830,7 @@ class PrizeFormulaParser(Parser):
 
     class SimpleRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -725,11 +843,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_simpleReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitSimpleReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterSimpleReward" ):
+                listener.enterSimpleReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitSimpleReward" ):
+                listener.exitSimpleReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitSimpleReward" ):
                 return visitor.visitSimpleReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def simpleReward(self):
 
@@ -752,7 +881,8 @@ class PrizeFormulaParser(Parser):
         return localctx
 
     class XpRewardContext(ParserRuleContext):
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -762,11 +892,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_xpReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitXpReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterXpReward" ):
+                listener.enterXpReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitXpReward" ):
+                listener.exitXpReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitXpReward" ):
                 return visitor.visitXpReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def xpReward(self):
 
@@ -788,7 +929,7 @@ class PrizeFormulaParser(Parser):
 
     class XpGuildRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -798,11 +939,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_xpGuildReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitXpGuildReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterXpGuildReward" ):
+                listener.enterXpGuildReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitXpGuildReward" ):
+                listener.exitXpGuildReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitXpGuildReward" ):
                 return visitor.visitXpGuildReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def xpGuildReward(self):
 
@@ -824,7 +976,7 @@ class PrizeFormulaParser(Parser):
 
     class GuildPotionRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -837,11 +989,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_guildPotionReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitGuildPotionReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterGuildPotionReward" ):
+                listener.enterGuildPotionReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitGuildPotionReward" ):
+                listener.exitGuildPotionReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitGuildPotionReward" ):
                 return visitor.visitGuildPotionReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def guildPotionReward(self):
 
@@ -867,7 +1030,7 @@ class PrizeFormulaParser(Parser):
 
     class AddMaxEnergyRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -877,11 +1040,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_addMaxEnergyReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitAddMaxEnergyReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterAddMaxEnergyReward" ):
+                listener.enterAddMaxEnergyReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitAddMaxEnergyReward" ):
+                listener.exitAddMaxEnergyReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAddMaxEnergyReward" ):
                 return visitor.visitAddMaxEnergyReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def addMaxEnergyReward(self):
 
@@ -903,27 +1077,41 @@ class PrizeFormulaParser(Parser):
 
     class PatternRewardContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def runePattern(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.RunePatternContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.RunePatternContext,0)
+
 
         def evolutionItemPattern(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.EvolutionItemPatternContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.EvolutionItemPatternContext,0)
+
 
         def creaturePattern(self):
-            return self.getTypedRuleContext(PrizeFormulaParser.CreaturePatternContext, 0)
+            return self.getTypedRuleContext(PrizeFormulaParser.CreaturePatternContext,0)
+
 
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_patternReward
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitPatternReward"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPatternReward" ):
+                listener.enterPatternReward(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPatternReward" ):
+                listener.exitPatternReward(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPatternReward" ):
                 return visitor.visitPatternReward(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def patternReward(self):
 
@@ -961,7 +1149,7 @@ class PrizeFormulaParser(Parser):
 
     class RunePatternContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -974,11 +1162,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_runePattern
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitRunePattern"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRunePattern" ):
+                listener.enterRunePattern(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRunePattern" ):
+                listener.exitRunePattern(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRunePattern" ):
                 return visitor.visitRunePattern(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def runePattern(self):
 
@@ -1004,7 +1203,7 @@ class PrizeFormulaParser(Parser):
 
     class RuneContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1014,11 +1213,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_rune
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitRune"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRune" ):
+                listener.enterRune(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRune" ):
+                listener.exitRune(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRune" ):
                 return visitor.visitRune(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def rune(self):
 
@@ -1040,7 +1250,7 @@ class PrizeFormulaParser(Parser):
 
     class EvolutionItemPatternContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1053,11 +1263,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_evolutionItemPattern
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitEvolutionItemPattern"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterEvolutionItemPattern" ):
+                listener.enterEvolutionItemPattern(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitEvolutionItemPattern" ):
+                listener.exitEvolutionItemPattern(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEvolutionItemPattern" ):
                 return visitor.visitEvolutionItemPattern(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def evolutionItemPattern(self):
 
@@ -1083,7 +1304,7 @@ class PrizeFormulaParser(Parser):
 
     class CreaturePatternContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1096,11 +1317,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_creaturePattern
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitCreaturePattern"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterCreaturePattern" ):
+                listener.enterCreaturePattern(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitCreaturePattern" ):
+                listener.exitCreaturePattern(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCreaturePattern" ):
                 return visitor.visitCreaturePattern(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def creaturePattern(self):
 
@@ -1126,7 +1358,7 @@ class PrizeFormulaParser(Parser):
 
     class CreatureContext(ParserRuleContext):
 
-        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1136,11 +1368,22 @@ class PrizeFormulaParser(Parser):
         def getRuleIndex(self):
             return PrizeFormulaParser.RULE_creature
 
-        def accept(self, visitor: ParseTreeVisitor):
-            if hasattr(visitor, "visitCreature"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterCreature" ):
+                listener.enterCreature(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitCreature" ):
+                listener.exitCreature(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCreature" ):
                 return visitor.visitCreature(self)
             else:
                 return visitor.visitChildren(self)
+
+
+
 
     def creature(self):
 
@@ -1159,3 +1402,8 @@ class PrizeFormulaParser(Parser):
         finally:
             self.exitRule()
         return localctx
+
+
+
+
+
