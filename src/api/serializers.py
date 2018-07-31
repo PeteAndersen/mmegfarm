@@ -174,7 +174,8 @@ class LevelSerializer(serializers.ModelSerializer):
             'slots',
             'energy_cost',
             'waves',
-            # TODO: Put rewards here
+            'rewards',
+            'rewards_instant',
         ]
 
 
@@ -188,7 +189,8 @@ class LevelSummarySerializar(serializers.ModelSerializer):
             'difficulty',
             'slots',
             'energy_cost',
-            # TODO: Put rewards here
+            'rewards',
+            'rewards_instant',
         ]
 
 

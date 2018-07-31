@@ -52,10 +52,10 @@ def _create_level(data, difficulty):
 
         level.slots = int(difficulty_data['allies'])
         level.energy_cost = int(difficulty_data['energy'])
-        if 'rewards' in data:
-            level.rewards = get_rewards(data['rewards'])
-        if 'rewardsInstant' in data:
-            level.rewards_instant = get_rewards(data['rewardsInstant'])
+        if 'rewards' in difficulty_data:
+            level.rewards = get_rewards(difficulty_data['rewards'])
+        if 'rewardsInstant' in difficulty_data:
+            level.rewards_instant = get_rewards(difficulty_data['rewardsInstant'])
 
         level.save()
 
