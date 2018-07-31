@@ -1,12 +1,13 @@
 import collections
 from antlr4 import *
+
 from .PrizeFormulaParser import PrizeFormulaParser
+from .xml import get_creatures_from_rewardpattern
 
-
-def deepupdate(d, u):
+def _deepupdate(d, u):
     for k, v in u.items():
         if isinstance(v, collections.Mapping):
-            d[k] = deepupdate(d.get(k, {}), v)
+            d[k] = _deepupdate(d.get(k, {}), v)
         else:
             d[k] = v
     return d
@@ -35,7 +36,7 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         elif isinstance(aggregate, list):
             return aggregate + [nextResult]
         elif isinstance(aggregate, dict):
-            return deepupdate(aggregate, nextResult)
+            return _deepupdate(aggregate, nextResult)
         else:
             raise ValueError(f"Don't know how to aggregate a type of {type(aggregate)}")
 
@@ -125,9 +126,12 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
     def visitCreaturePattern(self, ctx: PrizeFormulaParser.CreaturePatternContext):
         print(f'visitCreaturePattern: {ctx.getText()}')
 
+        creatures = get_creatures_from_rewardpattern(ctx.SKU().getText())
+        ids = list(creatures.values_list('pk', flat=True))
+
         return {
             'type': 'creaturePattern',
-            'value': ctx.SKU().getText(),
+            'value': ids,
             'quantity': int(ctx.AMOUNT().getText())
         }
 
