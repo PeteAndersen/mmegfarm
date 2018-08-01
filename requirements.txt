@@ -6,3 +6,4 @@ djangorestframework
 django-filter==2.0.0
 django-cors-headers
 django-debug-toolbar
+antlr4-python3-runtime

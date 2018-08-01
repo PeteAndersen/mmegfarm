@@ -1,0 +1,18 @@
+<Definitions>
+    <Definition sku="rune_stat_0001" path="icon-stats-hp" name="hp" />
+    <Definition sku="rune_stat_0002" path="icon-stats-hp" name="hp%" />
+    <Definition sku="rune_stat_0003" path="icon-stats-speed" name="speed" />
+    <Definition sku="rune_stat_0004" path="icon-stats-defense" name="defense" />
+    <Definition sku="rune_stat_0005" path="icon-stats-attack" name="attack" />
+    <Definition sku="rune_stat_0006" path="icon-stats-attack" name="attack%" />
+    <Definition sku="rune_stat_0007" path="icon-stats-defense" name="defense%" />
+    <Definition sku="rune_stat_0008" path="icon-stats-criticalchance" name="criticalChance%" />
+    <Definition sku="rune_stat_0009" path="icon-stats-critical" name="criticalDamage%" />
+    <Definition sku="rune_stat_0010" path="icon-stats-accuracy" name="accuracy" />
+    <Definition sku="rune_stat_0011" path="icon-stats-resistance" name="resistance" />
+    <Definition sku="rune_stat_0012" path="icon-stats-defense" name="defense%" />
+    <Definition sku="rune_stat_0013" path="icon-stats-lifesteal" name="lifesteal" />
+    <Definition sku="rune_stat_0014" name="increaseHealing" />
+    <Definition sku="rune_stat_0015" name="reduceCooldown" />
+    <Definition sku="rune_stat_0016" path="icon-immune-to-all" name="immuneAll" />
+</Definitions>

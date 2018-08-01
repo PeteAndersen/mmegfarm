@@ -325,8 +325,10 @@ class Level(models.Model):
     game_id = models.CharField(max_length=50, db_index=True)
     order = models.IntegerField()
     difficulty = models.IntegerField(choices=DIFFICULTY_CHOICES, null=True, blank=True)
-    slots = models.IntegerField(help_text='Creatures allowed to bring')
+    slots = models.IntegerField(help_text='Number of creatures allowed to bring')
     energy_cost = models.IntegerField()
+    rewards = JSONField(default={})
+    rewards_instant = JSONField(default={}, help_text='Rewards when using an Instant Ticket')
 
     class Meta:
         ordering = ['difficulty', 'order']
@@ -433,18 +435,3 @@ class EnemySpellEffect(SpellEffectBase):
     class Meta:
         ordering = ['order']
         unique_together = ('spell', 'order')
-
-
-class DropGroup(models.Model):
-    level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    instant = models.BooleanField(default=False, help_text='Drops when running with Instant Tickets')
-    xp = models.IntegerField()
-    crystals = models.IntegerField()
-
-
-class Drops(models.Model):
-    group = models.ForeignKey(DropGroup, on_delete=models.CASCADE)
-    probability = models.FloatField(help_text='Chance of reward')
-
-    # Might need to split this into different types of rewards for glyphs
-    # maybe an abstract base class

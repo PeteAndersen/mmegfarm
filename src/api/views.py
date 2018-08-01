@@ -52,8 +52,8 @@ class DungeonViewSet(viewsets.ModelViewSet):
 
 class LevelPagination(pagination.PageNumberPagination):
     ordering = ['order']
-    page_size = 50
-    max_page_size = 10000
+    page_size = 25
+    max_page_size = 100
     page_size_query_param = 'page_size'
 
 
@@ -62,6 +62,7 @@ class LevelViewSet(viewsets.ModelViewSet):
     Levels with wave information when viewing a single instance
     """
     queryset = Level.objects.all()
+    pagination_class = LevelPagination
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
 
     def get_queryset(self):

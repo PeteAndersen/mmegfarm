@@ -1,0 +1,7 @@
+<Definitions>
+    <Definition sku="rune_rarity_0001" name="TID_RUNE_RARITY_COMMON" path="1" sortingOrder="1" ungraveSC="1500" promptAtSelling="false" />
+    <Definition sku="rune_rarity_0002" name="TID_RUNE_RARITY_UNCOMMON" path="2" sortingOrder="2" ungraveSC="5000" promptAtSelling="false" />
+    <Definition sku="rune_rarity_0003" name="TID_RUNE_RARITY_RARE" path="3" sortingOrder="3" ungraveSC="15000" promptAtSelling="false" />
+    <Definition sku="rune_rarity_0004" name="TID_RUNE_RARITY_EPIC" path="4" sortingOrder="4" ungraveSC="25000" promptAtSelling="true" />
+    <Definition sku="rune_rarity_0005" name="TID_RUNE_RARITY_LEGENDARY" path="5" sortingOrder="5" ungraveSC="45000" promptAtSelling="true" />
+</Definitions>

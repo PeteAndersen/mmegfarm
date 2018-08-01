@@ -1,0 +1,5 @@
+<Definitions>
+    <Definition sku="rune_shape_0001" name="hex" path="hex" sortingOrder="3" glowImage="circular-glow" engravedScale="0.65" engravedXOffset="5" engravedYOffset="6" />
+    <Definition sku="rune_shape_0002" name="leaf" path="leaf" sortingOrder="2" glowImage="triangle-glow" engravedScale="0.55" engravedXOffset="6" engravedYOffset="5" />
+    <Definition sku="rune_shape_0003" name="square" path="square" sortingOrder="1" glowImage="square-glow" engravedScale="0.575" engravedXOffset="4" engravedYOffset="6" />
+</Definitions>

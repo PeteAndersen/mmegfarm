@@ -1,0 +1,16 @@
+<Definitions>
+    <Definition sku="evolve_item_0000" name="TID_EVOLVE_ITEM_0000" type="fire" size="small" currency="smallFireEvolutionItem" />
+    <Definition sku="evolve_item_0001" name="TID_EVOLVE_ITEM_0001" type="water" size="small" currency="smallWaterEvolutionItem" />
+    <Definition sku="evolve_item_0002" name="TID_EVOLVE_ITEM_0002" type="air" size="small" currency="smallAirEvolutionItem" />
+    <Definition sku="evolve_item_0003" name="TID_EVOLVE_ITEM_0003" type="earth" size="small" currency="smallEarthEvolutionItem" />
+    <Definition sku="evolve_item_0004" name="TID_EVOLVE_ITEM_0004" type="materia" size="small" currency="smallMateriaEvolutionItem" />
+    <Definition sku="evolve_item_0005" name="TID_EVOLVE_ITEM_0005" type="chimera" size="small" currency="smallChimeraEvolutionItem" />
+    <Definition sku="evolve_item_0006" name="TID_EVOLVE_ITEM_0006" type="anima" size="small" currency="smallAnimaEvolutionItem" />
+    <Definition sku="evolve_item_0007" name="TID_EVOLVE_ITEM_0007" type="fire" size="big" currency="bigFireEvolutionItem" />
+    <Definition sku="evolve_item_0008" name="TID_EVOLVE_ITEM_0008" type="water" size="big" currency="bigWaterEvolutionItem" />
+    <Definition sku="evolve_item_0009" name="TID_EVOLVE_ITEM_0009" type="air" size="big" currency="bigAirEvolutionItem" />
+    <Definition sku="evolve_item_0010" name="TID_EVOLVE_ITEM_0010" type="earth" size="big" currency="bigEarthEvolutionItem" />
+    <Definition sku="evolve_item_0011" name="TID_EVOLVE_ITEM_0011" type="materia" size="big" currency="bigMateriaEvolutionItem" />
+    <Definition sku="evolve_item_0012" name="TID_EVOLVE_ITEM_0012" type="chimera" size="big" currency="bigChimeraEvolutionItem" />
+    <Definition sku="evolve_item_0013" name="TID_EVOLVE_ITEM_0013" type="anima" size="big" currency="bigAnimaEvolutionItem" />
+</Definitions>

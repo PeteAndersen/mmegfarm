@@ -1,0 +1,30 @@
+<Definitions>
+    <Definition sku="pattern_reward_potion_0000" big="0" medium="0" small="2" />
+    <Definition sku="pattern_reward_potion_0001" big="0" medium="1" small="0" />
+    <Definition sku="pattern_reward_potion_0002" big="0" medium="1" small="2" />
+    <Definition sku="pattern_reward_potion_0003" big="0" medium="1" small="3" />
+    <Definition sku="pattern_reward_potion_0004" big="0" medium="1" small="4" />
+    <Definition sku="pattern_reward_potion_0005" big="0" medium="2" small="2" />
+    <Definition sku="pattern_reward_potion_0006" big="0" medium="2" small="3" />
+    <Definition sku="pattern_reward_potion_0007" big="0" medium="2" small="4" />
+    <Definition sku="pattern_reward_potion_0008" big="0" medium="2" small="0" />
+    <Definition sku="pattern_reward_potion_0009" big="0" medium="2" small="1" />
+    <Definition sku="pattern_reward_potion_0010" big="0" medium="3" small="0" />
+    <Definition sku="pattern_reward_potion_0011" big="0" medium="0" small="3" />
+    <Definition sku="pattern_reward_potion_0012" big="0" medium="0" small="4" />
+    <Definition sku="pattern_reward_potion_0013" big="0" medium="1" small="1" />
+    <Definition sku="pattern_reward_potion_0014" big="0" medium="0" small="1" />
+    <Definition sku="pattern_reward_potion_0015" big="0" medium="15" small="50" />
+    <Definition sku="pattern_reward_potion_0016" big="25" medium="20" small="50" />
+    <Definition sku="pattern_reward_potion_0017" big="45" medium="50" small="0" />
+    <Definition sku="pattern_reward_potion_0018" big="0" medium="0" small="10" />
+    <Definition sku="pattern_reward_potion_0019" big="0" medium="0" small="7" />
+    <Definition sku="pattern_reward_potion_0020" big="0" medium="0" small="5" />
+    <Definition sku="pattern_reward_potion_0021" big="0" medium="5" small="0" />
+    <Definition sku="pattern_reward_potion_0022" big="0" medium="3" small="0" />
+    <Definition sku="pattern_reward_potion_0023" big="0" medium="2" small="0" />
+    <Definition sku="pattern_reward_potion_0024" big="3" medium="0" small="0" />
+    <Definition sku="pattern_reward_potion_0025" big="2" medium="0" small="0" />
+    <Definition sku="pattern_reward_potion_0026" big="1" medium="0" small="0" />
+    <Definition sku="pattern_reward_potion_0027" big="5" medium="15" small="25" />
+</Definitions>
