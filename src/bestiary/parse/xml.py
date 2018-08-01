@@ -183,3 +183,35 @@ def get_boss_data(sku):
     node = root.find(f'Definition[@sku="{sku}"]')
     if node is not None:
         return node.attrib
+
+
+def get_rune_data_from_rewardpattern(sku):
+    tree = ET.parse(os.path.join(DATA_DIR, 'patternRewardRunesDefinitions.xml'))
+    root = tree.getroot()
+    node = root.find(f'Definition[@sku="{sku}"]')
+    if node is not None:
+        return node.attrib
+
+
+def get_rune_type_data(sku):
+    tree = ET.parse(os.path.join(DATA_DIR, 'runeTypesDefinitions.xml'))
+    root = tree.getroot()
+    node = root.find(f'Definition[@sku="{sku}"]')
+    if node is not None:
+        return node.attrib
+
+
+def get_rune_rarity_data(sku):
+    tree = ET.parse(os.path.join(DATA_DIR, 'runeRaritiesDefinitions.xml'))
+    root = tree.getroot()
+    node = root.find(f'Definition[@sku="{sku}"]')
+    if node is not None:
+        return node.attrib
+
+
+def get_rune_shape_data(sku):
+    tree = ET.parse(os.path.join(DATA_DIR, 'runeShapesDefinitions.xml'))
+    root = tree.getroot()
+    node = root.find(f'Definition[@sku="{sku}"]')
+    if node is not None:
+        return node.attrib

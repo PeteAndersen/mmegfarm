@@ -1,8 +1,11 @@
 import collections
+
 from antlr4 import *
 
 from .PrizeFormulaParser import PrizeFormulaParser
+from .runes import reward_rune
 from .xml import get_creatures_from_rewardpattern
+
 
 def _deepupdate(d, u):
     for k, v in u.items():
@@ -95,11 +98,12 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
     def visitRunePattern(self, ctx: PrizeFormulaParser.RunePatternContext):
+        rune_data = reward_rune(ctx.SKU().getText())
 
         return {
             'type': 'runePattern',
             'quantity': int(ctx.AMOUNT().getText()),
-            'value': ctx.SKU().getText(),
+            'value': rune_data,
         }
 
     def visitRune(self, ctx: PrizeFormulaParser.RuneContext):
@@ -109,7 +113,6 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
     def visitCreaturePattern(self, ctx: PrizeFormulaParser.CreaturePatternContext):
-
         creatures = get_creatures_from_rewardpattern(ctx.SKU().getText())
         ids = list(creatures.values_list('pk', flat=True))
 
