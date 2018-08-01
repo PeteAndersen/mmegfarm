@@ -3,6 +3,7 @@ import collections
 from antlr4 import *
 
 from .PrizeFormulaParser import PrizeFormulaParser
+from .evolution_items import evolution_item_reward
 from .runes import reward_rune
 from .xml import get_creatures_from_rewardpattern
 
@@ -44,9 +45,7 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
             raise ValueError(f"Don't know how to aggregate a type of {type(aggregate)}")
 
     def visitRewards(self, ctx: PrizeFormulaParser.RewardsContext):
-        results = self.visitChildren(ctx, default=[])
-
-        return results
+        return self.visitChildren(ctx, default=[])
 
     def visitProbabilityReward(self, ctx: PrizeFormulaParser.ProbabilityRewardContext):
         max_roll = int(ctx.AMOUNT().getText())
@@ -62,7 +61,7 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         }
 
     def visitDailyReward(self, ctx: PrizeFormulaParser.DailyRewardContext):
-        return self.visitChildren(ctx)
+        raise NotImplementedError()
 
     def visitVictoryReward(self, ctx: PrizeFormulaParser.VictoryRewardContext):
         return self.visitChildren(ctx, default=[])
@@ -88,14 +87,13 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         }
 
     def visitXpGuildReward(self, ctx: PrizeFormulaParser.XpGuildRewardContext):
-        return self.visitChildren(ctx)
-        # No children
+        raise NotImplementedError()
 
     def visitGuildPotionReward(self, ctx: PrizeFormulaParser.GuildPotionRewardContext):
-        return self.visitChildren(ctx)
+        raise NotImplementedError()
 
     def visitAddMaxEnergyReward(self, ctx: PrizeFormulaParser.AddMaxEnergyRewardContext):
-        return self.visitChildren(ctx)
+        raise NotImplementedError()
 
     def visitRunePattern(self, ctx: PrizeFormulaParser.RunePatternContext):
         rune_data = reward_rune(ctx.SKU().getText())
@@ -107,10 +105,15 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         }
 
     def visitRune(self, ctx: PrizeFormulaParser.RuneContext):
-        return self.visitChildren(ctx)
+        raise NotImplementedError()
 
     def visitEvolutionItemPattern(self, ctx: PrizeFormulaParser.EvolutionItemPatternContext):
-        return self.visitChildren(ctx)
+        item_data = evolution_item_reward(ctx.SKU().getText())
+        return {
+            'type': 'evolutionItemPattern',
+            'quantity': int(ctx.AMOUNT().getText()),
+            'value': item_data,
+        }
 
     def visitCreaturePattern(self, ctx: PrizeFormulaParser.CreaturePatternContext):
         creatures = get_creatures_from_rewardpattern(ctx.SKU().getText())
@@ -123,10 +126,11 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         }
 
     def visitCreature(self, ctx: PrizeFormulaParser.CreatureContext):
-        return self.visitChildren(ctx)
+        raise NotImplementedError()
 
     def visitWaveReward(self, ctx: PrizeFormulaParser.WaveRewardContext):
         # We don't care about wave rewards right now.
+        # Don't visit children
         return None
 
 

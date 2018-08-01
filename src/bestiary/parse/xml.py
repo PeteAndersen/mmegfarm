@@ -126,6 +126,7 @@ def get_spell_random_data(sku):
         return node.attrib
 
 
+# Regions, levels, enemies
 def region_definitions():
     result = []
 
@@ -211,6 +212,22 @@ def get_rune_rarity_data(sku):
 
 def get_rune_shape_data(sku):
     tree = ET.parse(os.path.join(DATA_DIR, 'runeShapesDefinitions.xml'))
+    root = tree.getroot()
+    node = root.find(f'Definition[@sku="{sku}"]')
+    if node is not None:
+        return node.attrib
+
+
+def get_evolution_item(sku):
+    tree = ET.parse(os.path.join(DATA_DIR, 'evolveItemsDefinitions.xml'))
+    root = tree.getroot()
+    node = root.find(f'Definition[@sku="{sku}"]')
+    if node is not None:
+        return node.attrib
+
+
+def get_evolutionitem_data_from_rewardpattern(sku):
+    tree = ET.parse(os.path.join(DATA_DIR, 'patternRewardEvolutionItemsDefinitions.xml'))
     root = tree.getroot()
     node = root.find(f'Definition[@sku="{sku}"]')
     if node is not None:
