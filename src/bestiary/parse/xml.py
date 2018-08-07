@@ -100,7 +100,7 @@ def get_spell_upgrade_data(sku):
                 match = skillUpMatcher.match(data[f'skillUp{x}'])
 
                 if match:
-                    if match.group('attribute') == 'turns' and float(match.group('val')) != 0:
+                    if data[f'skillUp{x}TID'] == 'TID_PLUS_COOLDOWN':
                         val = float(match.group('val'))
                     else:
                         val = float(match.group('amount'))
