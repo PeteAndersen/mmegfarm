@@ -244,10 +244,10 @@ class SpellEffectBase(models.Model):
     order = models.IntegerField()
     effect = models.CharField(max_length=30)
     target = models.CharField(choices=TARGET_CHOICES, max_length=20)
-    params = JSONField(blank=True, default={})
+    params = JSONField(blank=True, default=dict)
     condition = ArrayField(
         models.CharField(choices=CONDITION_CHOICES, max_length=30, default=''),
-        blank=True, default=[]
+        blank=True, default=list
     )
     permanent = models.NullBooleanField()
     probability = models.FloatField(null=True, blank=True)
@@ -299,11 +299,11 @@ class Dungeon(models.Model):
     always_available = models.BooleanField(default=True)
     days_available = ArrayField(
         models.IntegerField(),
-        default=[]
+        default=list
     )
     months_available = ArrayField(
         models.IntegerField(),
-        default=[]
+        default=list
     )
 
     class Meta:
@@ -327,8 +327,8 @@ class Level(models.Model):
     difficulty = models.IntegerField(choices=DIFFICULTY_CHOICES, null=True, blank=True)
     slots = models.IntegerField(help_text='Number of creatures allowed to bring')
     energy_cost = models.IntegerField()
-    rewards = JSONField(default={})
-    rewards_instant = JSONField(default={}, help_text='Rewards when using an Instant Ticket')
+    rewards = JSONField(default=dict)
+    rewards_instant = JSONField(default=dict, help_text='Rewards when using an Instant Ticket')
 
     class Meta:
         ordering = ['difficulty', 'order']
