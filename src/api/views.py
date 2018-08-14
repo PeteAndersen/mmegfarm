@@ -2,8 +2,8 @@ from django_filters import rest_framework as filters
 from rest_framework import viewsets, pagination
 from rest_framework.filters import OrderingFilter
 
-from bestiary.models import Creature, Dungeon, Level
-from .serializers import CreatureSerializer, DungeonSerializer, LevelSerializer, LevelSummarySerializar
+from bestiary.models import Creature, Dungeon, Level, Wave
+from .serializers import CreatureSerializer, DungeonSerializer, LevelSerializer, WaveSerializer
 from .filters import CreatureFilter, DungeonFilter
 
 
@@ -43,7 +43,7 @@ class DungeonViewSet(viewsets.ModelViewSet):
     """
     Dungeons with levels and rewards
     """
-    queryset = Dungeon.objects.all().prefetch_related('level_set')
+    queryset = Dungeon.objects.all()
     serializer_class = DungeonSerializer
     pagination_class = DungeonPagination
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter, )
@@ -62,24 +62,22 @@ class LevelViewSet(viewsets.ModelViewSet):
     Levels with wave information when viewing a single instance
     """
     queryset = Level.objects.all()
+    serializer_class = LevelSerializer
     pagination_class = LevelPagination
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
 
-        if self.action in ['retrieve']:
-            queryset = queryset.prefetch_related(
-                'wave_set',
-                'wave_set__enemy_set',
-                'wave_set__enemy_set__enemyspell_set',
-                'wave_set__enemy_set__enemyspell_set__enemyspelleffect_set',
-            )
+class WavePagination(pagination.PageNumberPagination):
+    ordering = ['order']
+    page_size = 25
+    max_page_size = 100
+    page_size_query_param = 'page_size'
 
-        return queryset
 
-    def get_serializer_class(self, *args, **kwargs):
-        if self.action == 'list':
-            return LevelSummarySerializar
-        else:
-            return LevelSerializer
+class WaveViewSet(viewsets.ModelViewSet):
+    """
+    Dungeon enemy waves
+    """
+    queryset = Wave.objects.all()
+    pagination_class = WavePagination
+    serializer_class = WaveSerializer
