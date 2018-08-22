@@ -156,6 +156,7 @@ class WaveSerializer(serializers.ModelSerializer):
         model = Wave
         fields = [
             'id',
+            'level',
             'enemies',
         ]
 
