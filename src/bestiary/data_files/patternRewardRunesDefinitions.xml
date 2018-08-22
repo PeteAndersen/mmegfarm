@@ -1403,4 +1403,5 @@
     <Definition sku="pattern_reward_rune_1401" type="rune_type_0010" rarity="rune_rarity_0005" shape="rune_shape_0001,rune_shape_0002,rune_shape_0003" stars="3,4,5" />
     <Definition sku="pattern_reward_rune_1402" type="rune_type_0011" rarity="rune_rarity_0005" shape="rune_shape_0001,rune_shape_0002,rune_shape_0003" stars="3,4,5" />
     <Definition sku="pattern_reward_rune_1403" type="rune_type_0012" rarity="rune_rarity_0005" shape="rune_shape_0001,rune_shape_0002,rune_shape_0003" stars="3,4,5" />
+    <Definition sku="pattern_reward_rune_1404" type="rune_type_0001,rune_type_0002,rune_type_0003,rune_type_0004,rune_type_0005,rune_type_0006,rune_type_0007,rune_type_0008,rune_type_0009,rune_type_0010,rune_type_0011,rune_type_0012" rarity="rune_rarity_0006" shape="rune_shape_0001,rune_shape_0002,rune_shape_0003" stars="2,3,4,5" />
 </Definitions>

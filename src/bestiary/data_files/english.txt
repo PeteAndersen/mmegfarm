@@ -929,7 +929,7 @@ TID_SPELL_297=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of poi
 TID_SPELL_298=Grants Poisonmail to all allies for <color=#00ff00>&&0,turns&&</color> turns.
 TID_SPELL_299=Attacks an enemy and removes <color=#00ff00>&&1,amount_int&&</color> beneficial effects from them. <color=#00ff00>&&2,prob&&%</color> chance of muting them, locking their special abilities for <color=#00ff00>&&2,turns&&</color> turn.
 TID_SPELL_300=Attacks an enemy, inflicting great damage, and steals <color=#00ff00>&&1,amount_int&&</color> beneficial effect from them.
-TID_SPELL_301=Attacks all the enemies. <color=#00ff00>&&1,prob&&%</color> chance of decreasing their resistance and <color=#00ff00>&&2,prob&&%</color> chance of poisoning them for <color=#00ff00>&&2,turns&&</color> turn.
+TID_SPELL_301=Attacks all the enemies. <color=#00ff00>&&2,prob&&%</color> chance of decreasing their resistance for <color=#00ff00>&&2,turns&&</color> turn(s) and <color=#00ff00>&&1,prob&&%</color> chance of poisoning them for <color=#00ff00>&&1,turns&&</color> turn.
 TID_SPELL_302=<color=#00ff00>&&0,probRandom,1&&%</color> chance of decreasing resistance and accuracy of all enemies for <color=#00ff00>&&0,paramRandom,1,2,turns&&</color> turns. Then, attacks them.
 TID_SPELL_303=Removes <color=#00ff00>&&1,amount_int&&</color> beneficial effects from an enemy and poisons them for <color=#00ff00>&&2,turns&&</color> turns. Then, attacks them, inflicting great damage.
 TID_SPELL_304=Attacks all enemies, inflicting moderate damage, removes <color=#00ff00>&&2,amount_int&&</color> beneficial effect from them, and decreases their critical chance for <color=#00ff00>&&1,turns&&</color> turn(s).
@@ -1149,7 +1149,7 @@ TID_SPELL_517=Attack all the enemies and steals <color=#00ff00>&&1,amount_float&
 TID_SPELL_518=Double attacks an enemy and terrifies them for <color=#00ff00>&&1,turns&&</color> turn and prevents them from receiving healing effects for <color=#00ff00>&&2,turns&&</color> turns. <color=#00ff00>&&3,prob&&%</color> chance of getting another turn.
 TID_SPELL_519=<color=#00ff00>&&0,prob&&%</color> chance of decreasing cooldown of all allies by <color=#00ff00>&&0,amount_int&&</color>. At the end of every turn, refills self turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
 TID_SPELL_520=Attack all enemies increasing attack base on own max HP, prevents them from receiving healing effects for <color=#00ff00>&&1,turns&&</color> turn, and increases duration of their active harmfull effects by <color=#00ff00>&&2,amount_int&&</color>.
-TID_SPELL_521=If attack is critical, grants self phoenix soul for <color=#00ff00>&&0,turns&&</color> turn, and instantly drains HP of the enemy. Drain is <color=#00ff00>35%</color> of own HP.
+TID_SPELL_521=If attack is critical, grants self phoenix soul for <color=#00ff00>&&0,turns&&</color> turn, and instantly drains HP of the enemy. Drain is 35% of own HP.
 TID_SPELL_522=Attacks an enemy and prevents self from receiving direct damage for <color=#00ff00>&&1,turns&&</color> turn. Then, protects self with a crystalline veil, bouncing back incoming negative effects to the original caster for <color=#00ff00>&&2,turns&&</color> turn.
 TID_SPELL_523=Attacks all enemies, taunts them, decreases their attack and drains their HP for <color=#00ff00>&&3,turns&&</color> turns. Drain is <color=#00ff00>&&3,amount_float&&%</color> of own attack. Then, spreads the damages received among all allies for <color=#00ff00>&&4,turns&&</color> turns.
 TID_SPELL_524=Attacks an enemy.
@@ -2664,7 +2664,7 @@ TID_BATTLE_INFO_DEBUFFS_DESC_0020=Mutes an enemy, only allowing casting of the f
 TID_BATTLE_INFO_DEBUFFS_DESC_0021=Provokes an enemy, forcing them to target the caster of this effect or one of their allies.
 TID_BATTLE_INFO_DEBUFFS_DESC_0022=Increases the damage an enemy receives by 40%.
 TID_BATTLE_INFO_DEBUFFS_DESC_0023=Increases the probability of an enemy receiving a critical attack by 30%.
-TID_BATTLE_INFO_DEBUFFS_DESC_0024=Plants a bomb on an enemy which detonates at the end of a timer, dealing damage based on the caster's attack.
+TID_BATTLE_INFO_DEBUFFS_DESC_0024=Plants a bomb on an enemy which detonates at the end of a timer, dealing damage based on the caster's attack. The enemy is stunned once the bomb explodes.
 TID_BATTLE_INFO_BUFFS_TITLE_0024=Partial Immunity
 TID_BATTLE_INFO_BUFFS_DESC_0024=Makes an ally partially immune to incoming lasting negative effects, resisting [some] of them with 100% chance, no matter what.
 TID_HELP=Help
@@ -3627,17 +3627,17 @@ TID_RUNE_NAME_IMMUNITY=Immunity
 TID_RUNE_NAME_APPEASEMENT_MAYUS=APPEASEMENT
 TID_RUNE_NAME_MEDITATION_MAYUS=MEDITATION
 TID_RUNE_NAME_IMMUNITY_MAYUS=IMMUNITY
-TID_RUNE_NAME_VITALITY_DESC=Increases the HP stat of the creature by 20%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_PROTECTION_DESC=Increases the DEF stat of the creature by 20%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_HASTE_DESC=Increases the SPD stat of the creature by 10. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_PRECISION_DESC=Increases the ACC stat of the creature by 20%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_FRENZY_DESC=Increases the CRIT % stat of the creature by 10%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_STRENGHT_DESC=Increases the ATK stat of the creature by 20%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_DESTRUCTION_DESC=Increases the CRIT DMG stat of the creature by 30%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_RESISTANCE_DESC=Increases the RES stat of the creature by 20%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_LIFESTEAL_DESC=With every attack, the creature recovers 25% of damage done in the form of HP. (Three Glyphs of the same type create a set bonus)
-TID_RUNE_NAME_APPEASEMENT_DESC=Increases the healing effects dealt by 15%. (3 Glyphs of the same type creates a set bonus)
-TID_RUNE_NAME_MEDITATION_DESC=20% chance of reducing the cooldown on all owner's spells at the end of every turn. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_VITALITY_DESC=Increases the HP stat of the creature by <color=#00ff00>20%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_PROTECTION_DESC=Increases the DEF stat of the creature by <color=#00ff00>20%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_HASTE_DESC=Increases the SPD stat of the creature by <color=#00ff00>10</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_PRECISION_DESC=Increases the ACC stat of the creature by <color=#00ff00>20%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_FRENZY_DESC=Increases the CRIT % stat of the creature by <color=#00ff00>10%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_STRENGHT_DESC=Increases the ATK stat of the creature by <color=#00ff00>20%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_DESTRUCTION_DESC=Increases the CRIT DMG stat of the creature by <color=#00ff00>30%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_RESISTANCE_DESC=Increases the RES stat of the creature by <color=#00ff00>20%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_LIFESTEAL_DESC=With every attack, the creature recovers <color=#00ff00>25%</color> of damage done in the form of HP. (Three Glyphs of the same type create a set bonus)
+TID_RUNE_NAME_APPEASEMENT_DESC=Increases the healing effects dealt by <color=#00ff00>15%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_MEDITATION_DESC=<color=#00ff00>20%</color> chance of reducing the cooldown on all owner's spells at the end of every turn. (3 Glyphs of the same type creates a set bonus)
 TID_RUNE_NAME_IMMUNITY_DESC=Grants owner Immunity to all harmful effects at the beginning of the first turn in each wave. Each Glyph set adds one turn to the immunity effect. (3 Glyphs of the same type creates a set bonus)
 TID_STAT_APPEASEMENT=Healing
 TID_STAT_MEDITATION=Cooldown
@@ -4246,7 +4246,7 @@ TID_MAP_NAME_SPECIAL_REGION_11_TITLE=DWARF TREASURY
 TID_MAP_NAME_SPECIAL_REGION_12_TITLE=FACELESS LIBRARY
 TID_MAP_NAME_SPECIAL_REGION_13_TITLE=SECRET ISLAND
 TID_BATTLE_TEXT_ADDED_ENERGY=Energy
-TID_BATTLE_TEXT_ADDED_FOCUS=Focus
+TID_BATTLE_TEXT_ADDED_FOCUS=Concentration
 TID_BATTLE_TEXT_AVOID_LIFE_CHAGE=Avoid Life Change
 TID_BATTLE_TEXT_BALANCE_HP=Balance HP
 TID_BATTLE_TEXT_BLINDMAIL=Blindmail
@@ -4254,7 +4254,7 @@ TID_BATTLE_TEXT_CHANGE_FORM=Change Form
 TID_BATTLE_TEXT_CURSE=Curse
 TID_BATTLE_TEXT_DIVINE_SHIELD=Divine Shield
 TID_BATTLE_TEXT_DUPLICATE_HP=Duplicate HP
-TID_BATTLE_TEXT_MATCH_HP=Match HP
+TID_BATTLE_TEXT_MATCH_HP=Redefined HP
 TID_BATTLE_TEXT_MADNESS=Madness
 TID_BATTLE_TEXT_MIRROR=Mirror
 TID_BATTLE_TEXT_PARASITE=Parasite
@@ -5033,8 +5033,8 @@ TID_BATTLE_INFO_BUFFS_TITLE_0027=Mirror
 TID_BATTLE_INFO_BUFFS_DESC_0027=A creature with this effect is protected by a crystalline veil that acts as a mirror against negative effects, thus bouncing them back to the original caster.
 TID_BATTLE_INFO_BUFFS_TITLE_0028=Concentration Points
 TID_BATTLE_INFO_BUFFS_DESC_0028=Points of extra energy in the form of sageness. These allow some spells to have extra effects when cast by the ally in question. These extra effects are indicated by (Cx), where x is the number of Concentration points needed.
-TID_BATTLE_INFO_DEBUFFS_TITLE_0028=Focus Points
-TID_BATTLE_INFO_DEBUFFS_DESC_0028=Points of debility that affect an enemy creature and allow some spells to have extra effects when cast against those enemies. These extra effects are indicated by (Fx), where x is the number of Focus points needed.
+TID_BATTLE_INFO_DEBUFFS_TITLE_0028=Focus Marks
+TID_BATTLE_INFO_DEBUFFS_DESC_0028=Points of debility that affect an enemy creature and allow some spells to have extra effects when cast against those enemies. These extra effects are indicated by (Fx), where x is the number of Focus Marks needed.
 TID_MAP_NAME_SPECIAL_REGION_GROUPEVENTDUNGEON=Secret Island
 TID_MAP_NAME_SPECIAL_REGION_GROUPEVENTDUNGEON_SOMEELEMENTS=Secret Island
 TID_MAP_NAME_SPECIAL_REGION_GROUPEVENTDUNGEON_CLOSED=Secret Island
@@ -5340,7 +5340,7 @@ TID_SPELL_878=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of stu
 TID_SPELL_879=Attacks an enemy with a huge attack increase based on own defense, and increases the remaining cooldown of the enemy's spells by <color=#00ff00>&&1,amount_int&&</color>.
 TID_SPELL_880=Attacks all enemies, dealing moderate damage with an attack increase based on own defense, and reverts the healing and damaging effects received by all allies except self for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_881=Attacks an enemy, increasing attack based on the remaining own HP, taunts them for <color=#00ff00>&&1,turns&&</color> turn(s) and mutes them for <color=#00ff00>&&2,turns&&</color> turn(s). Decrease the enemy defense for <color=#00ff00>&&3,turns&&</color> turns if they have a harmful effect applied.
-TID_SPELL_882=Cast Disarming Bash upon the enemy that performs a critical attack against self. Also, is protected by a Mail of Thorns, damaging an enemy attacker by <color=#00ff00>&&1,amount_float&&%</color> of their max HP.
+TID_SPELL_882=Cast Disarming Bash upon the enemy that performs a critical attack against self. Also, is protected by a Mail of Thorns, damaging an enemy attacker by <color=#00ff00>&&1,amount_float&&%</color> of their max HP
 TID_SPELL_883=Attacks an enemy, mutes them, and curses them for <color=#00ff00>&&2,turns&&</color> turns, disabling <color=#00ff00>&&2,amount_float&&%</color> of their max HP.
 TID_SPELL_884=Protects self with a Mail of Thorns, damaging an enemy attacker by <color=#00ff00>&&0,amount_float&&%</color> of their max HP. Heals self by <color=#00ff00>&&1,percentage&&%</color> of own max HP upon receiving a critical attack.
 TID_SPELL_885=Attacks an enemy with an attack increase based on own defense, empties their turn bar, lowers the turn bar of all the other enemies by <color=#00ff00>&&2,amount_float&&%</color>, and decreases the speed of all enemies for <color=#00ff00>&&3,turns&&</color> turns.
@@ -5358,7 +5358,7 @@ TID_SPELL_896=Attacks an enemy with an attack increase based on own critical dam
 TID_SPELL_897=Attacks an enemy, ignoring their defense. If enemy has a positive effect, stuns them for <color=#00ff00>&&2,turns&&</color> turns. If enemy has a negative effect, steals up to <color=#00ff00>&&1,amount_float&&%</color> of their turn bar.
 TID_SPELL_898=Steals up to <color=#00ff00>&&1,amount_int&&</color> positive effects from the enemy, then attacks them with a damage increase based on own speed.
 TID_SPELL_899=Attacks all enemies with an additional 15% chance of critical attack. If attack is critical, refills own turn bar by <color=#00ff00>&&2,amount_float&&%</color>. For <color=#00ff00>&&1,turns&&</color> turns, prevents enemies from reviving if they perish.
-TID_SPELL_900=Decreases the defense of an enemy for <color=#00ff00>&&1,turns&&</color> turn, then attacks them. If attack is critical, steals up to <color=#00ff00>&&2,amount_float&&%</color> of their turn bar.
+TID_SPELL_900=Decreases the defense of an enemy for <color=#00ff00>&&1,turns&&</color> turn, then attacks them. If attack is critical, steals up to <color=#00ff00>&&3,amount_float&&%</color> of their turn bar.
 TID_SPELL_901=Attacks an enemy, dealing great damage with an attack increase based on own critical damage, and curses them for <color=#00ff00>&&1,turns&&</color> turns, disabling <color=#00ff00>&&1,amount_float&&%</color> of their max HP.
 TID_SPELL_902=Attacks an enemy with an attack increase based on own critical damage. <color=#00ff00>&&1,prob&&%</color> chance of stealing up to <color=#00ff00>&&1,amount_float&&%</color> of their turn bar, and <color=#00ff00>&&2,prob&&%</color> chance of stunning them for <color=#00ff00>&&2,turns&&</color> turn.
 TID_SPELL_903=Ignores enemies' defense when attacking, and steals up to <color=#00ff00>&&0,amount_int&&</color> of their positive effects.
@@ -6596,9 +6596,9 @@ TID_SPELL_988=Attacks an enemy, increasing the attack damage based on own max HP
 TID_SPELL_989=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. Then, the enemy attacked will be muted for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_990=Attacks an enemy, increasing the attack damage based on own max HP, decreases their defense for <color=#00ff00>&&1,turns&&</color> turns and decreases their attack for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_991=Teams up with <color=#00ff00>&&1,amount_int&&</color> allies to attack an enemy. Then, poisons twice the enemy for <color=#00ff00>&&3,turns&&</color> turn each.
-TID_SPELL_992=Teams up with <color=#00ff00>&&1,amount_int&&</color> ally to attack an enemy. If the attacked enemy has been marked as hunted, their defense and their attack will be decreased for <color=#00ff00>&&3,turns&&</color> turns. <color=#00ff00>&&4,amount_float&&%</color> chance to get another turn.
+TID_SPELL_992=Teams up with <color=#00ff00>&&1,amount_int&&</color> ally to attack an enemy. Then, their defense and their attack will be decreased for <color=#00ff00>&&3,turns&&</color> turns. <color=#00ff00>&&4,amount_float&&%</color> chance to get another turn.
 TID_SPELL_993=Grants invisibility to all the other allies for <color=#00ff00>&&2,turns&&</color> turns, and increases self defense and attack for <color=#00ff00>&&1,turns&&</color>  turns.
-TID_SPELL_994=Teams up with <color=#00ff00>&&1,amount_int&&</color> ally to attack an enemy. If the attacked enemy is poisoned, the current poison will burst and a new poison will be applied for <color=#00ff00>&&3,turns&&</color> turns.
+TID_SPELL_994=Teams up with <color=#00ff00>&&1,amount_int&&</color> ally to attack an enemy. Then, the poisons fo the enemy will be burst and a new poison will be applied for <color=#00ff00>&&3,turns&&</color> turns.
 TID_SPELL_995=Grants body shield to all allies for <color=#00ff00>&&0,turns&&</color> turns. Protects self from receiving damage for <color=#00ff00>&&1,turns&&</color> turns and protects self with a veil, with <color=#00ff00>&&2,amount_float&&%</color> chance of bouncing back incoming negative effects to the caster for <color=#00ff00>&&2,turns&&</color> turns.
 TID_TOP_100=Top 100
 TID_MISSION_WIN_STREAK_IN_X_REGION_SPECIAL_Y_TIMES=Win %1% consecutive battles in: %2%
@@ -6872,7 +6872,7 @@ TID_PVP_WIN_STREAK_MILESTONES_REWARDS_BY_LEAGUE=MILESTONES REWARDS BY LEAGUE
 TID_PVP_WIN_STREAK_MILESTONES_COMPLETED=NEW MILESTONE COMPLETED!
 TID_PVP_WIN_STREAK_LOST_DESC=You were Defeated! Current Victory streak is broken and the victories counter will go back to 0
 TID_PVP_INFO_TITLE_6=Obtain incredible rewards for your expertise!
-TID_PVP_LEAGUES_INFO_SLIDE06_01=Every 5 Victories in a row you will obtain a reward until you reach 25 consecutive victories. The higher your League, the better the rewards.
+TID_PVP_LEAGUES_INFO_SLIDE06_01=Every 5 consecutive Victories you will obtain a reward until you reach 25 in a row. The higher your League, the better the rewards.
 TID_PVP_LEAGUES_INFO_SLIDE06_02=You will obtain a bonus of extra Reputation Points per Victory in a row until 5 victories.
 TID_PVP_LEAGUES_INFO_SLIDE06_03=When the Season ends or If you are Defeated in a Battle, the Victory counter goes down to start.
 TID_LINK_ACCOUNT=Link Account
@@ -6925,3 +6925,432 @@ TID_EVOLVED_SNOW_MAIDEN_PLURAL=Yuki-onnas
 TID_CABIR_PLURAL=Cabirs
 TID_EVOLVED_CABIR_SINGULAR=Evolved Cabir
 TID_EVOLVED_CABIR_PLURAL=Evolved Cabirs
+TID_SPELL_TITLE_996=Ambush
+TID_SPELL_TITLE_997=Breaking Ambush
+TID_SPELL_TITLE_998=Reflecting Ambush
+TID_SPELL_TITLE_999=Blinding Coverage
+TID_SPELL_TITLE_1000=Counterpart
+TID_SPELL_TITLE_1001=Vengeance
+TID_SPELL_TITLE_1002=Front Barrier
+TID_SPELL_TITLE_1003=Eternal protection
+TID_SPELL_TITLE_1004=Concentration (Passive)
+TID_SPELL_TITLE_1005=Silence
+TID_SPELL_TITLE_1006=Focused Bomb
+TID_SPELL_TITLE_1007=Holy Protection
+TID_SPELL_TITLE_1008=Taunting Coverage
+TID_SPELL_TITLE_1009=Dark immunity
+TID_SPELL_TITLE_1010=Cursed Protection
+TID_SPELL_TITLE_1011=Hurting Fans
+TID_SPELL_TITLE_1012=Accelerating Fans
+TID_SPELL_TITLE_1013=Slowing Fans
+TID_SPELL_TITLE_1014=Preventive Magic
+TID_SPELL_TITLE_1015=Malediction
+TID_SPELL_TITLE_1016=Pure Ritual
+TID_SPELL_TITLE_1017=Magical Recovery
+TID_SPELL_TITLE_1018=Imprecation
+TID_SPELL_TITLE_1019=Blocking Movement
+TID_SPELL_TITLE_1020=Healing Coverage
+TID_SPELL_TITLE_1021=Blessing
+TID_SPELL_TITLE_1022=Consecration
+TID_SPELL_TITLE_1023=Blessed by the Light
+TID_SPELL_TITLE_1024=Blocking Vision
+TID_SPELL_TITLE_1025=Sentence (Passive)
+TID_SPELL_TITLE_1026=Magical Spotlight
+TID_SPELL_TITLE_1027=Focused Spotlight
+TID_SPELL_TITLE_1028=Vital Spotlight
+TID_SPELL_TITLE_1029=Firebolt
+TID_SPELL_TITLE_1030=Fearing Light
+TID_SPELL_TITLE_1031=Madness Charge
+TID_SPELL_TITLE_1032=Threatening Light
+TID_SPELL_TITLE_1033=Breakdown
+TID_SPELL_TITLE_1034=Lowering defense
+TID_SPELL_TITLE_1035=Mind games
+TID_SPELL_TITLE_1036=Breaking Barriers
+TID_SPELL_TITLE_1037=Focusing attack
+TID_SPELL_TITLE_1038=Sabotage
+TID_SPELL_TITLE_1039=Battery
+TID_SPELL_TITLE_1040=Cursed Light
+TID_HELP_BUILDINGS=Buildings
+TID_HELP_BUILDINGS_TITLE_0000=Akadimia
+TID_HELP_BUILDINGS_DESC_0000=The Akadimia is the most prestigious school of Magic in Ashan's world. Inside the Akadimia you can define your name, customize the look of your Wizard and even the spells that you will use in battle.
+TID_HELP_BUILDINGS_TITLE_0001=Summoning altar
+TID_HELP_BUILDINGS_DESC_0001=In the Summoning Altar, you can summon new Creatures to join your squad by redeeming Soulstones or Fragments.
+TID_HELP_BUILDINGS_TITLE_0002=Dragon Utopia
+TID_HELP_BUILDINGS_DESC_0002=The Dragon Utopia generates Seals over time. Come back regularly to collect newly created Seals.
+TID_HELP_BUILDINGS_TITLE_0003=Crystal mine
+TID_HELP_BUILDINGS_DESC_0003=The Crystal Mine generates Crystals over time. You should harvest your Crystals regularly!
+TID_HELP_BUILDINGS_TITLE_0004=Menagerie
+TID_HELP_BUILDINGS_DESC_0004=In the Menagerie you can see all the bestiary of creatures that you could obtain.
+TID_HELP_BUILDINGS_TITLE_0005=Arena
+TID_HELP_BUILDINGS_DESC_0005=In the Arena you can prove your power against other mages and try to get magical rewards.
+TID_HELP_BUILDINGS_TITLE_0006=Magical shop
+TID_HELP_BUILDINGS_DESC_0006=Inside this Magical Shop you will find different magical items. The offers will be automatically updated every hour.
+TID_HELP_BUILDINGS_TITLE_0007=Guild Halls
+TID_HELP_BUILDINGS_DESC_0007=For centuries this halls have being accepting groups of wizards that are prepared to practice their magic against other groups.
+TID_HELP_MAGICALHOUSE=Magical houses
+TID_HELP_MAGICALHOUSE_DESC=The Wizards are divided into three Orders: the Alchemists (House Materia), the Shapers (House Chimera) and the Summoners (House Anima). You can change the Magical House selected anytime.
+TID_HELP_MAGICALHOUSE_TITLE_0000=House Anima
+TID_HELP_MAGICALHOUSE_DESC_0000=House of Magic focused on improving the team abilities.
+TID_HELP_MAGICALHOUSE_TITLE_0001=House Chimera
+TID_HELP_MAGICALHOUSE_DESC_0001=House of Magic focused on inflicting damage to the enemies.
+TID_HELP_MAGICALHOUSE_TITLE_0002=House Materia
+TID_HELP_MAGICALHOUSE_DESC_0002=House of Magic focused on withstanding the blows of the enemies.
+TID_HELP_MAGICALHOUSE_TITLE_0003=Spell tree
+TID_HELP_MAGICALHOUSE_DESC_0003=After some fighting time, Heroes are able to use their magic to cast a Spell. This spell is different depending on the Magical House selected, each one has a different spell tree that allow you to configure your own spell.
+Use the points that you obtain after leveling up to improve this spell, you can remove the last selection that you did without losing the points.
+TID_HELP_BATTLE=Battle
+TID_HELP_BATTLE_TITLE_0000=Elemental counter
+TID_HELP_BATTLE_DESC_0000=The game is based on a Elemental Counter system which give your creature more or less effectiveness against other elements.
+
+Fire > Earth > Air > Water > Fire
+
+
+
+In battle you can check these elemental counters by checking the arrows over the enemies:
+-    When the arrow is Red: You will deal less damage.
+-    When the arrow is Yellow: You will deal a normal amount of damage.
+-    When the arrow is Green: You will deal more damage.
+-    When arrow is Blue: The skill will affect to your allies.
+TID_HELP_BATTLE_TITLE_0001=Speed bar
+TID_HELP_BATTLE_DESC_0001=The Speed of each creature is represented in the Turn bar (blue bar) of each creature. The Turn bar fills according to the speed of your Creature. When it is full, it means this is now the turn of this Creature to execute an action.
+TID_HELP_BATTLE_TITLE_0002=Main stats
+TID_HELP_BATTLE_TITLE_0002_SUBTITLE_0000=HP
+TID_HELP_BATTLE_TITLE_0002_SUBDESC_0000=The HP represents the life of your creature. In battle is represented by the green bar.
+TID_HELP_BATTLE_TITLE_0002_SUBTITLE_0001=Attack
+TID_HELP_BATTLE_TITLE_0002_SUBDESC_0001=The Attack represents the damages of your creature when attacking.
+TID_HELP_BATTLE_TITLE_0002_SUBTITLE_0002=Defense
+TID_HELP_BATTLE_TITLE_0002_SUBDESC_0002=The Defense represents the protection of the creature against attacks.
+TID_HELP_BATTLE_TITLE_0002_SUBTITLE_0003=Speed
+TID_HELP_BATTLE_TITLE_0002_SUBDESC_0003=The speed of the creature is its velocity, the higher the speed, the more often your creature will attack. In battle it is represented by the blue bar.
+TID_HELP_BATTLE_TITLE_0002_SUBTITLE_0004=Critical Chance
+TID_HELP_BATTLE_TITLE_0002_SUBDESC_0004=The Critical Chance represents the probability that each creature has to perform a critical.
+TID_HELP_BATTLE_TITLE_0002_SUBTITLE_0005=Critical Damage
+TID_HELP_BATTLE_TITLE_0002_SUBDESC_0005=The Critical Damage is the damage multiplier of the attack when it is a critical.
+TID_HELP_BATTLE_TITLE_0002_SUBTITLE_0006=Accuracy & Resistance
+TID_HELP_BATTLE_TITLE_0002_SUBDESC_0006=Accuracy affects your chance of landing a negative effect and Resistance affects your chances to resist to a negative effect.
+The Effect resistance will be calculated from the difference between Accuracy and Resistance. The resistance can't go down below 10%.
+TID_HELP_CREATURES=Creatures
+TID_HELP_CREATURES_TITLE_0000=Roles
+TID_HELP_CREATURES_TITLE_0000_SUBTITLE_0000=Attacker
+TID_HELP_CREATURES_TITLE_0000_SUBDESC_0000=Attacker creatures are based on high damages over the enemies.
+TID_HELP_CREATURES_TITLE_0000_SUBTITLE_0001=Defender
+TID_HELP_CREATURES_TITLE_0000_SUBDESC_0001=Defender creatures are based ond supporting the attacks from enemies and trying to cover their allies.
+TID_HELP_CREATURES_TITLE_0000_SUBTITLE_0002=Support
+TID_HELP_CREATURES_TITLE_0000_SUBDESC_0002=Support creatures are based on supporting all allies by buffing their stats, healing  or even reviving  them.
+TID_HELP_CREATURES_TITLE_0000_SUBTITLE_0003=Saboteur
+TID_HELP_CREATURES_TITLE_0000_SUBDESC_0003=Saboteur creatures are based on blocking or decreasing stats from enemies to try to reduce their effectiveness in battle.
+TID_HELP_CREATURES_TITLE_0000_SUBTITLE_0004=Rank
+TID_HELP_CREATURES_TITLE_0000_SUBDESC_0004=The rank is an indicator of the strength of the creatures, it's represented by stars. Some creature start with a different rank but you can upgrade the power of all creatures until rank 5.
+TID_HELP_CREATURES_TITLE_0001=How to level up a creature
+TID_HELP_CREATURES_TITLE_0001_SUBTITLE_0000=Level up
+TID_HELP_CREATURES_TITLE_0001_SUBDESC_0000=Fight in battles to get experience or use Potions earned in battle or in simulations to allow your Creatures to Level up faster. The higher a Creature’s Level, the stronger it becomes.
+TID_HELP_CREATURES_TITLE_0001_SUBTITLE_0001=Rank up
+TID_HELP_CREATURES_TITLE_0001_SUBDESC_0001=Upgrading the Rank of a Creature gives it an additional Star. The more Stars it has, the higher the Level it can reach.
+-    1 Star:    Maximum Level = 15
+-    2 Stars:    Maximum Level = 20
+-    3 Stars:     Maximum Level = 25
+-    4 Stars:     Maximum Level = 30
+-    5 Stars:     Maximum Level = 35
+
+To upgrade your Creature’s Rank, tap the “Upgrade” button in the Team Management menu and then select “Rank up” to access the relevant screen.
+To Rank up a Creature you need to use other Creatures of the same rank, which will be released into the wild in the process, and effectively disappear from your collection. 
+-    1 to 2 Stars:      Use 1 Creature of 1 Star
+-    2 to 3 Stars:     Use 2 Creatures of 2 Stars
+-    3 to 4 Stars:     Use 3 Creatures of 3 Stars
+-    4 to 5 Stars:     Use 4 Creatures of 4 Stars
+In addition, the Creature needs to have reached their current maximum level before you can Rank up.
+TID_HELP_CREATURES_TITLE_0001_SUBTITLE_0002=Skill up
+TID_HELP_CREATURES_TITLE_0001_SUBDESC_0002=To upgrade a Creature’s Skill you should select the “Upgrade” button within the Team Management menu and tap the “Skill Up” button to access the relevant screen.
+You will need 4 spare Creatures, all sharing the same Element as the one you want to improve. A Magical Book is also required to complete the process.
+TID_HELP_CREATURES_TITLE_0001_SUBTITLE_0003=Evolution
+TID_HELP_CREATURES_TITLE_0001_SUBDESC_0003=To Evolve, Creatures require various Evolution Materials linked to their Element, in addition to Materia, Anima or Chimera, depending on their Magical House affiliation. For example, a Water Griffin requires water evolution items. You can get Evolution Materials by battling in the Special Dungeons of the Dragonmist Islands. When a Creature is evolved, it becomes more powerful and its appearance changes. Evolve them until they become epic!
+TID_HELP_OBTAIN=How to obtain…
+TID_HELP_OBTAIN_TITLE_0000=Creatures
+TID_HELP_OBTAIN_DESC_0000=There are two ways to obtain Creatures.
+-    You can summon a Creature from the Summoning Altar by purchasing Soulstones. 
+-    You can capture Creatures while battling in Dungeons. The Creatures that can be captured appear in the “possible rewards” box on the right hand side of the screen before entering any Dungeon.
+TID_HELP_OBTAIN_TITLE_0001=Soulstones
+TID_HELP_OBTAIN_DESC_0001=You receive a free Soulstone every day in the Summoning Altar. Additional ones can be obtained by completing selected Achievements, or can be purchased with Seals. Some of the Special Packs, available in the Shop, also offer Soulstones.
+TID_HELP_OBTAIN_TITLE_0002=Chests
+TID_HELP_OBTAIN_DESC_0002=Chests are earned by playing the Lottery or can be bought for Crystals from the Summoning Altar. Additionally, you get one free Chest from the Altar every 8 hours!
+TID_HELP_OBTAIN_TITLE_0003=Glyphs
+TID_HELP_OBTAIN_DESC_0003=Glyphs can be found inside Dungeons and can also be looted from Chests.
+TID_HELP_OBTAIN_TITLE_0004=Instant tickets
+TID_HELP_OBTAIN_DESC_0004=You can use Instant Tickets to skip a Dungeon battle and directly claim the reward, but only if you have already completed this Dungeon before. You first need to complete all the levels within the region. You can get Instant Tickets from Chests, Daily Missions, Dungeons or the Shop.
+TID_HELP_OBTAIN_TITLE_0005=Crystals
+TID_HELP_OBTAIN_DESC_0005=Crystals are obtained by harvesting from the Crystal Mine, which generates them over time. Additionally, you can sometimes win Crystals playing the Daily Lottery, by completing Daily Missions or by releasing Creatures and fighting in Dungeons.
+TID_HELP_OBTAIN_TITLE_0006=Seals
+TID_HELP_OBTAIN_DESC_0006=Seals are generated in the Dragon Utopia, so return regularly to collect new ones. Seals are also often found inside Dungeons and can be earned with the Daily Lottery, or by completing Daily Missions.
+TID_HELP_OBTAIN_TITLE_0007=Energy
+TID_HELP_OBTAIN_DESC_0007=Energy refills over time, but you can also obtain more inside Dungeons or visiting the Shop.
+TID_HELP_OBTAIN_TITLE_0008=Potions
+TID_HELP_OBTAIN_DESC_0008=You can obtain potions making Simulated Battles, in the Team Management for releasing Creatures and also inside the Chests.
+TID_HELP_OBTAIN_TITLE_0009=Evolution Materials
+TID_HELP_OBTAIN_DESC_0009=You can obtain Evolution Materials battling through the Dragonmist Islands and occasionally when opening Chests and releasing Creatures.
+TID_HELP_OBTAIN_TITLE_0010=Magical Books
+TID_HELP_OBTAIN_DESC_0010=Magic Books are special items you can use to upgrade the Skill of a creature or to Evolve one. They can be found inside Chests, in the Dragonmist Islands and through Achievements too.
+TID_HELP_OBTAIN_TITLE_0011=Creature Fragments
+TID_HELP_OBTAIN_DESC_0011=Creature Fragments allows you to unlock specific creatures that are available in the shop. They can be found in Chests, in the Magical Shop, battling in Tower or Trials and by releasing Creatures.
+TID_HELP_DUNGEONS=Dungeons
+TID_HELP_DUNGEONS_TITLE_0000=Shattered Islands
+TID_HELP_DUNGEONS_DESC_0000=The overall map is based on 9 regions with 7 levels each one. Once you complete the 7 levels you will unlock a new difficulty. There are 3 difficulties by region: Normal, Advanced and Nightmare.
+TID_HELP_DUNGEONS_TITLE_0001=Arena
+TID_HELP_DUNGEONS_DESC_0001=To fight in the arena you have to set your defense first, the creatures that you set as defense are going to be the ones that your enemies will face when they attack you.
+Once you start battling other wizards you will be positioned inside a league, try to scale to the first position and you will be promoted to a new league. If you are in the last positions of the league at the end of the season you will be demoted.
+As better you position is at the end of a season, and higher your league is you will receive better rewards.
+TID_HELP_DUNGEONS_TITLE_0002=Dragonmist Islands
+TID_HELP_DUNGEONS_DESC_0002=The Dragonmist Islands are a special region where you will be able face new challenges and to obtain Evolution Materials that are required to improve your Creatures.
+TID_HELP_DUNGEONS_TITLE_0002_SUBTITLE_0000=Tower of Houses
+TID_HELP_DUNGEONS_TITLE_0002_SUBDESC_0000=The Tower of Houses gives Evolution Materials related to the different Magical Houses. These Magical Houses materials are needed to evolve your creatures.
+TID_HELP_DUNGEONS_TITLE_0002_SUBTITLE_0001=Elemental Tower
+TID_HELP_DUNGEONS_TITLE_0002_SUBDESC_0001=The Elemental Tower gives Elemental Evolution Materials that are needed to evolve your creatures. The element of the dungeon change every few days:
+Monday - Fire Dungeon opens
+Tuesday - Fire Dungeon opens
+Wednesday - Water Dungeon opens
+Thursday - Water Dungeon opens
+Friday - Air Dungeon opens
+Saturday - Air Dungeon opens
+Sunday - Earth Dungeon opens
+TID_HELP_DUNGEONS_TITLE_0002_SUBTITLE_0002=Glyph's Dungeon
+TID_HELP_DUNGEONS_TITLE_0002_SUBDESC_0002=The Glyph's Dungeon is the best place to find powerful glyphs. The type of glyphs that can be obtained inside this dungeon changes every day.
+Monday - Vitality, Protection and Resistance
+Tuesday - Frenzy, Haste and Destruction
+Wednesday - Strength and Precision
+Thursday - Vitality, Protection and Resistance
+Friday - Frenzy, Haste and Destruction
+Saturday - Strength and Precision
+Sunday - Strength and Precision
+TID_HELP_DUNGEONS_TITLE_0002_SUBTITLE_0003=Tower of Trials
+TID_HELP_DUNGEONS_TITLE_0002_SUBDESC_0003=The Tower of Trials is a challenge of 100 levels with two different difficulties that is reset every month, only the best wizards can surpass this challenge.
+TID_HELP_GLYPHS=Glyphs
+TID_HELP_GLYPHS_DESC=You can equip up to 6 Glyphs at the same time to each Creature to increase their stats. Depending on the Glyph type, you’ll boost the Creature’s speed, attack, life, accuracy, resistance, and so forth.
+TID_HELP_GLYPHS_TITLE_0000=Type of Glyphs
+TID_HELP_GLYPHS_DESC_0000=Here is the list of all Glyph types you will encounter in the game:
+Vitality:            Increases HP
+Defense:         Increases DEF
+Haste:             Increases SPD
+Precision:        Increases ACC
+Frenzy:            Increases CRIT %
+Strength:          Increases ATK
+Destruction:     Increases CRIT
+Endurance:      Increases RES
+Life Steal:        Gives a chance to life steal
+Appeasement: Increases the healing effects received
+Meditation:      Gives a chance to reduce the cooldowns
+Immunity:        Gives a chance to obtain immunity in the first wave
+TID_HELP_GLYPHS_TITLE_0001=Set of Glyphs
+TID_HELP_GLYPHS_DESC_0001=Equipping a Creature with 3 Glyphs of the same type will grant an additional bonus:
+3 Vitality Glyphs:             + 20% Health Bonus (HP)
+3 Defense Glyphs:          + 20% Defense (DEF)
+3 Haste Glyphs:              + 10 Speed Bonus (SPD)
+3 Precision Glyphs:         + 20% Accuracy Bonus (ACC)
+3 Frenzy Glyphs:            + 10% Critical chance Bonus (CRIT %)
+3 Strength Glyphs:         + 20% Attack Bonus (ATK)
+3 Destruction Glyphs:     + 30% Critical Damage Bonus (CRIT)
+3 Endurance Glyphs:      + 20% Resistance Bonus (RES)
+3 Life Steal Glyphs:        Chance to recover a 25% of the damage done in form of HP
+3 Appeasement Glyphs: Increases the healing effects received by 15%
+3 Meditation Glyphs:       20% chance to reduce the cooldowns for all the spells of the owner at the end of the turn<
+3 Immunity Glyphs:         Grants immunity to the owner at the beginning of the first wave. Each Glyph set adds one turn to the immunity effect
+TID_HELP_PVP=Arena
+TID_HELP_PVP_DESC=In order to participate in the Arena you have to define your defense first. The team that you define as defense is going to be the one that your opponents will fight once they attack you.
+TID_HELP_PVP_TITLE_0000=Battles
+TID_HELP_PVP_TITLE_0000_SUBTITLE_0000=Victory & Defeat
+TID_HELP_PVP_TITLE_0000_SUBDESC_0000=Every battle gives reputation points.
+Depending on the enemy that you attack you will obtain or lose ranking points, these points will change depending on the level, league of your opponent.
+TID_HELP_PVP_TITLE_0000_SUBTITLE_0001=Win Streak
+TID_HELP_PVP_TITLE_0000_SUBDESC_0001=Every 5 consecutive wins you will obtain an extra reward. By every win in streak you'll get a bonus on the reputation points that you obtain in the battle. Over it, every 5 consecutive wins you will obtain a special reward, that will be different depending on the league that you are.
+TID_HELP_PVP_TITLE_0001=Season & League & Leaderboard
+TID_HELP_PVP_DESC_0001=Every season lasts one week and is restarted every Monday. At the beginning of every season you will be positioned in a League, there are 14 different Leagues.
+Every League has its own Leaderboard where all the players are positioned, this position will define the reward that will be obtained at the end of the season. Each League has different rewards.
+TID_HELP_PVP_TITLE_0001_SUBTITLE_0000=Promotion & Demotion
+TID_HELP_PVP_TITLE_0001_SUBDESC_0000=At the end of every season you will be promoted or demoted depending on your position in the Leaderboard at the end of the Season. You can see all the Wizards that will be promoted or demoted in the Leaderboard, all the ones that appears over the green line will be promoted to a higher league. Those that are behind the red line will be demoted to a Lowe league, the rest will be keep in the same League.
+TID_HELP_PVP_TITLE_0002=Arena Shop
+TID_HELP_PVP_DESC_0002=In the reputation shop you'll find different items that can be obtained in exchange of some reputation points that you obtain in battles.
+TID_AR_SELECT_SURFACE=Select surface
+TID_TAB_GUILDS_RAIDS=Raids
+TID_GUILDS_RAID_NOT_ACTIVE=Raid not active
+TID_GUILDS_RAID_ATTEMPTS=Attempts today: %1% of %2%
+TID_DARK_CHEST_SINGULAR=Dark Chest
+TID_GUILDS_RAID_DETAIL=RAID DETAIL
+TID_GUILDS_RAID_TEAM=Team
+TID_GUILDS_RAID_INFO=Available creatures for this Raid
+TID_GUILDS_RAID_ROOSTER_REFRESH=These are the creatures available for this Raid, if they die you will need to wait one day to use them again in the Raid.
+TID_GUILDS_RAID_ROSTER_NO_REFRESH=These are the creatures available for this Raid, if they die you won't be able to use them again for this Raid.
+TID_GUILDS_RAID_TIMER=Creatures available in:
+TID_GUILDS_RAID_LIST_EMPTY_STATE=No creatures meets the requirements to play this Raid.
+TID_GUILDS_RAID_DETAILS=Raid Details
+TID_GUILDS_RAID_ACTIVE_INFO=Only one Raid can be active at a time.
+TID_GUILDS_RAID_TOOLTIP_DURATION=Duration:
+TID_GUILDS_RAID_TOOLTIP_ATTEMPTS_DAY=Attempts per day:
+TID_GUILDS_RAID_TOOLTIP_ROSTER=Roster refresh:
+TID_GUILDS_RAID_TOOLTIP_LIMITATION=Entry limitation:
+TID_GUILDS_RAID_TOOLTIP_NO_TIME_LIMIT=No time limit
+TID_GUILDS_RAID_TOOLTIP_DAILY=Daily
+TID_GUILDS_RAID_TOOLTIP_4_STARS=4 stars or higher Creatures
+TID_GUILDS_RAID_TOOLTIP_5_STARS=Only 5 stars Creatures
+TID_GUILDS_RAID_TOOLTIP_UNLIMITED=Unlimited
+TID_GUILDS_RAID_TOOLTIP_NEVER=Never
+TID_GUILDS_RAID_COMPLETION=Raid completion
+TID_GUILDS_RAID_INFO_BATTLE_MODES=Raid Battle Modes
+TID_GUILDS_RAID_INFO_INTRO=There are two ways for enter Raid battles
+TID_GUILDS_RAID_SAFE_BATTLE=Safe Battle
+TID_GUILDS_RAID_BATTLE=Battle
+TID_GUILDS_RAID_INFO_SAFE=You can enter on "Safe Battle" mode in order to test your creatures and define your strategy. But please, note that in safe mode, the progress will not be saver nor be taken in account for the Raid.
+TID_GUILDS_RAID_INFO_BATTLE=Regular Battle mode, allows you to progress in the Raid. The damage dealt will be taken in account for the overall progression, but if there is any entry limitation, it will count also.
+TID_GUILDS_RAID_ACTIVATE=Activate Raid
+TID_GUILDS_RAID_ACTIVATE_DESC=You are going to Activate %1%. The following amount of Battle Commands will be discounted from your Guild Wallet.
+TID_GUILDS_RAID_CREATURES_NOT_AVAILABLE=Creatures not available
+TID_GUILDS_RAID_CREATURES_DEAD=Selected creatures are dead, and can not be used right now. Please select another creatures.
+TID_GUILDS_RAID_ACTIVATED=Raid Activated
+TID_GUILDS_RAID_ACTIVATED_DESC=Congratulations, the Raid has been activated! Enjoy the Battle!
+TID_GUILDS_RAID_NOT_ENOUGH_CURRENCY=Not enough currency
+TID_GUILDS_RAID_NOT_ENOUGH_CURRENCY_DESC=Your Guild does not have enough Battle Commands to Activate this Raid. Complete Quests in order to obtain more.
+TID_GUILDS_RAID_FAIL_ACTIVATE=Raid can not be activated
+TID_GUILDS_RAID_FAIL_ACTIVATE_DESC=The Raid can not be activated because there is one running already.
+TID_GUILDS_TEAM_SEL_ADVICE=Advice: Your Creatures are automatically filtered in order to enter this Raid.
+TID_SPELL_996=Attacks an enemy.
+TID_SPELL_997=Attacks an enemy and increases self defense for <color=#00ff00>&&1,turns&&</color> turn.
+TID_SPELL_998=Attacks an enemy and protects self with a crystalline veil, bouncing back incoming negative effects to the original caster for <color=#00ff00>&&1,turns&&</color> turns.
+TID_SPELL_999=Attacks all enemies increasing attack based on own defense. Increase own attack for <color=#00ff00>&&1,turns&&</color> turns and surrounds self with blindmail for <color=#00ff00>&&2,turns&&</color> turns, which provides a <color=#00ff00>&&2,amount_float&&%</color> chance of blinding an enemy attacker for <color=#00ff00>&&2,turns&&</color> turns. Then, gets <color=#00ff00>&&3,amount_int&&</color> Concentration points.
+TID_SPELL_1000=Attacks an enemy, decrease the defense of all enemies for <color=#00ff00>&&1,turns&&</color> turns and increase the defense of all allies for <color=#00ff00>&&2,turns&&</color> turns. Then, if self has <color=#00ff00>&&3,buildCost&&</color> Concentration Points, the enemy  will be cursed, disabling <color=#00ff00>&&3,amount_float&&%</color> of their HP for <color=#00ff00>&&3,turns&&</color> turns.
+TID_SPELL_1001=Attacks an enemy increasing attack based on own defense. Then, gets <color=#00ff00>&&1,amount_float&&%</color> chance to counter-attack for <color=#00ff00>&&1,turns&&</color> turn(s) and gets <color=#00ff00>&&2,amount_int&&</color> Concentration points.
+TID_SPELL_1002=Grants invisibility to all the other allies for <color=#00ff00>&&1,turns&&</color> turns, increases self defense for <color=#00ff00>&&0,turns&&</color> turns and protects self with a crystalline veil, bouncing back incoming negative effects to the original caster for <color=#00ff00>&&2,turns&&</color> turns. If has <color=#00ff00>&&3,buildCost&&</color> Concentration points gets invincibility for <color=#00ff00>&&3,turns&&</color> turns.
+TID_SPELL_1003=Attack all enemies and grants body shield to all the other allies for <color=#00ff00>&&1,turns&&</color> turns. Then, obtain reverse for <color=#00ff00>&&2,turns&&</color> turns. If has <color=#00ff00>&&3,buildCost&&</color> Concentration points gets a protection by a Mail of Thorns, damaging an enemy attacker by <color=#00ff00>&&3,amount_float&&%</color> of their max HP for <color=#00ff00>&&3,turns&&</color> turns.
+TID_SPELL_1004=Obtain <color=#00ff00>&&0,amount_int&&</color> Concetration point for every attack. <color=#00ff00>&&1,prob&&%</color> chance to fill <color=#00ff00>&&1,amount_float&&%</color> of own turn bar at every turn.
+TID_SPELL_1005=Attacks an enemy increasing attack based on own maximum HP and mutes them for <color=#00ff00>&&1,turns&&</color> turn(s). Then, grants self <color=#00ff00>&&2,amount_float&&%</color> chance to dodge incoming attacks for <color=#00ff00>&&2,turns&&</color> turn(s) and gets <color=#00ff00>&&3,amount_int&&</color> Concentration points.
+TID_SPELL_1006=Attack all enemies and plants a bomb on the targeted enemy that deal <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turns timer. If has <color=#00ff00>&&2,buildCost&&</color> Concentration points, all the cooldowns will be reseted and will get another turn.
+TID_SPELL_1007=Attacks an enemy increasing attack based on own maximum HP and grants self divine shield for <color=#00ff00>&&1,turns&&%</color> turns. Then, gets <color=#00ff00>&&2,amount_int&&</color> Concentration points.
+TID_SPELL_1008=Attack all enemies. Grants self <color=#00ff00>&&1,amount_float&&%</color> chance to taunt the enemy attacker for <color=#00ff00>&&1,turns&&</color> turn(s) and regenerates own HP by <color=#00ff00>&&2,percentage&&%</color> of max HP for <color=#00ff00>&&2,turns&&</color> turns. If has <color=#00ff00>&&3,buildCost&&</color> Concentration points put all enemies spells on cooldown.
+TID_SPELL_1009=Attacks an enemy increasing attack based on own defense. Prevents self from receiving damage for <color=#00ff00>&&1,turns&&</color> turn(s) and gets self immunity to all harmful effects for <color=#00ff00>&&2,turns&&</color> turn(s). Then, gets <color=#00ff00>&&3,amount_int&&</color> Concentration points.
+TID_SPELL_1010=Attacks an enemy increasing attack based on own defense. Mark all allies as protected, sheltering them from <color=#00ff00>&&1,amount_float&&%</color> incoming damage for <color=#00ff00>&&1,turns&&</color> turns and surrounds them with blindmail for <color=#00ff00>&&2,turns&&</color> turns. If has <color=#00ff00>&&3,buildCost&&</color> Concentration points casts a thornmail, damaging an enemy attacker by <color=#00ff00>&&3,amount_float&&%</color> of their max HP for <color=#00ff00>&&3,turns&&</color> turn.
+TID_SPELL_1011=Attacks an enemy.
+TID_SPELL_1012=Attacks an enemy and refills own turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
+TID_SPELL_1013=Attacks an enemy and lowers their turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
+TID_SPELL_1014=Attacks an enemy and prevents them from receiving beneficial effects for <color=#00ff00>&&1,turns&&</color> turns. Then, marks the enemy with  <color=#00ff00>&&2,amount_int&&</color> Focus marks.
+TID_SPELL_1015=Decrease the defense of all the enemies for <color=#00ff00>&&0,turns&&</color> turn(s) and decrease their attack for <color=#00ff00>&&1,turns&&</color> turn(s). If the targeted enemy is marked with <color=#00ff00>&&2,woundCost&&</color> Focus marks will be paralyzed for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_1016=Attacks an enemy and increases the receiving healing effects of all allies for <color=#00ff00>&&1,turns&&</color> turns. Then, gets <color=#00ff00>&&2,amount_int&&</color> Concentration points.
+TID_SPELL_1017=Heal all allies by <color=#00ff00>&&0,percentage&&%</color> of own HP and shields them, providing shelter of <color=#00ff00>&&1,percentage&&%</color> max HP for <color=#00ff00>&&1,turns&&</color> turns. If has <color=#00ff00>&&2,buildCost&&</color> Concentration points, casts immunity to all harmful effects over all the allies for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_1018=Attacks an enemy and prevents them from receiving healing effects for <color=#00ff00>&&1,turns&&</color> turn(s). Then, marks them with <color=#00ff00>&&2,amount_int&&</color> Focus marks.
+TID_SPELL_1019=Attacks all enemies and lowers their turn bar by <color=#00ff00>&&1,amount_float&&%</color>. If the tageted enemy has <color=#00ff00>&&2,woundCost&&</color> Focus marks, the cooldown of the enemies will be increased by <color=#00ff00>&&2,amount_int&&</color>.
+TID_SPELL_1020=Heal an ally by <color=#00ff00>&&0,percentage&&%</color> of own HP and prevents them from receiving damage for <color=#00ff00>&&1,turns&&</color> turns. Then, gets <color=#00ff00>&&2,amount_int&&</color> Concentration points.
+TID_SPELL_1021=Increase the defense of all allies for <color=#00ff00>&&0,turns&&</color> turn(s) and increase their receiving healing effects for <color=#00ff00>&&1,turns&&</color> turn(s). If self has <color=#00ff00>&&2,buildCost&&</color> Concentration points, heals all allies by <color=#00ff00>&&2,percentage&&%</color> of own HP.
+TID_SPELL_1022=Attacks an enemy and protects self with a crystalline veil, bouncing back incoming negative effects to the original caster for <color=#00ff00>&&1,turns&&</color> turn(s). Then, gets <color=#00ff00>&&2,amount_int&&</color> Concentration points.
+TID_SPELL_1023=Heals an ally by <color=#00ff00>&&0,percentage&&%</color> and surrounds them with blindmail, which provides a <color=#00ff00>&&1,amount_float&&%</color> chance of blind an enemy attacker, for <color=#00ff00>&&1,turns&&</color> turns. Grants them immunity to harmful effects for <color=#00ff00>&&2,turns&&</color> turns. If self has <color=#00ff00>&&3,buildCost&&</color> Concentration points also heals the ally by <color=#00ff00>&&3,percentage&&%</color>.
+TID_SPELL_1024=Attack all enemies and blinds the targeted one for <color=#00ff00>&&1,turns&&</color> turns. If the targeted enemy has <color=#00ff00>&&1,woundCost&&%</color> Focus marks will be stunned for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_1025=Every attack has <color=#00ff00>&&0,prob&&%</color> chance to put a Focus point over the enemy
+TID_SPELL_1026=Attacks an enemy.
+TID_SPELL_1027=Attacks an enemy increasing attack based on own speed.
+TID_SPELL_1028=Attacks an enemy increasing attack based on own maximum HP.
+TID_SPELL_1029=Attacks an enemy and implants a parasite that devours <color=#00ff00>&&1,amount_float&&%</color> of their HP, increasing <color=#00ff00>&&1,amount2_float&&%</color> each lapsing turn for <color=#00ff00>&&1,turns&&</color> turns. Then, marks them with <color=#00ff00>&&2,amount_int&&</color> Focus marks.
+TID_SPELL_1030=Attacks an enemy increasing attack based on own speed and terrifies them for <color=#00ff00>&&1,turns&&</color> turn(s). If the targeted enemy has <color=#00ff00>&&2,woundCost&&</color> Focus marks, blinds all enemies for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_1031=Attacks an enemy and casts madness forcing them to attack themselves or other enemies. Then, marks them with <color=#00ff00>&&2,amount_int&&</color> Focus marks.
+TID_SPELL_1032=Attack all enemies and decrease their resistance for <color=#00ff00>&&1,turns&&</color> turn(s). If the targeted enemy is marked with <color=#00ff00>&&2,woundCost&&</color> Focus marks, drains HP from all enemies for <color=#00ff00>&&2,turns&&</color> turns. Drain is <color=#00ff00>&&2,amount_float&&%</color> of own attack.
+TID_SPELL_1033=Attacks an enemy and decreases their defense for <color=#00ff00>&&1,turns&&</color> turn(s). If is marked with <color=#00ff00>&&2,woundCost&&</color> Focus marks, stuns them for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_1034=Attacks all enemies and decreases their speed for <color=#00ff00>&&1,turns&&</color> turn. Then, marks them with <color=#00ff00>&&2,amount_int&&</color> Focus marks.
+TID_SPELL_1035=Casts madness over an enemy forcing them to attack themselves or other enemies and removes <color=#00ff00>&&0,amount_int&&</color> of their benefitial effects. If the targeted enemy is marked with <color=#00ff00>&&2,woundCost&&</color> Focus marks will be confused for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_1036=Decrease the attack of all enemies for <color=#00ff00>&&0,turns&&</color> turn(s) and decrease their resistance for <color=#00ff00>&&1,turns&&</color> turn(s). Then, marks all enemies with <color=#00ff00>&&2,amount_int&&</color> Focus marks.
+TID_SPELL_1037=Double attacks an enemy and marks them with <color=#00ff00>&&1,amount_int&&</color> Focus marks.
+TID_SPELL_1038=Attack all enemies and decrease their defense for <color=#00ff00>&&1,turns&&</color> turn(s). If the enemy is marked with <color=#00ff00>&&2,woundCost&&</color> Focus mark, will be muted for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_1039=Attacks an enemy increasing attack based on own speed and marks them with <color=#00ff00>&&1,amount_int&&</color> Focus marks.
+TID_SPELL_1040=Poison all the enemies for <color=#00ff00>&&0,turns&&</color> turn(s) and decreases their attack for <color=#00ff00>&&1,turns&&</color> turn(s). If the targeted enemy has been marked with <color=#00ff00>&&2,woundCost&&</color> Focus marks their harmful effects will be increased by <color=#00ff00>&&2,amount_int&&</color>.
+TID_DARK_GLYPH_BONUS=Dark Glyph bonus:
+TID_GUILDS_BATTLE_COMMANDS=Battle Commands
+TID_GUILDS_BATTLE_COMMANDS_OWNED=Battle Commands owned by your Guild
+TID_AGE_GATE_SPECIFY=Please, specify your age
+TID_CREATURE_POPUP_CURRENT_LIFE=Current Lifebar:
+TID_CREATURE_POPUP_IMMUNE_TO=Immune to some effects
+TID_CREATURE_POPUP_IMMUNITY=Immunities
+TID_GUILDS_BATTLE_DEAD_CREATURE=This creature has dead in battle, it will be available when roster refreshes
+TID_GUILDS_ERROR_NOT_ENOUGH_RESOURCES=Not enough resources
+TID_GUILDS_ERROR_NOT_ENOUGH_RESOURCES_DESC=Your Guild does not have enough Battle Commands to Activate this Raid. Complete Quests in order to obtain more.
+TID_GUILDS_ERROR_CAN_NOT_BE_ACTIVATED=Raid can not be activated
+TID_GUILDS_ERROR_CAN_NOT_BE_ACTIVATED_DESC=The Raid can not be activated because there is one running already.
+TID_GUILDS_FINISHED_FIGHT=Finished Fight
+TID_GUILDS_DEAD_CREATURES=All your creatures are dead!
+TID_RAID_BOSS_0000=Dragon Eel
+TID_KEY_DARK_PLURAL=Dark Keys
+TID_KEY_DARK_SINGULAR=Dark Key
+TID_DARK_CHEST_PLURAL=Dark Chests
+TID_BATTLE_INFO_BUFFS_TITLE_0034=Invisible
+TID_BATTLE_INFO_BUFFS_DESC_0034=The creature affected with this beneficial effect will be invisible in the fight, avoiding the enemy to target them. The invisibility is not taken in account if the creature is the last one remaining in battle, and will be lost once the creature attacks.
+TID_RAID_BOSS_TITLE_0000=Dragon Breath
+TID_RAID_BOSS_TITLE_0001=Stealth (Passive)
+TID_RAID_BOSS_TITLE_0002=Living (Passive)
+TID_RAID_BOSS_TITLE_0003=One Shot, One Kill
+TID_RAID_BOSS_TITLE_0004=Rage Mode
+TID_RAID_BOSS_TITLE_0005=Freezing Ray
+TID_RAID_BOSS_TITLE_0006=Roar of Time
+TID_RAID_BOSS_TITLE_0007=Sacred Water
+TID_RAID_BOSS_TITLE_0008=Spirit Form (Passive)
+TID_RAID_BOSS_TITLE_0009=Kill them all!
+TID_RAID_BOSS_TITLE_0010=Elemental Summoner
+TID_RAID_BOSS_DESC_0000=Attacks an enemy.
+TID_RAID_BOSS_DESC_0001=Cannot be directly targeted by the enemies.
+TID_RAID_BOSS_DESC_0002=Revives automatically a defeated ally. Then, increase own defense by &&1,percentage&&% and own attack by &&2,percentage&&%.
+TID_RAID_BOSS_DESC_0003=Remove all the beneficial effects of the enemies, and blocks them from reviving for &&2,turns&& turn(s). Then, kill one enemy randomly.
+TID_RAID_BOSS_DESC_0004=Increase the attack of all allies by &&0,percentage&&%. This effect can not be purged.
+TID_RAID_BOSS_DESC_0005=Attacks an enemy and lowers their turn bar by &&1,amount_float&&%.
+TID_RAID_BOSS_DESC_0006=Attacks all enemies and lowers their turn bar by &&1,amount_float&&%. Then, revives all defeated allies with &&2,percentage&&% HP and fills their turn bar by &&3,amount_float&&%.
+TID_RAID_BOSS_DESC_0007=Attack all enemies and revives all the defeated allies with &&1,percentage&&% HP and refills their turn bar by &&2,amount_float&&%.
+TID_RAID_BOSS_DESC_0008=At the end of every turn, grants all allies increased attack that increases by &&0,amount2_float&&% every turn while the beneficial effect is active.
+TID_RAID_BOSS_DESC_0009=Remove all the beneficial effects of all the enemies, and reduces their HP to &&2,amount_float&&%.
+TID_RAID_BOSS_DESC_0010=Revives all dead allies with &&0,percentage&&% HP and refills their turn bar by &&1,amount_float&&%.
+TID_HELP_GUILDS_RAIDS=Guild Raids
+TID_HELP_GUILDS_RAIDS_TITLE_0000=What is a Guild raid?
+TID_HELP_GUILDS_RAIDS_DESC_0000=The Guild raids are cooperative battles where the members of the guild can participate in order to defeat the same boss. The HP is shared between all the team so you will have to collaborate to defeat it!
+TID_HELP_GUILDS_RAIDS_TITLE_0001=Requisites to enter
+TID_HELP_GUILDS_RAIDS_DESC_0001=Every Raid has its own requirements to access, you could need creatures with at least 4 stars or higher or in others directly creatures with 5 stars.
+TID_HELP_GUILDS_RAIDS_TITLE_0002=Limited time & Rooster
+TID_HELP_GUILDS_RAIDS_DESC_0002=Depending on the Raid and its difficulty the time to complete the dungeon can be different.
+
+Once a creature of your team is defeated in a Raid battle it won't be able to be used again in the Raid except those difficulties that specifies that there is a rooster update. 
+If the Raid has rooster update all your creatures will be restored after 24 hours.
+TID_HELP_GUILDS_RAIDS_TITLE_0003=Escape creatures in battle
+TID_HELP_GUILDS_RAIDS_DESC_0003=Once you are in battle in every creature turn you have the choice to perform an attack or try to make the creature of the turn escape from battle. 
+
+Trying to escape has a chance of success, but if the creature finally escapes from battle, their HP and cooldowns will be storage and used in the next battle that you perform in the Raid.
+TID_HELP_GUILDS_RAIDS_TITLE_0004=What is needed to activate a Guild Raid?
+TID_HELP_GUILDS_RAIDS_DESC_0004=Only the Leader and the Officers can activate a Guild Raid. To activate it they will need to use Battle Commands which can be obtained trough quests. Every time that a member of the guild obtain a Battle Command, will be automatically storage in the Guild.
+TID_HELP_GUILDS_RAIDS_TITLE_0005=Raid Leaderboard and Rewards
+TID_HELP_GUILDS_RAIDS_DESC_0005=Only Raids that are completed brings rewards to the participants. If the Boss Raid is defeated the rewards will be distributed depending on the positions in the leaderboard associated to the Raid.
+The leaderboard distribution is defined by the amount of damage performed over the bosses of the Raid.
+TID_BATTLE_TEXT_INVISIBLE=Invisible
+TID_DARK_GLYPH_SINGULAR=Dark Glyph
+TID_DARK_GLYPH_PLURAL=Dark Glyphs
+TID_RUNE_RARITY_DARK=Dark
+TID_GUILDS_ESCAPE_TITLE=Escape
+TID_GUILDS_ESCAPE_DESC=The creature has &&-1,raidEscapeSuccessRate&&% chance to escape from the battle. Their HP and cooldowns will be saved for the next battle.
+TID_BATTLE_COMMANDS_SINGULAR=Battle Command
+TID_BATTLE_COMMANDS_PLURAL=Battle Commands
+TID_OPEN_RATES_DARK_CHEST=100% Dark Glyph \n 100% Rare Items
+TID_BATTLE_TIMER_TIME=Time:
+TID_BATTLE_TIMER_BEST=Best:
+TID_BATTLE_TEXT_INSTANT_KILL=Instant Kill
+TID_BATTLE_TEXT_INCREASE_ATTACK_INCREMENTAL=Permanent attack buff
+TID_BATTLE_INFO_BUFFS_TITLE_0035=Permanent attack buff
+TID_BATTLE_INFO_BUFFS_DESC_0035=While this effect is active, the attack of the creature will be increased by 10% every turn.
+TID_BATTLE_TEXT_RETURN=Get another turn
+TID_MISSION_OBTAIN_X_CREATURE_OF_TYPE_Y=Obtain 1 %2% type creature
+TID_GUILDS_RAID_EXPIRED_USER_KICK=The raid has finished and the extra time to complete it has expired.
+TID_GUILDS_RAID_FINISHED=Raid finished
+TID_GUILDS_RAID_FINISHED_DESC_LAST_BATTLE=This Raid is finished, you need to wait a few minutes in order to activate another one and receive your rewards. Time left:
+TID_GUILDS_RAID_FINISHED_DESC_IN_BATTLE=This Raid is finished, you have a few minutes to finish the battle before being redirected to Guilds Menu. Time left:
+TID_BATTLE_TEXT_ESCAPE_SUCCESS=Escape succeeded
+TID_BATTLE_TEXT_ESCAPE_FAIL=Escape failed
+TID_IMMUNE_TO=Immune to:
+TID_GUILDS_RAID_CREATURES_DEAD_LIST=This creature is dead, and can not be used right now. Please select another creature.
+TID_RUNE_NAME_VITALITY_EXTRA_BONUS_DESC=Increases the HP stat of the creature by <color=#FF00FF>25%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_PROTECTION_EXTRA_BONUS_DESC=Increases the DEF stat of the creature by <color=#FF00FF>25%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_HASTE_EXTRA_BONUS_DESC=Increases the SPD stat of the creature by <color=#FF00FF>12</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_PRECISION_EXTRA_BONUS_DESC=Increases the ACC stat of the creature by <color=#FF00FF>25%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_FRENZY_EXTRA_BONUS_DESC=Increases the CRIT % stat of the creature by <color=#FF00FF>12%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_STRENGHT_EXTRA_BONUS_DESC=Increases the ATK stat of the creature by <color=#FF00FF>25%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_DESTRUCTION_EXTRA_BONUS_DESC=Increases the CRIT DMG stat of the creature by <color=#FF00FF>35%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_RESISTANCE_EXTRA_BONUS_DESC=Increases the RES stat of the creature by <color=#FF00FF>25%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_LIFESTEAL_EXTRA_BONUS_DESC=With every attack, the creature recovers <color=#FF00FF>30%</color> of damage done in the form of HP. (Three Glyphs of the same type create a set bonus)
+TID_RUNE_NAME_APPEASEMENT_EXTRA_BONUS_DESC=Increases the healing effects dealt by <color=#FF00FF>22%</color>. (3 Glyphs of the same type creates a set bonus)
+TID_RUNE_NAME_MEDITATION_EXTRA_BONUS_DESC=<color=#FF00FF>23%</color> chance of reducing the cooldown on all owner's spells at the end of every turn. (3 Glyphs of the same type creates a set bonus)
+TID_ORC_PLURAL=Maulers
+TID_MEDIUM_STONE_TITLE_DESC=This Soulstone contains a creature from 2 star to 4 stars.
+TID_RUNE_NAME_IMMUNITY_EXTRA_BONUS_DESC=Grants owner Immunity to all harmful effects at the beginning of the first turn in each wave. Each Glyph set adds one turn to the immunity effect. (3 Glyphs of the same type creates a set bonus)

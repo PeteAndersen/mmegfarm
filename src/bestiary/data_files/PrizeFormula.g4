@@ -19,7 +19,6 @@ singleReward
 	| creature
 	| rune
 	| guildPotionReward
-	| xpGuildReward
 	;
 
 probabilityReward
@@ -56,10 +55,6 @@ xpReward
 	: 'xp:' AMOUNT
 	;
 	
-xpGuildReward
-	: 'xpGuild:' AMOUNT
-	;
-
 guildPotionReward
 	: 'guildPotion:' SKU ':' AMOUNT
 	;
@@ -100,9 +95,9 @@ AMOUNT
 
 CURRENCY
 	: 'sc' | 'hc' | 'instantTicket' | 'book'
-	| 'smallKey' | 'mediumKey' | 'bigKey'
+	| 'smallKey' | 'mediumKey' | 'bigKey' | 'darkKey'
 	| 'smallPotion' | 'mediumPotion' | 'bigPotion' 
-	| 'smallGatchaChest' | 'mediumGatchaChest' | 'bigGatchaChest'
+	| 'smallGatchaChest' | 'mediumGatchaChest' | 'bigGatchaChest' | 'darkGatchaChest'
 	| 'smallGatchaStone' | 'mediumGatchaStone' | 'bigGatchaStone'
 	| 'smallGatchaStonePart' | 'mediumGatchaStonePart' | 'bigGatchaStonePart'
 	| 'airGatchaStone' | 'fireGatchaStone' | 'waterGatchaStone' | 'earthGatchaStone'
@@ -125,6 +120,7 @@ CURRENCY
     | 'bigWaterEvolutionItem' | 'bigAirEvolutionItem' | 'bigEarthEvolutionItem' | 'bigMateriaEvolutionItem'
     | 'bigChimeraEvolutionItem' | 'bigAnimaEvolutionItem'
     | 'smallGuildXpPotion' | 'mediumGuildXpPotion' |  'bigGuildXpPotion' | 'epicGuildXpPotion' | 'legendaryGuildXpPotion'
+	| 'xpGuild' | 'battleCommand'
 	;
 
 ENERGY

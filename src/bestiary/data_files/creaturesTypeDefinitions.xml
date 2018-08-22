@@ -142,4 +142,10 @@
     <Definition sku="creature_type_kappa_elite" name="kappa_elite" tidSingular="TID_EVOLVED_KAPPA_SINGULAR" tidPlural="Evolved Kappas" groupTidSingular="TID_CREATURE_NAME_404" groupTidPlural="TID_KAPPA_PLURAL" />
     <Definition sku="creature_type_taweret_core" name="taweret_core" tidSingular="TID_CREATURE_NAME_411" tidPlural="TID_TAWERET_PLURAL" groupTidSingular="TID_CREATURE_NAME_411" groupTidPlural="TID_TAWERET_PLURAL" />
     <Definition sku="creature_type_taweret_elite" name="taweret_elite" tidSingular="TID_EVOLVED_TAWERET_SINGULAR" tidPlural="TID_EVOLVED_TAWERET_PLURAL" groupTidSingular="TID_CREATURE_NAME_411" groupTidPlural="TID_TAWERET_PLURAL" />
+    <Definition sku="creature_type_panda_core" name="panda_core" tidSingular="TID_CREATURE_NAME_418" tidPlural="TID_EVOLVED_PANDA_SINGULAR" groupTidSingular="TID_CREATURE_NAME_418" groupTidPlural="TID_PANDA_PLURAL" />
+    <Definition sku="creature_type_panda_elite" name="panda_elite" tidSingular="TID_PANDA_PLURAL" tidPlural="TID_EVOLVED_PANDA_PLURAL" groupTidSingular="TID_CREATURE_NAME_418" groupTidPlural="TID_PANDA_PLURAL" />
+    <Definition sku="creature_type_snowmaiden_core" name="snowmaiden_core" tidSingular="TID_CREATURE_NAME_425" tidPlural="TID_EVOLVED_SNOW_MAIDEN_SINGULAR" groupTidSingular="TID_CREATURE_NAME_425" groupTidPlural="TID_SNOW_MAIDEN_PLURAL" />
+    <Definition sku="creature_type_snowmaiden_elite" name="snowmaiden_elite" tidSingular="TID_SNOW_MAIDEN_PLURAL" tidPlural="TID_EVOLVED_SNOW_MAIDEN_PLURAL" groupTidSingular="TID_CREATURE_NAME_425" groupTidPlural="TID_SNOW_MAIDEN_PLURAL" />
+    <Definition sku="creature_type_cabir_core" name="cabir_core" tidSingular="TID_CREATURE_NAME_432" tidPlural="TID_EVOLVED_CABIR_SINGULAR" groupTidSingular="TID_CREATURE_NAME_432" groupTidPlural="TID_CABIR_PLURAL" />
+    <Definition sku="creature_type_cabir_elite" name="cabir_elite" tidSingular="TID_CABIR_PLURAL" tidPlural="TID_EVOLVED_CABIR_PLURAL" groupTidSingular="TID_CREATURE_NAME_432" groupTidPlural="TID_CABIR_PLURAL" />
 </Definitions>
