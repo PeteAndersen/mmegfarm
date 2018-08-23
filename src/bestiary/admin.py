@@ -24,6 +24,10 @@ class SpellAdmin(admin.ModelAdmin):
 
 @admin.register(Creature)
 class CreatureAdmin(admin.ModelAdmin):
+    search_fields = [
+        'name',
+    ]
+
     list_filter = (
         'playable',
         'summonable',
