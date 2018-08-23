@@ -734,7 +734,7 @@
     <Definition sku="creature_spell_9984" image="spell-icon-defense" turns="1" ingredient0="taunt" ingredient0Target="all" ingredient1="heal" ingredient1Target="self" />
     <Definition sku="creature_spell_9983" image="spell-icon-defense" turns="1" ingredient0="decreaseCriticalChance" ingredient0Target="all" ingredient1="decreaseCriticalDamage" ingredient1Target="all" />
     <Definition sku="creature_spell_9982" image="spell-icon-defense" turns="1" ingredient0="heal" ingredient0Target="all" />
-    <Definition sku="creature_spell_9981" image="spell-icon-defense" turns="1" ingredient0="deathAlly" ingredient0Target="all_minus_one" />
+    <Definition sku="creature_spell_9981" image="spell-icon-defense" turns="1" ingredient0="death" ingredient0Target="all_minus_one" />
     <Definition sku="creature_spell_9980" image="spell-icon-defense" turns="5" ingredient0="attack" ingredient0Target="one" ingredient1="polymorph" ingredient1Target="one" />
     <Definition sku="creature_spell_9979" image="spell-icon-defense" turns="1" ingredient0="attack" ingredient0Target="one" />
     <Definition sku="creature_spell_9978" image="spell-icon-defense" turns="2" ingredient0="attack" ingredient0Target="all" ingredient1="poison" ingredient1Target="all" />
@@ -977,6 +977,6 @@
     <Definition sku="raid_boss_spell_0003" image="spell-icon-attack-heal" turns="2" ingredient0="attack" ingredient0Target="one" ingredient1="unfillBar" ingredient1Target="one" />
     <Definition sku="raid_boss_spell_0004" image="spell-icon-attack-heal" turns="3" ingredient0="attack" ingredient0Target="all" ingredient1="unfillBar" ingredient1Target="all" ingredient2="revive" ingredient2Target="all" ingredient3="fillBar" ingredient3Target="all_minus_self" />
     <Definition sku="raid_boss_spell_0005" image="spell-icon-attack-heal" turns="5" ingredient0="attack" ingredient0Target="all" ingredient1="revive" ingredient1Target="all" ingredient2="fillBar" ingredient2Target="all_minus_self" />
-    <Definition sku="raid_boss_spell_0006" image="spell-icon-attack-heal" turns="5" ingredient0="attack" ingredient0Target="one" ingredient1="purge" ingredient1Target="all" ingredient2="matchHP" ingredient2Target="all" />
-    <Definition sku="raid_boss_spell_0007" image="spell-icon-attack-heal" turns="8" ingredient0="revive" ingredient0Target="all" ingredient1="fillBar" ingredient1Target="all_minus_self" />
+    <Definition sku="raid_boss_spell_0006" image="spell-icon-attack-heal" turns="4" ingredient0="attack" ingredient0Target="one" ingredient1="purge" ingredient1Target="all" ingredient2="matchHP" ingredient2Target="all" />
+    <Definition sku="raid_boss_spell_0007" image="spell-icon-attack-heal" turns="6" ingredient0="revive" ingredient0Target="all" ingredient1="fillBar" ingredient1Target="all_minus_self" />
 </Definitions>
