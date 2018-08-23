@@ -16,6 +16,10 @@ def creatures():
             # Alternate skills parsed in skills() function
             continue
 
+        if data['status'] == 'disabled':
+            # Data exists but not in game yet
+            continue
+
         try:
             c = Creature.objects.get(game_id=data['sku'])
         except Creature.DoesNotExist:
