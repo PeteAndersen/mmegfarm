@@ -54,7 +54,7 @@ def get_creature_data_by_trackingname(tracking_name):
     for file_path in iglob(os.path.join(DATA_DIR, 'creaturesDefinitions*.xml')):
         tree = ET.parse(file_path)
         root = tree.getroot()
-        result += root.findall(f'Definition[@trackingName="{tracking_name}"][@playable="true"]')
+        result += root.findall(f'Definition[@trackingName="{tracking_name}"][@status="enabled"]')
 
     if len(result):
         return [el.attrib for el in result]
