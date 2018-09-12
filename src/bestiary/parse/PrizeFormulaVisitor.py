@@ -45,7 +45,7 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
             raise ValueError(f"Don't know how to aggregate a type of {type(aggregate)}")
 
     def visitRewards(self, ctx: PrizeFormulaParser.RewardsContext):
-        return self.visitChildren(ctx, default=[])
+        return self.visitChildren(ctx)
 
     def visitProbabilityReward(self, ctx: PrizeFormulaParser.ProbabilityRewardContext):
         max_roll = int(ctx.AMOUNT().getText())
