@@ -96,11 +96,5 @@ def evolutions():
 
 
 def special_case_creatures():
-    # Tawerets all have the same name for creatureType. Need to update evolved ones.
-    Creature.objects.annotate(
-        evolvesTo__count=Count('evolvesTo')
-    ).filter(
-        name__icontains="taweret", evolvesTo__count=0
-    ).update(
-        creatureType='creature_type_taweret_elite'
-    )
+    # No special cases require handling as of game ver 2.2.7
+    pass

@@ -910,7 +910,7 @@ TID_SPELL_278=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of fre
 TID_SPELL_279=Increases defense and attack of all allies for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_280=Attacks an enemy and increases duration of their harmful effects by <color=#00ff00>&&1,amount_int&&</color>.
 TID_SPELL_281=Increases speed, critical chance, and critical damage of all allies, for <color=#00ff00>&&2,turns&&</color> turns.
-TID_SPELL_282=Attacks an enemy with an attack increase based on their max HP. If attack is critical, decreases their turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
+TID_SPELL_282=Attacks an enemy, inflicting great damage and increasing attack based on own speed. If attack is critical, steals <color=#00ff00>&&1,amount_float&&%</color> of the enemy's turn bar.
 TID_SPELL_283=Attacks an enemy and removes <color=#00ff00>&&2,amount_int&&</color> beneficial effects from them. <color=#00ff00>&&1,prob&&%</color> chance of preventing them from receiving beneficial effects for <color=#00ff00>&&1,turns&&</color> turn.
 TID_SPELL_284=Attacks an enemy.
 TID_SPELL_285=Attacks an enemy, inflicting great damage.
@@ -1121,7 +1121,7 @@ TID_SPELL_489=Attacks an enemy with a damage increase based on own max HP. If at
 TID_SPELL_490=Grants self invincibility against all sources of damage, and body shield to all other allies, for <color=#00ff00>&&1,turns&&</color> turns. <color=#00ff00>&&2,prob&&%</color> chance of muting all enemies for <color=#00ff00>&&2,turns&&</color> turn.
 TID_SPELL_491=Attacks an enemy.
 TID_SPELL_492=Attacks an enemy. <color=#00ff00>&&1,prob&&%</color> chance of decreasing the defense for <color=#00ff00>&&1,turns&&</color> turn and lowering their turn bar by <color=#00ff00>&&2,amount_float&&%</color>.
-TID_SPELL_493=Attacks an enemy, inflicting great damage, with damage increased based on enemy max HP.
+TID_SPELL_493=Attacks an enemy, increasing the attack based on own max HP. <color=#00ff00>&&1,prob&&%</color> chance to lower their turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
 TID_SPELL_494=Attacks all enemies with an attack increase based on own max HP. <color=#00ff00>&&0,probRandom,1&&%</color> chance of decreasing their defense and attack for <color=#00ff00>&&0,paramRandom,1,2,turns&&</color> turns.
 TID_SPELL_495=Heals all allies by <color=#00ff00>&&0,percentage&&%</color> of own max HP, and increases their attack and defense for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_496=Grants Phoenix Soul to all allies, reviving them <color=#00ff00>&&0,amount_float&&%</color> when their HP reaches 0. Also increases their critical chance and critical damage for <color=#00ff00>&&2,turns&&</color> turns.
@@ -1192,7 +1192,7 @@ TID_SPELL_560=Attacks an enemy, inflicting great damage, and explodes their acti
 TID_SPELL_561=Attack all enemies and decrease their speed for <color=#00ff00>&&2,turns&&</color> turns. <color=#00ff00>&&1,prob&&%</color> chance of planting a bomb on each that deals <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turn timer. Then, refills own turn bar by <color=#00ff00>&&3,amount_float&&%</color>.
 TID_SPELL_562=Attacks all enemies. <color=#00ff00>&&1,prob&&%</color> chance of planting a bomb on each that deals <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turn timer.
 TID_SPELL_563=Attacks all enemies, decreases their resistance for <color=#00ff00>&&1,turns&&</color> turns, and refills own turn bar by <color=#00ff00>&&2,amount_float&&%</color>.
-TID_SPELL_564=Attacks an enemy, inflicting moderate damage with an attack increase based on own max HP. <color=#00ff00>&&1,prob&&%</color> chance of puting all enemy's skills on cooldown.
+TID_SPELL_564=Attacks an enemy, inflicting moderate damage with an attack increase based on own max HP. <color=#00ff00>&&1,prob&&%</color> chance of putting all enemy's skills on cooldown.
 TID_SPELL_565=Taunts all enemies and mutes them, locking their special skills, then reflects damage and shelters self from <color=#00ff00>&&1,amount_float&&%</color> incoming damage, for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_566=Attacks all enemies with an attack increase based on own max HP. <color=#00ff00>&&1,prob&&%</color> chance of decreasing their defense for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_567=Attacks all enemies with an attack increase based on own max HP. <color=#00ff00>&&1,prob&&%</color> chance of lowering their turn bar by <color=#00ff00>&&1,amount_float&&%</color>.
@@ -4245,7 +4245,7 @@ TID_POPUP_RELOAD_CONTENT_TITLE=LOADING
 TID_MAP_NAME_SPECIAL_REGION_11_TITLE=DWARF TREASURY
 TID_MAP_NAME_SPECIAL_REGION_12_TITLE=FACELESS LIBRARY
 TID_MAP_NAME_SPECIAL_REGION_13_TITLE=SECRET ISLAND
-TID_BATTLE_TEXT_ADDED_ENERGY=Energy
+TID_BATTLE_TEXT_ADDED_ENERGY=Focus
 TID_BATTLE_TEXT_ADDED_FOCUS=Concentration
 TID_BATTLE_TEXT_AVOID_LIFE_CHAGE=Avoid Life Change
 TID_BATTLE_TEXT_BALANCE_HP=Balance HP
@@ -6401,7 +6401,7 @@ TID_MISSION_WIN_STREAK_IN_SPECIAL_X_Y_TIME=Win %1% battle in: %2%
 TID_MISSION_WIN_STREAK_IN_SPECIAL_X_Y_TIMES=Win %1% consecutive battles in: %2%
 TID_SPELL_906=Attacks an enemy.
 TID_SPELL_907=Attacks an enemy and removes <color=#00ff00>&&1,amount_int&&</color> of their beneficial effects.
-TID_SPELL_908=Attacks an enemy and removes <color=#00ff00>&&1,amount_int&&</color> of own harmful effects effects.
+TID_SPELL_908=Attacks an enemy and removes <color=#00ff00>&&1,amount_int&&</color> of own harmful effects.
 TID_SPELL_909=Attacks an enemy and removes all the beneficial effects of them. After, confuse them for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_910=Curses all enemies, disabling <color=#00ff00>&&0,amount_float&&%</color> of their HP for <color=#00ff00>&&0,turns&&</color> turns. Then, implants a parasite that devours <color=#00ff00>&&1,amount_float&&%</color> of their HP, increasing <color=#00ff00>&&1,amount2_float&&%</color> each lapsing turn for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_911=Attacks an enemy, increasing attack based on own max HP and lowers their turn bar by <color=#00ff00>&&2,amount_float&&%</color> . Then, casts madness over the enemy to force him to attack himself or to another enemy.
@@ -6558,14 +6558,14 @@ TID_SPELL_TITLE_995=Defensive Barrier
 TID_SPELL_951=Attacks an enemy.
 TID_SPELL_952=Attacks an enemy and curses them, disabling <color=#00ff00>&&1,amount_float&&%</color> of their HP for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_953=Attacks an enemy and increases their harmful effects by <color=#00ff00>&&1,amount_int&&</color>.
-TID_SPELL_954=Attacks an enemy increasing attack based on the enemy's HP.  If the HP of the enemy is lower than <color=#00ff00>&&1,hp&&%</color>, casts Zombie Call over a random dead ally and increase all allies attack for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_954=Attacks an enemy increasing attack based on own max HP.  If the HP of the enemy is lower than <color=#00ff00>&&1,hp&&%</color>, casts Zombie Call over a random dead ally and increase all allies attack for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_955=Casts Zombie Call over all the defeated allies. Increases the speed of all allies for <color=#00ff00>&&1,turns&&</color> turns and increases their defense for <color=#00ff00>&&2,turns&&</color> turns.
-TID_SPELL_956=Attacks an enemy, increasing the attack damage based on the enemy HP. If the enemy's HP is higher than <color=#00ff00>&&1,hp&&%</color>: Decreases their attack and defense for <color=#00ff00>&&2,turns&&</color> turns. If the enemy's HP is lower than <color=#00ff00>&&3,hp&&%</color>: Prevents the enemy from being healed or revived for <color=#00ff00>&&4,turns&&</color> turns.
+TID_SPELL_956=Attacks an enemy inflicting great damage and increasing attack based on own Critical Damage. If the enemy HP is higher than <color=#00ff00>&&1,hp&&%</color>: Decreases their attack and defense for <color=#00ff00>&&2,turns&&</color> turns. If the enemy HP is lower than <color=#00ff00>&&3,hp&&%</color>: Prevents the enemy from being healed or revived for <color=#00ff00>&&4,turns&&</color> turns.
 TID_SPELL_957=Attacks all enemies and decreases their defense for <color=#00ff00>&&1,turns&&</color> turns. <color=#00ff00>&&2,prob&&%</color> chance to polymorph all enemies for <color=#00ff00>&&2,turns&&</color> turns.
 TID_SPELL_958=Polymorphs an enemy, converting them into a critter for <color=#00ff00>&&0,turns&&</color> turns. Then, lowers their turn bar by <color=#00ff00>&&1,amount_float&&%</color> and decreases their speed for <color=#00ff00>&&2,turns&&</color> turn(s).
-TID_SPELL_959=Attack all enemies increasing attack based on the enemy HP. If the targeted enemy HP is higher than <color=#00ff00>&&1,hp&&%</color>: Decreases their defense for <color=#00ff00>&&1,turns&&</color> turns. If the targeted enemy is affected by Polymorph: Increases their harmful effects by <color=#00ff00>&&2,amount_int&&</color>.
-TID_SPELL_960=Attacks an enemy, increasing the attack damage based on the enemy HP and polymorphs them, converting them into a critter for <color=#00ff00>&&1,turns&&</color> turns.
-TID_SPELL_961=Attacks an enemy increasing attack based on the enemy's HP. If the enemy is affected by polymorph will be cursed, disabling <color=#00ff00>&&1,amount_float&&%</color> of their HP for <color=#00ff00>&&1,turns&&</color> turns. If the enemy HP is lower than <color=#00ff00>&&2,hp&&%</color> will prevent the enemy from reviving for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_959=Attack all enemies increasing attack based on own Critical Damage. If the enemy HP is higher than <color=#00ff00>&&1,hp&&%</color>: Decreases their defense for <color=#00ff00>&&1,turns&&</color> turns. If the enemy is affected by Polymorph: Increases their harmful effects by <color=#00ff00>&&2,amount_int&&</color>.
+TID_SPELL_960=Attacks an enemy inflicting great damage and polymorphs them, converting them into a critter for <color=#00ff00>&&1,turns&&</color> turns. Then, decrease the speed of all enemies for <color=#00ff00>&&2,turns&&</color> turns.
+TID_SPELL_961=Attacks an enemy inflicting great damage, increasing attack based on self speed and disables <color=#00ff00>&&1,amount_float&&%</color> of their HP for <color=#00ff00>&&1,turns&&</color> turns. If the enemy is affected by polymorph will be cursed, disabling <color=#00ff00>&&2,amount_float&&%</color> of their HP for <color=#00ff00>&&2,turns&&</color> turns. If the enemy HP is lower than <color=#00ff00>&&3,hp&&%</color> will prevent the enemy from reviving for <color=#00ff00>&&3,turns&&</color> turns.
 TID_SPELL_962=Attacks an enemy, increasing the attack damage based on the enemy's HP and increases the remaining number of spell cooldown turns by <color=#00ff00>&&1,amount_int&&</color>.
 TID_SPELL_963=Revives an ally with <color=#00ff00>&&0,percentage&&%</color> HP, and grants them invisibility for <color=#00ff00>&&1,turns&&</color> turns. Then, casts a divine shield for <color=#00ff00>&&2,turns&&</color> turn(s) over self.
 TID_SPELL_964=Attacks an enemy, increasing the attack damage based on the enemy's HP. If the enemy is affected by Polymorph their defense will be decreased for <color=#00ff00>&&2,turns&&</color> turns and their harmful effects will be increased by <color=#00ff00>&&1,amount_float&&</color>.
@@ -6786,7 +6786,7 @@ TID_YOUR_PHOTO=YOUR PHOTO
 TID_REQUIREMENTS_TITLE=CONDITIONS TO ENTER
 TID_REQUIREMENTS_DESC=Requirements to enter this dungeon:
 TID_SPELL_ZOMBIECALL_1=Attacks an enemy.
-TID_SPELL_ZOMBIECALL_2=Attacks an enemy increasing attack based on enemy maxHP. <color=#00ff00>&&1,prob&&%</color> chance to decrease their defense for <color=#00ff00>&&1,turns&&</color>.
+TID_SPELL_ZOMBIECALL_2=Attacks an enemy increasing the attack based on enemy's speed. <color=#00ff00>&&1,prob&&%</color> chance to decrease their defense for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_ZOMBIECALL_3=Attack all enemies with <color=#00ff00>&&1,prob&&%</color> chance to implants them a parasite that devours <color=#00ff00>&&1,amount_float&&%</color> of their HP, increasing <color=#00ff00>&&1,amount2_float&&%</color> each lapsing turn for <color=#00ff00>&&1,turns&&</color> turns.
 TID_SPELL_TITLE_ZOMBIECALL_1=Call of the death
 TID_SPELL_TITLE_ZOMBIECALL_2=Breaking
@@ -7219,7 +7219,7 @@ TID_SPELL_1002=Grants invisibility to all the other allies for <color=#00ff00>&&
 TID_SPELL_1003=Attack all enemies and grants body shield to all the other allies for <color=#00ff00>&&1,turns&&</color> turns. Then, obtain reverse for <color=#00ff00>&&2,turns&&</color> turns. If has <color=#00ff00>&&3,buildCost&&</color> Concentration points gets a protection by a Mail of Thorns, damaging an enemy attacker by <color=#00ff00>&&3,amount_float&&%</color> of their max HP for <color=#00ff00>&&3,turns&&</color> turns.
 TID_SPELL_1004=Obtain <color=#00ff00>&&0,amount_int&&</color> Concetration point for every attack. <color=#00ff00>&&1,prob&&%</color> chance to fill <color=#00ff00>&&1,amount_float&&%</color> of own turn bar at every turn.
 TID_SPELL_1005=Attacks an enemy increasing attack based on own maximum HP and mutes them for <color=#00ff00>&&1,turns&&</color> turn(s). Then, grants self <color=#00ff00>&&2,amount_float&&%</color> chance to dodge incoming attacks for <color=#00ff00>&&2,turns&&</color> turn(s) and gets <color=#00ff00>&&3,amount_int&&</color> Concentration points.
-TID_SPELL_1006=Attack all enemies and plants a bomb on the targeted enemy that deal <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turns timer. If has <color=#00ff00>&&2,buildCost&&</color> Concentration points, all the cooldowns will be reseted and will get another turn.
+TID_SPELL_1006=Attacks all enemies and plants a bomb on the targeted enemy that deals <color=#00ff00>&&1,amount_int&&</color> times own attack after <color=#00ff00>&&1,turns&&</color> turns timer. If self has <color=#00ff00>&&2,buildCost&&</color> Concentration points, plants another bomb dealing <color=#00ff00>&&2,amount_int&&</color> times own attack after <color=#00ff00>&&2,turns&&</color> turns timer, all self cooldowns will be reseted and the Panda will get another turn.
 TID_SPELL_1007=Attacks an enemy increasing attack based on own maximum HP and grants self divine shield for <color=#00ff00>&&1,turns&&%</color> turns. Then, gets <color=#00ff00>&&2,amount_int&&</color> Concentration points.
 TID_SPELL_1008=Attack all enemies. Grants self <color=#00ff00>&&1,amount_float&&%</color> chance to taunt the enemy attacker for <color=#00ff00>&&1,turns&&</color> turn(s) and regenerates own HP by <color=#00ff00>&&2,percentage&&%</color> of max HP for <color=#00ff00>&&2,turns&&</color> turns. If has <color=#00ff00>&&3,buildCost&&</color> Concentration points put all enemies spells on cooldown.
 TID_SPELL_1009=Attacks an enemy increasing attack based on own defense. Prevents self from receiving damage for <color=#00ff00>&&1,turns&&</color> turn(s) and gets self immunity to all harmful effects for <color=#00ff00>&&2,turns&&</color> turn(s). Then, gets <color=#00ff00>&&3,amount_int&&</color> Concentration points.
@@ -7292,8 +7292,8 @@ TID_RAID_BOSS_DESC_0003=Remove all the beneficial effects of the enemies, and bl
 TID_RAID_BOSS_DESC_0004=Increase the attack of all allies by &&0,percentage&&%. This effect can not be purged.
 TID_RAID_BOSS_DESC_0005=Attacks an enemy and lowers their turn bar by &&1,amount_float&&%.
 TID_RAID_BOSS_DESC_0006=Attacks all enemies and lowers their turn bar by &&1,amount_float&&%. Then, revives all defeated allies with &&2,percentage&&% HP and fills their turn bar by &&3,amount_float&&%.
-TID_RAID_BOSS_DESC_0007=Attack all enemies and revives all the defeated allies with &&1,percentage&&% HP and refills their turn bar by &&2,amount_float&&%.
-TID_RAID_BOSS_DESC_0008=At the end of every turn, grants all allies increased attack that increases by &&0,amount2_float&&% every turn while the beneficial effect is active.
+TID_RAID_BOSS_DESC_0007=Attacks all enemies and increases all their spells cooldown by &&3,amount_int&&. Revives all the defeated allies with &&1,percentage&&% HP and refills their turn bar by &&2,amount_float&&%.
+TID_RAID_BOSS_DESC_0008=At the end of the turn: If has Permanent Attack buff active, increases it by &&6,amount2_float&&%. If not, removes all harmful effects, increases their: defense, attack, resistance, critical chance and accuracy for &&1,turns&& turns, and cast Permanent Attack buff over all allies.
 TID_RAID_BOSS_DESC_0009=Remove all the beneficial effects of all the enemies, and reduces their HP to &&2,amount_float&&%.
 TID_RAID_BOSS_DESC_0010=Revives all dead allies with &&0,percentage&&% HP and refills their turn bar by &&1,amount_float&&%.
 TID_HELP_GUILDS_RAIDS=Guild Raids
@@ -7324,8 +7324,8 @@ TID_GUILDS_ESCAPE_DESC=The creature has &&-1,raidEscapeSuccessRate&&% chance to 
 TID_BATTLE_COMMANDS_SINGULAR=Battle Command
 TID_BATTLE_COMMANDS_PLURAL=Battle Commands
 TID_OPEN_RATES_DARK_CHEST=100% Dark Glyph \n 100% Rare Items
-TID_BATTLE_TIMER_TIME=Time:
-TID_BATTLE_TIMER_BEST=Best:
+TID_BATTLE_TIMER_TITLE=Time:
+TID_BEST_BATTLE_TIMER_TITLE=Best:
 TID_BATTLE_TEXT_INSTANT_KILL=Instant Kill
 TID_BATTLE_TEXT_INCREASE_ATTACK_INCREMENTAL=Permanent attack buff
 TID_BATTLE_INFO_BUFFS_TITLE_0035=Permanent attack buff
@@ -7354,3 +7354,7 @@ TID_RUNE_NAME_MEDITATION_EXTRA_BONUS_DESC=<color=#FF00FF>23%</color> chance of r
 TID_ORC_PLURAL=Maulers
 TID_MEDIUM_STONE_TITLE_DESC=This Soulstone contains a creature from 2 star to 4 stars.
 TID_RUNE_NAME_IMMUNITY_EXTRA_BONUS_DESC=Grants owner Immunity to all harmful effects at the beginning of the first turn in each wave. Each Glyph set adds one turn to the immunity effect. (3 Glyphs of the same type creates a set bonus)
+TID_GUILDS_RAID_STARTED=A new Raid has started!
+TID_GUILDS_QUEST_STARTED=A new Quest has started!
+TID_GUILDS_RAID_NO_AVAILABLE_TIME=You cannot play this Raid, remaining time:
+TID_GUILDS_RAID_OTHER_DAMAGE=Other damage
