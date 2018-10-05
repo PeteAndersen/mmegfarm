@@ -45,7 +45,13 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
             raise ValueError(f"Don't know how to aggregate a type of {type(aggregate)}")
 
     def visitRewards(self, ctx: PrizeFormulaParser.RewardsContext):
-        return self.visitChildren(ctx)
+        result = self.visitChildren(ctx, default=[])
+
+        # Flatten if array of arrays
+        if len(result) > 0 and isinstance(result[0], list):
+            return [item for sublist in result for item in sublist]
+
+        return result
 
     def visitProbabilityReward(self, ctx: PrizeFormulaParser.ProbabilityRewardContext):
         max_roll = int(ctx.AMOUNT().getText())
@@ -64,7 +70,8 @@ class PrizeFormulaVisitor(ParseTreeVisitor):
         raise NotImplementedError()
 
     def visitVictoryReward(self, ctx: PrizeFormulaParser.VictoryRewardContext):
-        return self.visitChildren(ctx, default=[])
+        result = self.visitChildren(ctx, default=[])
+        return result
 
     def visitPartialProbReward(self, ctx: PrizeFormulaParser.PartialProbRewardContext):
         probability = int(ctx.AMOUNT().getText())
