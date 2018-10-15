@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from bestiary.models import Creature, Spell, SpellUpgrade, SpellEffect, Dungeon, Level, Wave, Enemy, EnemySpell, \
+from .models import Creature, Spell, SpellUpgrade, SpellEffect, Dungeon, Level, Wave, Enemy, EnemySpell, \
     EnemySpellEffect
 
 

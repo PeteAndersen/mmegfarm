@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from .views import CreatureViewSet, DungeonViewSet, LevelViewSet, WaveViewSet
+from bestiary.views import CreatureViewSet, DungeonViewSet, LevelViewSet, WaveViewSet
 
 app_name = 'api'
 

@@ -1,6 +1,7 @@
 from django_filters import rest_framework as filters
 from django.db.models import Count
-from bestiary.models import Creature, Dungeon
+
+from .models import Creature, Dungeon
 
 
 def filter_array_value(queryset, name, value):
