@@ -29,6 +29,7 @@ DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 ADMINS = (('Peter', 'swarfarm@porksmash.com'),)
 MANAGERS = ADMINS
+SITE_ID = 1
 
 # Application definition
 
@@ -37,12 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'allauth',
+    'allauth.account',
     'corsheaders',
     'django_filters',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
 
     'api.apps.ApiConfig',
     'bestiary.apps.BestiaryConfig',
@@ -63,6 +70,7 @@ if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
     INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = 'mmegfarm.urls'
 
@@ -97,6 +105,11 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -111,6 +124,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/auth/user/'
 
 # SSL settings
 CSRF_COOKIE_SECURE = not DEBUG
@@ -131,13 +149,9 @@ CORS_ORIGIN_REGEX_WHITELIST = [r'^.*mm-eg\.farm$', ]
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -157,4 +171,13 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+
+REST_USE_JWT = True
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'api.serializers.UserDetailsSerializer',
 }

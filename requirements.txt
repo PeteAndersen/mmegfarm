@@ -1,9 +1,11 @@
-Django==2.1
+Django==2.1.2
 psycopg2-binary
 gunicorn
 django-environ
 djangorestframework
+djangorestframework-jwt
 django-filter==2.0.0
 django-cors-headers
 django-debug-toolbar
 antlr4-python3-runtime
+django-rest-auth[with-social]
