@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     'api.apps.ApiConfig',
     'bestiary.apps.BestiaryConfig',
+    'profiles.apps.ProfilesConfig',
 ]
 
 MIDDLEWARE = [
@@ -179,5 +180,5 @@ REST_FRAMEWORK = {
 
 REST_USE_JWT = True
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'api.serializers.UserDetailsSerializer',
+    'USER_DETAILS_SERIALIZER': 'profiles.serializers.UserDetailsSerializer',
 }
