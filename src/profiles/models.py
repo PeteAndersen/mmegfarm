@@ -1,9 +1,11 @@
 import uuid
 
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 from django.db import models
+from django.utils.safestring import mark_safe
 
-from bestiary.models import Creature
+from bestiary.models import Creature, Dungeon, Level
 
 
 class Profile(models.Model):
@@ -14,6 +16,7 @@ class Profile(models.Model):
 
 class CreatureInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    game_id = models.IntegerField(null=True)
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     creature = models.ForeignKey(Creature, on_delete=models.CASCADE)
     rank = models.IntegerField()
@@ -66,7 +69,26 @@ class GlyphInstance(models.Model):
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    game_id = models.IntegerField(null=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    creature = models.ForeignKey(CreatureInstance, on_delete=models.SET_NULL, null=True)
     type = models.IntegerField(choices=TYPE_CHOICES)
     rarity = models.IntegerField(choices=RARITY_CHOICES)
     stars = models.IntegerField()
     level = models.IntegerField()
+    stats = JSONField(default=dict)
+
+
+class Team(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    dungeon = models.ForeignKey(Dungeon, on_delete=models.SET_NULL)
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL)
+    roster = models.ManyToManyField(CreatureInstance)
+    description = models.TextField(
+        null=True,
+        blank=True,
+        help_text=mark_safe(
+            '<a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">Markdown syntax</a> enabled'
+        )
+    )

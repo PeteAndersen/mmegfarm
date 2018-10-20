@@ -1,4 +1,4 @@
-from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, pagination
 from rest_framework.filters import OrderingFilter
 
@@ -28,7 +28,7 @@ class CreatureViewSet(viewsets.ModelViewSet):
     )
     serializer_class = CreatureSerializer
     pagination_class = CreaturePagination
-    filter_backends = (filters.DjangoFilterBackend, OrderingFilter, )
+    filter_backends = (DjangoFilterBackend, OrderingFilter, )
     filter_class = CreatureFilter
 
 
@@ -46,7 +46,7 @@ class DungeonViewSet(viewsets.ModelViewSet):
     queryset = Dungeon.objects.all()
     serializer_class = DungeonSerializer
     pagination_class = DungeonPagination
-    filter_backends = (filters.DjangoFilterBackend, OrderingFilter, )
+    filter_backends = (DjangoFilterBackend, OrderingFilter, )
     filter_class = DungeonFilter
 
 
@@ -64,7 +64,7 @@ class LevelViewSet(viewsets.ModelViewSet):
     queryset = Level.objects.all()
     serializer_class = LevelSerializer
     pagination_class = LevelPagination
-    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_backends = (DjangoFilterBackend, OrderingFilter,)
 
 
 class WavePagination(pagination.PageNumberPagination):
