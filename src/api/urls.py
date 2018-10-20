@@ -1,14 +1,12 @@
-from django.urls import path, include
-
 from rest_framework import routers
 
-from bestiary.urls import router as bestaryRouter
+from bestiary.urls import router as bestiary_router
+from profiles.urls import router as profile_router
 
 app_name = 'api'
 
 router = routers.DefaultRouter()
-router.registry.extend(bestaryRouter.registry)
+router.registry.extend(bestiary_router.registry)
+router.registry.extend(profile_router.registry)
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+urlpatterns = router.urls

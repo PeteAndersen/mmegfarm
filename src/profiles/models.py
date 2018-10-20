@@ -10,7 +10,7 @@ from bestiary.models import Creature, Dungeon, Level
 
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
 
@@ -82,8 +82,8 @@ class GlyphInstance(models.Model):
 class Team(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    dungeon = models.ForeignKey(Dungeon, on_delete=models.SET_NULL)
-    level = models.ForeignKey(Level, on_delete=models.SET_NULL)
+    dungeon = models.ForeignKey(Dungeon, on_delete=models.SET_NULL, null=True)
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL, null=True)
     roster = models.ManyToManyField(CreatureInstance)
     description = models.TextField(
         null=True,
