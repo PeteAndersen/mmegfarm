@@ -1,13 +1,13 @@
 
 from rest_framework import viewsets, pagination
 
-from .models import Profile, CreatureInstance, GlyphInstance, Team
-from .serializers import ProfileSerializer, CreatureInstanceSerializer, GlyphInstanceSerializer, TeamSerializer
+from .models import Account, CreatureInstance, GlyphInstance, Team
+from .serializers import AccountSerializer, CreatureInstanceSerializer, GlyphInstanceSerializer, TeamSerializer
 
 
-class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+class AccountViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
 
 
 class CreatureInstanceViewSet(viewsets.ModelViewSet):
